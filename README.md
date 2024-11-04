@@ -91,6 +91,13 @@ Aplikasi akan dapat diakses di `http://127.0.0.1:8000`.
 -   Buka `http://127.0.0.1:8000` di browser Anda
 -   Jelajahi acara dan pilih tiket yang ingin Anda pesan
 
+## Aturan Commit
+
+-   Gunakan prefix `feat:` jika ada fitur baru, contoh: `feat: Halaman login User`
+-   Gunakan prefix `fix:` jika ada perbaikan bug, contoh: `fix: Halaman login user`
+-   Gunakan prefix `style:` jika ada perubahan style dari sebuah halaman, contoh: `style: Halaman login user`
+-   JANGAN PUSH KE BRANCH MAIN!
+
 ## Testing
 
 Untuk menjalankan tes pada aplikasi ini, gunakan perintah berikut:
@@ -110,7 +117,3 @@ Aplikasi ini dilisensikan di bawah [MIT License](https://opensource.org/licenses
 ---
 
 **BookRN** - Platform booking tiket event dan konser yang cepat dan mudah!
-
-```
-
-```
