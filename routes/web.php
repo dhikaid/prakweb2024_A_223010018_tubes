@@ -7,17 +7,17 @@ Route::get('/', function () {
 });
 
 Route::get('/login', function () {
-    return view('login');
+    return view('auth.login');
 });
 
-Route::get('/regist', function () {
-    return view('regist');
+Route::get('/register', function () {
+    return view('auth.register');
 });
 
 Route::get('/reset-password', function () {
-    return view('reset-password');
+    return view('auth.reset-password');
 });
 
 Route::get('/lupa-password', function () {
-    return view('lupa-password');
+    return view('auth.lupa-password');
 });
