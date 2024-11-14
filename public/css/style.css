@@ -1,0 +1,12 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('/assets/background.jpg');
+}
+.transparan {
+    opacity: 0.5;
+}
+
+.box {
+    box-shadow: 10px 10px;
+    opacity: 0.5;
+}
