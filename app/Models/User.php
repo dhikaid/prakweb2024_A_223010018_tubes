@@ -12,6 +12,9 @@ class User extends Authenticatable
 
     use HasFactory, Notifiable;
 
+    // Tentukan nama kolom primary key
+    protected $primaryKey = 'user_id';  // Gunakan 'user_id' sebagai primary key
+
     /**
      * The attributes that are mass assignable.
      *

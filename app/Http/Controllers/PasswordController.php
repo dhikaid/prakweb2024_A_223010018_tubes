@@ -19,7 +19,7 @@ class PasswordController extends Controller
     // Mengirim link reset password
     public function sendResetLink(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
+        $request->validate(['email' => 'required|email:rfc,dns']);
 
         $status = Password::sendResetLink(
             $request->only('email')
@@ -31,9 +31,18 @@ class PasswordController extends Controller
     }
 
     // Menampilkan form reset password
-    public function showResetForm($token)
+    public function showResetForm(Request $request, $token)
     {
-        return view('auth.reset-password', ['token' => $token]);
+        $email = $request->query('email');
+
+        if (!$token || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return redirect()->route('password.request')->withErrors(['message' => 'Token atau email tidak valid.']);
+        }
+
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $email
+        ]);
     }
 
     // Memproses reset password
@@ -41,13 +50,14 @@ class PasswordController extends Controller
     {
         $request->validate([
             'token' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email:rfc,dns',
             'password' => 'required|min:8|confirmed',
         ]);
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
+                // Pastikan menggunakan user_id jika kolom ID Anda bernama user_id
                 $user->password = Hash::make($password);
                 $user->save();
             }
@@ -57,4 +67,6 @@ class PasswordController extends Controller
             ? redirect()->route('login')->with('status', __($status))
             : back()->withErrors(['email' => [__($status)]]);
     }
+
+
 }

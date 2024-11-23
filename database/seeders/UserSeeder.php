@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::create([
             'user_uuid' => Str::uuid(), // UUID untuk kolom user_uuid
             'username' => 'dummyuser', // Username
-            'email' => 'regaccount@bhadrikais.my.id', // Email
+            'email' => 'azhar.luthfiadi@gmail.com', // Email
             'fullname' => 'Dummy User', // Nama lengkap (gunakan fullname, bukan name)
             'image' => 'default.png', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password

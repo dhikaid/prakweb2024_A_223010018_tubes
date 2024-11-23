@@ -15,7 +15,7 @@
                 <h1 class="text-2xl font-semibold text-left mb-2 text-white">Pulihkan Akunmu</h1>
                 <p class="text-left mb-6 text-white">Mulai kembali menikmati konser dengan mudah!</p>
                 @if (session('status'))
-                    <p>{{ session('status') }}</p>
+                    <p>Jika alamat email anda terdaftar, <br>maka anda akan mendapatkan email untuk reset password</p>
                 @endif
                 <div class="bg-white p-6 rounded-2xl shadow-xl relative w-80">
                     <div class="transparan absolute -top-4 -right-4 bg-blue-200 w-12 h-12 rounded-full"></div>
