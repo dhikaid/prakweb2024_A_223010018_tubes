@@ -27,28 +27,28 @@ class PasswordController extends Controller
         $status = Password::sendResetLink($request->only('email'));
 
         // Menampilkan pesan yang aman tanpa memberi tahu apakah email terdaftar
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => 'Jika alamat email Anda terdaftar, maka Anda akan mendapatkan email untuk reset password.'])
-            : back()->withErrors(['email' => 'Terjadi kesalahan. Coba lagi.']);
+        return back()->with(['status' => 'Link password telah dikirim di email terdaftar anda. Silahkan check inbox/spam']);
     }
+
 
     // Menampilkan form reset password
     public function showResetForm(Request $request, $token)
     {
         $email = $request->query('email');
 
-        // Validasi email dan token
-        if (!$token || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            // Jika token atau email tidak valid, arahkan kembali ke halaman lupa password
-            return redirect()->route('password.request')->withErrors(['message' => 'Token atau email tidak valid.']);
+        if ($email && $user = User::where('email', $email)->first()) {
+            if (Password::tokenExists($user, $token)) {
+                // Tampilkan form reset password
+                return view('auth.reset-password', [
+                    'token' => $token,
+                    'email' => $email
+                ]);
+            }
         }
 
-        // Tampilkan form reset password
-        return view('auth.reset-password', [
-            'token' => $token,
-            'email' => $email
-        ]);
+        return redirect(route('password.request'))->with('Token atau email tidak valid');
     }
+
 
     // Memproses reset password
     public function resetPassword(Request $request)
