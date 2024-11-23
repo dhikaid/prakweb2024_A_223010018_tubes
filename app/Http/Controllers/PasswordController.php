@@ -9,7 +9,6 @@ use App\Models\User;
 
 class PasswordController extends Controller
 {
-
     // Menampilkan form untuk memasukkan email
     public function showForgotPasswordForm()
     {
@@ -19,15 +18,18 @@ class PasswordController extends Controller
     // Mengirim link reset password
     public function sendResetLink(Request $request)
     {
-        $request->validate(['email' => 'required|email:rfc,dns']);
+        // Validasi email yang dimasukkan
+        $request->validate([
+            'email' => 'required|email:rfc,dns',
+        ]);
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        // Mengirim link reset password
+        $status = Password::sendResetLink($request->only('email'));
 
+        // Menampilkan pesan yang aman tanpa memberi tahu apakah email terdaftar
         return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+            ? back()->with(['status' => 'Jika alamat email Anda terdaftar, maka Anda akan mendapatkan email untuk reset password.'])
+            : back()->withErrors(['email' => 'Terjadi kesalahan. Coba lagi.']);
     }
 
     // Menampilkan form reset password
@@ -35,10 +37,13 @@ class PasswordController extends Controller
     {
         $email = $request->query('email');
 
+        // Validasi email dan token
         if (!$token || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            // Jika token atau email tidak valid, arahkan kembali ke halaman lupa password
             return redirect()->route('password.request')->withErrors(['message' => 'Token atau email tidak valid.']);
         }
 
+        // Tampilkan form reset password
         return view('auth.reset-password', [
             'token' => $token,
             'email' => $email
@@ -48,12 +53,14 @@ class PasswordController extends Controller
     // Memproses reset password
     public function resetPassword(Request $request)
     {
+        // Validasi input reset password
         $request->validate([
             'token' => 'required',
             'email' => 'required|email:rfc,dns',
             'password' => 'required|min:8|confirmed',
         ]);
 
+        // Memproses reset password
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
@@ -63,10 +70,9 @@ class PasswordController extends Controller
             }
         );
 
+        // Menampilkan pesan apakah password berhasil di-reset atau tidak
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
+            ? redirect()->route('login')->with('status', 'Password Anda berhasil diubah. Silakan login dengan password baru.')
             : back()->withErrors(['email' => [__($status)]]);
     }
-
-
 }
