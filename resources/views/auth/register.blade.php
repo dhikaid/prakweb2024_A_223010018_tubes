@@ -17,10 +17,11 @@
                     <div class="transparan absolute -top-4 -right-4 bg-blue-200 w-12 h-12 rounded-full"></div>
                     <div class="transparan absolute -bottom-4 -right-4 bg-purple-200 w-12 h-12 rounded-full"></div>
                     <div class="transparan absolute -bottom-4 -left-4 bg-purple-200 w-12 h-12 rounded-full"></div>
-                    <form class="space-y-2">
+                    <form class="space-y-2" action="/register" method="post">
+                        @csrf
                         <div>
                             <label class="block text-sm font-medium mb-1" for="username">Nama Pengguna</label>
-                            <input class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200" id="username" name="username" type="text"/>
+                            <input class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200 @error('username')is-invalid @enderror" id="username" name="username" type="text"/>
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-1" for="fullname">Nama Lengkap</label>
@@ -35,7 +36,7 @@
                             <input class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200" id="password" name="password" type="password"/>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium mb-1" for="confirm password">Konfirmasi Kata Sandi</label>
+                            <label class="block text-sm font-medium mb-1" for="confirm_password">Konfirmasi Kata Sandi</label>
                             <input class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200" id="confirm password" name="password" type="password"/>
                         </div>
                         <button class="w-full bg-purple-600 text-white py-2 rounded-full hover:bg-blue-500 hover:text-white transition duration-300">Daftar</button>

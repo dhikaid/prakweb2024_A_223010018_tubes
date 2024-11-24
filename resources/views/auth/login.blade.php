@@ -17,14 +17,15 @@
                     <div class="transparan absolute -top-4 -right-4 bg-blue-200 w-12 h-12 rounded-full"></div>
                     <div class="transparan absolute -bottom-4 -right-4 bg-purple-200 w-12 h-12 rounded-full"></div>
                     <div class="transparan absolute -bottom-4 -left-4 bg-purple-200 w-12 h-12 rounded-full"></div>
-                    <form class="space-y-2">
+                    <form class="space-y-2" action="/login" method="post">
+                        @csrf
                         <div>
-                            <label class="block text-sm font-medium mb-1" for="username">Nama Pengguna</label>
-                            <input class="w-full border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200" id="username" name="username" type="text"/>
+                            <label class="block text-sm font-medium mb-1"  for="username" >Nama Pengguna</label>
+                            <input class="w-full border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200 " id="username" name="username" type="text" autofocus required/>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium mb-1" for="password">Kata Sandi</label>
-                            <input class="w-full border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200" id="password" name="password" type="password"/>
+                            <label class="block text-sm font-medium mb-1"  for="password">Kata Sandi</label>
+                            <input class="w-full border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200" id="password" name="password" type="password" required/>
                         </div>
                         <div class="text-right">
                             <a class="text-sm text-gray-500 hover:text-gray-300 transition duration-300" href="/lupa-password">Lupa kata sandi?</a>
@@ -37,7 +38,7 @@
                         <button class="w-1/2 text-gray-500 bg-white border border-gray-300 py-2 rounded-lg ml-2 flex items-center justify-center hover:bg-purple-300 hover:text-white transition duration-300"><img alt="DiAkun icon" class="w-6 h-6 mr-1" src="/assets/diakun-icon.png"/>DiAkun</button>
                     </div>
                     <div class="text-center mt-4">
-                        <p class="text-sm">Belum memiliki akun? <a class="text-gray-500 hover:text-gray-300 transition duration-300" href="/regist">Daftar disini!</a></p>
+                        <p class="text-sm">Belum memiliki akun? <a class="text-gray-500 hover:text-gray-300 transition duration-300" href="/register">Daftar disini!</a></p>
                     </div>
                 </div>
             </div>
