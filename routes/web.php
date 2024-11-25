@@ -2,34 +2,36 @@
 
 use App\Http\Controllers\ControllerAuth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PasswordController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Login
-Route::get('/login', function () {
-    return view('auth.login');
-});
 
-Route::post('/login', [ControllerAuth::class, 'authenticate']);
+// route group for middleware guest
+Route::group(['middleware' => 'guest'], function () {
 
-// Log out
-Route::post('/logout', [ControllerAuth::class, 'logout']);
+    // LOGIN
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->middleware('guest')->name('login');
+    Route::post('/login', [ControllerAuth::class, 'authenticate']);
 
-// Register
-Route::get('/register', function () {
-    return view('auth.register');
-});
+    // REGISTER
+    Route::get('/register', function () {
+        return view('auth.register');
+    });
+    Route::post('/register', [ControllerAuth::class, 'store']);
 
-Route::post('/register', [ControllerAuth::class, 'store']);
+    // LOGOUT
+    Route::post('/logout', [ControllerAuth::class, 'logout']);
 
-// Reset password
-Route::get('/reset-password', function () {
-    return view('auth.reset-password');
-});
+    // LUPA PASSWORD
+    Route::get('/lupa-password', [PasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/lupa-password', [PasswordController::class, 'sendResetLink'])->name('password.email');
 
-// lupa password
-Route::get('/lupa-password', function () {
-    return view('auth.lupa-password');
+    // RESET PASSWORD
+    Route::get('/reset-password/{token}', [PasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [PasswordController::class, 'resetPassword'])->name('password.update');
 });
