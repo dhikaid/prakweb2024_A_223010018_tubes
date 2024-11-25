@@ -33,9 +33,11 @@
             </form>
             <div class="text-center my-2">Atau masuk dengan</div>
             <div class="flex justify-between space-x-4">
+                
                 <button
                     class="w-1/2 text-gray-500 bg-white border border-gray-300 py-2 rounded-lg ml-2 flex items-center justify-center hover:bg-purple-300 hover:text-white transition duration-300"><img
-                        alt="Google icon" class="w-4 h-4 mr-2" src="/assets/google-icon.png" />Google</button>
+                        alt="Google icon" class="w-4 h-4 mr-2" src="/assets/google-icon.png" /><a href="auth/redirect">Google</a></button>
+                
                 <button
                     class="w-1/2 text-gray-500 bg-white border border-gray-300 py-2 rounded-lg ml-2 flex items-center justify-center hover:bg-purple-300 hover:text-white transition duration-300"><img
                         alt="DiAkun icon" class="w-6 h-6 mr-1" src="/assets/diakun-icon.png" />DiAkun</button>

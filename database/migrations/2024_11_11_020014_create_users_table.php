@@ -13,6 +13,9 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
             $table->uuid('user_uuid');
+            $table->string('google_id');
+            $table->string('google_token');
+            $table->string('google_refresh_token')->nullable();
             $table->string('username');
             $table->string('image');
             $table->string('email')->unique();
