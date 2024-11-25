@@ -14,7 +14,10 @@ Route::group(['middleware' => 'guest'], function () {
 
     // LOGIN
     Route::get('/login', function () {
-        return view('auth.login');
+        $data = [
+            'title' => 'Login',
+        ];
+        return view('auth.login', $data);
     })->middleware('guest')->name('login');
     Route::post('/login', [ControllerAuth::class, 'authenticate']);
 

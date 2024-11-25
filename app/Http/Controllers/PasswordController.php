@@ -12,7 +12,10 @@ class PasswordController extends Controller
     // Menampilkan form untuk memasukkan email
     public function showForgotPasswordForm()
     {
-        return view('auth.lupa-password');
+        $data = [
+            'title' => 'Lupa Password',
+        ];
+        return view('auth.lupa-password', $data);
     }
 
     // Mengirim link reset password

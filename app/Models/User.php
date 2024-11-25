@@ -20,7 +20,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-<<<<<<< HEAD
+
     // protected $fillable = [
     //     'user_uuid',
     //     'fullname',
@@ -33,16 +33,6 @@ class User extends Authenticatable
     //     'updated_at',
     // ];
     protected $guarded = ['user_id'];
-=======
-    protected $fillable = [
-        'username',
-        'email',
-        'fullname',
-        'password',
-        'role_id',
-        'image',
-    ];
->>>>>>> 3ba894b598787432bf51c726823a3da472c1fe75
 
     protected $hidden = [
         'password',
@@ -61,8 +51,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-
-
-
 }
