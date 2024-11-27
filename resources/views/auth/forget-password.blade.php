@@ -1,13 +1,14 @@
 @extends('auth.layouts.layouts')
 @section('auth')
-<div class="flex items-center justify-center space-x-16 h-full">
-    <div class="hidden md:block">
-        <img alt="login" src="/assets/lupa-password.svg" height="400" width="400" />
-    </div>
-    <div class="relative">
-        <h1 class="text-2xl font-semibold text-left mb-2 text-white">Pulihkan Akunmu</h1>
-        <p class="text-left mb-6 text-white">Mulai kembali menikmati konser dengan mudah!</p>
-        <div class="bg-white p-6 rounded-2xl shadow-xl relative w-80">
+
+<div class="hidden md:block">
+    <img alt="login" src="/assets/lupa-password.svg" height="600" width="600" />
+</div>
+<div class="relative m-4">
+    <h1 class="text-2xl font-semibold text-left mb-2 text-white">Pulihkan Akunmu</h1>
+    <p class="text-left mb-6 text-white">Mulai kembali menikmati konser dengan mudah!</p>
+    <div class="flex justify-center items-center">
+        <div class="bg-white p-6 rounded-2xl shadow-xl relative w-full">
             <div class="transparan absolute -top-4 -right-4 bg-blue-200 w-12 h-12 rounded-full"></div>
             <div class="transparan absolute -bottom-4 -left-4 bg-purple-200 w-12 h-12 rounded-full"></div>
             @if (session('status'))
@@ -38,8 +39,6 @@
         </div>
     </div>
 </div>
-<div class="absolute bottom-4 left-6">
-    <a href="{{ route('login') }}"
-        class="bg-blue-200 text-black px-4 py-2 rounded-full hover:bg-purple-100 hover:text-gray-500 transition duration-300">Kembali</a>
-</div>
+
+
 @endsection

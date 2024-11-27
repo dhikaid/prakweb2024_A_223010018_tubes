@@ -11,12 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id('user_id');
-            $table->uuid('user_uuid');
-            $table->string('google_id');
-            $table->string('google_token');
-            $table->string('google_refresh_token')->nullable();
-            $table->string('username');
+            $table->id('user_id')->unique();
+            $table->uuid('user_uuid')->unique();
+            $table->string('username')->unique();
             $table->string('image');
             $table->string('email')->unique();
             $table->string('fullname');
@@ -40,8 +37,6 @@ return new class extends Migration {
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
-
-
     }
 
     /**
@@ -52,6 +47,5 @@ return new class extends Migration {
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-
     }
 };
