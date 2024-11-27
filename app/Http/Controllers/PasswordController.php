@@ -9,10 +9,33 @@ use App\Models\User;
 
 class PasswordController extends Controller
 {
-    // Menampilkan form untuk memasukkan email
-    public function showForgotPasswordForm()
+
+    // Show view page for lupa-password
+    public function showForgetPassword()
     {
-        return view('auth.lupa-password');
+        $data = [
+            'title' => 'Forget Password',
+        ];
+        return view('auth.forget-password', $data);
+    }
+
+
+    public function showResetPassword(Request $request, $token)
+    {
+
+        $email = $request->query('email');
+        if ($email && $user = User::where('email', $email)->first()) {
+            if (Password::tokenExists($user, $token)) {
+                $data = [
+                    'title' => 'Reset Password',
+                    'token' => $token,
+                    'email' => $email
+                ];
+                return view('auth.reset-password', $data);
+            }
+        }
+
+        return redirect(route('password.request'))->with('Token atau email tidak valid');
     }
 
     // Mengirim link reset password
@@ -28,25 +51,6 @@ class PasswordController extends Controller
 
         // Menampilkan pesan yang aman tanpa memberi tahu apakah email terdaftar
         return back()->with(['status' => 'Link password telah dikirim di email terdaftar anda. Silahkan check inbox/spam']);
-    }
-
-
-    // Menampilkan form reset password
-    public function showResetForm(Request $request, $token)
-    {
-        $email = $request->query('email');
-
-        if ($email && $user = User::where('email', $email)->first()) {
-            if (Password::tokenExists($user, $token)) {
-                // Tampilkan form reset password
-                return view('auth.reset-password', [
-                    'token' => $token,
-                    'email' => $email
-                ]);
-            }
-        }
-
-        return redirect(route('password.request'))->with('Token atau email tidak valid');
     }
 
 

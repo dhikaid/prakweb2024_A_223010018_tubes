@@ -1,6 +1,7 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    background-image: url('/assets/background.jpg');
+.bg-img-auth {
+    font-family: "Poppins", sans-serif;
+    background-image: url("/assets/background.jpg");
+    background-size: cover;
 }
 .transparan {
     opacity: 0.5;

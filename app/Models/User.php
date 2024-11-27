@@ -20,14 +20,19 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'username',
-        'email',
-        'fullname',
-        'password',
-        'role_id',
-        'image',
-    ];
+
+    // protected $fillable = [
+    //     'user_uuid',
+    //     'fullname',
+    //     'name',
+    //     'email',
+    //     'password',
+    //     'image',
+    //     'role_id',
+    //     'created_at',
+    //     'updated_at',
+    // ];
+    protected $guarded = ['user_id'];
 
     protected $hidden = [
         'password',
@@ -46,8 +51,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-
-
-
 }
