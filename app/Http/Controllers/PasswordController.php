@@ -42,41 +42,48 @@ class PasswordController extends Controller
     public function sendResetLink(Request $request)
     {
         // Validasi email yang dimasukkan
-        $request->validate([
+        $validatedData = $request->validate([
             'email' => 'required|email:rfc,dns',
         ]);
 
-        // Mengirim link reset password
-        $status = Password::sendResetLink($request->only('email'));
+        if (User::where('email', $validatedData)->first()) {
+            // Mengirim link reset password
+            $status = Password::sendResetLink($request->only('email'));
+        }
+
 
         // Menampilkan pesan yang aman tanpa memberi tahu apakah email terdaftar
-        return back()->with(['status' => 'Link password telah dikirim di email terdaftar anda. Silahkan check inbox/spam']);
+        return back()->with('success', 'Link password telah dikirim di email terdaftar anda. Silahkan check inbox/spam');
     }
 
 
     // Memproses reset password
     public function resetPassword(Request $request)
     {
+
+
         // Validasi input reset password
         $request->validate([
             'token' => 'required',
             'email' => 'required|email:rfc,dns',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8',
+            'password_confirmation' => 'required|min:8|same:password',
         ]);
 
         // Memproses reset password
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                // Pastikan menggunakan user_id jika kolom ID Anda bernama user_id
                 $user->password = Hash::make($password);
                 $user->save();
             }
         );
 
+
+
         // Menampilkan pesan apakah password berhasil di-reset atau tidak
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', 'Password Anda berhasil diubah. Silakan login dengan password baru.')
+            ? redirect()->route('login')->with('success', 'Password Anda berhasil diubah. Silakan login dengan password baru.')
             : back()->withErrors(['email' => [__($status)]]);
     }
 }

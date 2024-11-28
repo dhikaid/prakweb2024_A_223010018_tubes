@@ -10,19 +10,48 @@
             <div class="transparan absolute -top-4 -right-4 bg-blue-200 w-12 h-12 rounded-full"></div>
             <div class="transparan absolute -bottom-4 -right-4 bg-purple-200 w-12 h-12 rounded-full"></div>
             <div class="transparan absolute -bottom-4 -left-4 bg-purple-200 w-12 h-12 rounded-full"></div>
+
+            @if (session()->has('error'))
+            <div class="flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-lg ">
+                <div class="flex items-center justify-center w-5 bg-red-500">
+                </div>
+                <div class="px-4 py-2 -mx-3">
+                    <div class="mx-3">
+                        <span class="font-semibold text-red-500 ">Error</span>
+                        <p class="text-sm text-gray-600 ">
+                            {{ session('error') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @elseif(session()->has('success'))
+            <div class="flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-lg ">
+                <div class="flex items-center justify-center w-5 bg-green-500">
+                </div>
+                <div class="px-4 py-2 -mx-3">
+                    <div class="mx-3">
+                        <span class="font-semibold text-green-500 ">Success</span>
+                        <p class="text-sm text-gray-600 ">
+                            {{ session('success') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <form class="space-y-2" action="/login" method="post">
                 @csrf
                 <div>
                     <label class="block text-sm font-medium mb-1" for="username">Nama Pengguna</label>
                     <input
                         class="w-full border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200 "
-                        id="username" name="username" type="text" autofocus required />
+                        id="username" name="username" type="text" autofocus required autocomplete="off" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="password">Kata Sandi</label>
                     <input
                         class="w-full border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
-                        id="password" name="password" type="password" required />
+                        id="password" name="password" type="password" required required autocomplete="off" />
                 </div>
                 <div class="text-right">
                     <a class="text-sm text-gray-500 hover:text-gray-300 transition duration-300"
