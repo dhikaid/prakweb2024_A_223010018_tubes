@@ -36,8 +36,8 @@ class AuthController extends Controller
             'username' => ['required', 'min:3', 'max:100', 'unique:users'],
             'fullname' => 'required|max:255',
             'email' => 'required|email:dns|unique:users',
-            'password' => 'required|min:5|max:100',
-
+            'password' => 'required|min:8',
+            'password_confirmation' => 'required|min:8|same:password',
         ]);
 
         $validatedData['password'] = Hash::make($validatedData['password']);
@@ -47,7 +47,7 @@ class AuthController extends Controller
 
         User::create($validatedData);
 
-        return redirect('/login')->with('success', 'Registration successfull! Please login');
+        return redirect('/login')->with('success', 'Registrasi berhasil, silahkan login.');
     }
 
     public function authenticate(Request $request)
@@ -62,7 +62,7 @@ class AuthController extends Controller
             return redirect()->intended('/dashbord');
         }
 
-        return back()->with('loginError', 'Login failed!');
+        return back()->with('error', 'Username atau password tidak benar. Silahkan login ulang.');
     }
 
     public function logout(Request $request)

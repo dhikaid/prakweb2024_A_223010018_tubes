@@ -18,34 +18,42 @@
                 <div>
                     <label class="block text-sm font-medium mb-1" for="username">Nama Pengguna</label>
                     <input
-                        class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200 "
-                        id="username" name="username" type="text" />
-                    <p>@error('username') {{ $message }} @enderror</p>
+                        class="w-full  rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200 {{ $errors->has('username') ? 'border border-red-500' : 'border border-gray-300' }} text-sm"
+                        id=" username" name="username" type="text" required autocomplete="off"
+                        value="{{ old('username') }}" />
+                    @error('username') <p class="text-xs text-red-500 m-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="fullname">Nama Lengkap</label>
                     <input
-                        class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
-                        id="fullname" name="fullname" type="text" />
+                        class="w-full {{ $errors->has('fullname') ? 'border border-red-500' : 'border border-gray-300' }} text-sm rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200 "
+                        id="fullname" name="fullname" type="text" required autocomplete="off"
+                        value="{{ old('fullname') }}" />
+                    @error('fullname') <p class="text-xs text-red-500 m-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="email">Email</label>
                     <input
-                        class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
-                        id="email" name="email" type="email" />
+                        class="w-full {{ $errors->has('email') ? 'border border-red-500' : 'border border-gray-300' }} text-sm rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
+                        id="email" name="email" type="email" required autocomplete="off" value="{{ old('email') }}" />
+                    @error('email') <p class="text-xs text-red-500 m-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="password">Kata Sandi</label>
                     <input
-                        class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
-                        id="password" name="password" type="password" />
+                        class="w-full {{ ($errors->has('password') ) ? 'border border-red-500' : 'border border-gray-300' }} text-sm rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
+                        id="password" name="password" type="password" required autocomplete="off" />
+                    @error('password') <p class="text-xs text-red-500 m-1">{{ $message }}</p> @enderror
+
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="confirm_password">Konfirmasi Kata
                         Sandi</label>
                     <input
-                        class="w-full border border-gray-300 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
-                        id="confirm password" name="password" type="password" />
+                        class="w-full {{ ( $errors->has('password_confirmation')) ? 'border border-red-500' : 'border border-gray-300' }} rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
+                        id="confirm password" name="password_confirmation" type="password" required
+                        autocomplete="off" />
+                    @error('password_confirmation') <p class="text-xs text-red-500 m-1">{{ $message }}</p> @enderror
                 </div>
                 <button
                     class="w-full bg-purple-600 text-white py-2 rounded-full hover:bg-blue-500 hover:text-white transition duration-300">Daftar</button>
