@@ -6,11 +6,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PasswordController;
 
 Route::get('/', function () {
-    return response()->json(
-        [
-            'message' => 'Jangan lupa TUBES DIKERJAKAN YA MAN TEMAN!'
-        ]
-    );
+    // return response()->json(
+    //     [
+    //         'message' => 'Jangan lupa TUBES DIKERJAKAN YA MAN TEMAN!'
+    //     ]
+    // );
+
+    $data = [
+        'title' => 'Home',
+
+    ];
+    return view('main.index', $data);
 });
 
 
@@ -22,7 +28,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', [AuthController::class, 'authenticate']);
 
     // REGISTER
-    Route::get('/register', [AuthController::class, 'showRegister']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'store']);
 
     // LUPA PASSWORD

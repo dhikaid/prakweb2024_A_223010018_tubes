@@ -79,8 +79,6 @@ class PasswordController extends Controller
             }
         );
 
-
-
         // Menampilkan pesan apakah password berhasil di-reset atau tidak
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('login')->with('success', 'Password Anda berhasil diubah. Silakan login dengan password baru.')
