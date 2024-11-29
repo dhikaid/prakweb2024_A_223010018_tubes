@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id('ticket_id');
             $table->uuid('ticket_uuid');
             $table->string('jenis_ticket');
-            $table->decimal('ticket_price');
+            $table->decimal('ticket_price', 15, 2);
             $table->integer('jumlah_ticket');
             $table->foreignId('event_id')->references('event_id')->on('events');
             $table->timestamps();
