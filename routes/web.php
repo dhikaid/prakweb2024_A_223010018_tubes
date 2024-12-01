@@ -14,7 +14,7 @@ use App\Http\Controllers\ServiceAPIController;
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 
 // ROUTE DETAIL
-Route::get('/search', [HomeController::class, 'showDetail'])->name('detail');
+Route::get('/detail', [HomeController::class, 'showDetail'])->name('detail');
 
 //ROUTE HOME
 Route::get('/', [HomeController::class, 'index'])->name('home');
