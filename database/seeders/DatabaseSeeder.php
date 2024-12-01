@@ -15,8 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         // Memanggil Seeder
         $this->call([
-            RoleSeeder::class, // Tambahkan RoleSeeder di sini
-            UserSeeder::class, // Jangan lupa seeder lainnya
+            RoleSeeder::class, // Jangan lupa seeder lainnya
+            UserSeeder::class,
+            EventSeeder::class,
+            TicketSeeder::class,
+            EventCategorySeeder::class,
+            EventCategoryMappingSeeder::class,
         ]);
     }
 }
