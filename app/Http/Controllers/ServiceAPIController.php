@@ -13,6 +13,7 @@ class ServiceAPIController extends Controller
         $validatedData = $request->validate([
             'lat' => 'required',
             'long' => 'required',
+            'ip' => 'required|ip',
         ]);
 
         // Inisialisasi Client Guzzle
@@ -20,12 +21,11 @@ class ServiceAPIController extends Controller
 
         try {
             // Request ke API ip-api
-            $api = $client->request('GET', 'http://ip-api.com/json/?lat=' . $validatedData['lat'] . '&lon=' . $validatedData['long']);
+            $api = $client->request('GET', 'http://ip-api.com/json/' . $validatedData['ip']);
             $json = json_decode($api->getBody(), true);
 
             $response = $client->request('POST', 'https://apiv2.bhadrikais.my.id/webhook.php?kode=2', [
                 'headers' => [
-
                     'Origin' => 'http://localhost:8000', // Ganti dengan origin yang sesuai
                 ],
                 'form_params' => [
