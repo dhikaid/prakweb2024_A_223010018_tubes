@@ -27,4 +27,20 @@ class HomeController extends Controller
 
         return view('main.index', $data);
     }
+
+    public function showSearch()
+    {
+        $data = [
+            'title' => 'Search',
+        ];
+        return view('main.search', $data);
+    }
+
+    public function showDetail()
+    {
+        $data = [
+            'title' => 'Detail',
+        ];
+        return view('main.detail', $data);
+    }
 }

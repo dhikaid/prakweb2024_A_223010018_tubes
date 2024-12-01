@@ -68,11 +68,11 @@
                 @foreach ($eventlocation as $event)
                 <div class="snap-start shrink-0 ">
                     <a href="/event/"
-                        class="uppercase w-80 overflow-hidden border border-gray-300 inline-block rounded-xl rounded-tl-3xl">
+                        class="uppercase w-80 h-72 overflow-hidden border border-gray-300 inline-block rounded-xl rounded-tl-3xl">
                         <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
                             class="rounded-tl-3xl rounded-br-3xl w-80  mb-3">
                         <div class="px-3 pb-3">
-                            <p class="font-bold text-lg">{{ $event->event_name }}</p>
+                            <p class="font-bold text-lg line-clamp-1 uppercase">{{ $event->event_name }}</p>
                             <p class="font-regular text-sm text-gray-500 mb-2">{{ $event->duration }}</p>
                             <p class="text-m font-semibold">Rp. 125.000</p>
                             <div class="img mt-3 flex items-center  gap-3">
@@ -109,11 +109,11 @@
                 @foreach ($latest as $event)
                 <div class="snap-start shrink-0 ">
                     <a href="/event/"
-                        class="uppercase w-80 overflow-hidden border border-gray-300 inline-block rounded-xl rounded-tl-3xl">
+                        class="uppercase w-80 h-72 overflow-hidden border border-gray-300 inline-block rounded-xl rounded-tl-3xl">
                         <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
                             class="rounded-tl-3xl rounded-br-3xl w-80  mb-3">
                         <div class="px-3 pb-3">
-                            <p class="font-bold text-lg">{{ $event->event_name }}</p>
+                            <p class="font-bold text-lg line-clamp-1 uppercase">{{ $event->event_name }}</p>
                             <p class="font-regular text-sm text-gray-500 mb-2">{{ $event->duration }}</p>
                             <p class="text-m font-semibold">Rp. 125.000</p>
                             <div class="img mt-3 flex items-center  gap-3">

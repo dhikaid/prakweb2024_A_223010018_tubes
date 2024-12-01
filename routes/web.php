@@ -60,4 +60,7 @@ Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('
 // Route::get('/main/event-details/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
 
 // ROUTE SEARCH
-Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
+
+// ROUTE DETAIL
+Route::get('/search', [HomeController::class, 'showDetail'])->name('detail');
