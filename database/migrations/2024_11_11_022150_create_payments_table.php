@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id('payment_id');
-            $table->uuid('payment_uuid');
+            $table->id('payment_id')->unique();
+            $table->uuid('payment_uuid')->unique();
             $table->foreignId('booking_id')->references('booking_id')->on('bookings');
             $table->decimal('jumlah_pembayaran');
             $table->string('payment_method');

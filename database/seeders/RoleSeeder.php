@@ -23,7 +23,12 @@ class RoleSeeder extends Seeder
 
         Role::create([
             'role_uuid' => Str::uuid(), // UUID untuk kolom user_uuid
-            'role' => 'user', // Username
+            'role' => 'EO', // Username
+        ]);
+
+        Role::create([
+            'role_uuid' => Str::uuid(), // UUID untuk kolom user_uuid
+            'role' => 'User', // Username
         ]);
     }
 }

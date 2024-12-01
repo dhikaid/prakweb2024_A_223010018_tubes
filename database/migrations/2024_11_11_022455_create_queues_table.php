@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('queues', function (Blueprint $table) {
-            $table->id('queue_id');
-            $table->uuid('queue_uuid');
+            $table->id('queue_id')->unique();
+            $table->uuid('queue_uuid')->unique();
             $table->foreignId('event_id')->references('event_id')->on('events');
             $table->foreignId('user_id')->references('user_id')->on('users');
             $table->dateTime('queue_time');

@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('fullname');
             $table->string('password');
             $table->foreignId('role_id')->references('role_id')->on('roles');
+            $table->boolean('isVerified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
