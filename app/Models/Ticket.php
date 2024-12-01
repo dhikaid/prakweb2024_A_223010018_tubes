@@ -7,4 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     //
+
+    protected $primaryKey = 'ticket _id';
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
 }
