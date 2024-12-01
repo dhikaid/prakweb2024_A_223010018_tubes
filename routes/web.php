@@ -4,14 +4,20 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OauthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\EventController;
 
-Route::get('/', function () {
-    return response()->json(
-        [
-            'message' => 'Jangan lupa TUBES DIKERJAKAN YA MAN TEMAN!'
-        ]
-    );
-});
+// Route::get('/', function () {
+//     return response()->json(
+//         [
+//             'message' => 'Jangan lupa TUBES DIKERJAKAN YA MAN TEMAN!'
+//         ]
+//     );
+// });
+
+//ROUTE HOME
+Route::get('/', [EventController::class, 'showHome'])->name('home');
+// Route::get('main/home', [EventController::class, 'showHome'])->name('home');
 
 
 // route group for middleware guest
@@ -49,3 +55,10 @@ route::group(['middleware' => 'auth'], function () {
     // LOGOUT
     Route::get('/logout', [AuthController::class, 'logout']);
 });
+
+// ROUTE EVENT DETAILS
+Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
+// Route::get('/main/event-details/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
+
+// ROUTE SEARCH
+Route::get('/search', [SearchController::class, 'search'])->name('search');
