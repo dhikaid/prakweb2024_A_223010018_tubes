@@ -9,6 +9,13 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ServiceAPIController;
 
+
+// ROUTE SEARCH
+Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
+
+// ROUTE DETAIL
+Route::get('/search', [HomeController::class, 'showDetail'])->name('detail');
+
 //ROUTE HOME
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
@@ -58,9 +65,3 @@ route::group(['middleware' => 'auth'], function () {
 // ROUTE EVENT DETAILS
 Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
 // Route::get('/main/event-details/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
-
-// ROUTE SEARCH
-Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
-
-// ROUTE DETAIL
-Route::get('/search', [HomeController::class, 'showDetail'])->name('detail');
