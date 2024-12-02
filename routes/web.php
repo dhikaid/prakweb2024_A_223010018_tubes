@@ -9,12 +9,17 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ServiceAPIController;
 
+// ROUTE DASHBOARD
+Route::get('/dashboard', function () {
+    return view('dashboard.index');
+})->name('dashboard');
 
 // ROUTE SEARCH
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 
 // ROUTE DETAIL
-Route::get('/detail', [HomeController::class, 'showDetail'])->name('detail');
+Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
+Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
 
 //ROUTE HOME
 Route::get('/', [HomeController::class, 'index'])->name('home');

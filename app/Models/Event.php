@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Number;
 
 class Event extends Model
 {
@@ -36,7 +37,7 @@ class Event extends Model
         return $this->hasMany(Ticket::class, 'event_id', 'event_id');
     }
 
-    public function location(): HasOne
+    public function locations(): HasOne
     {
         return $this->hasOne(Location::class, 'location_id', 'location');
     }
@@ -55,5 +56,14 @@ class Event extends Model
         } else {
             return Carbon::parse($this->start_date)->format($format) . '- ' . Carbon::parse($this->end_date)->format($format);
         }
+    }
+
+    // return low price to high price format 10-100
+    public function getPriceRangeAttribute()
+    {
+
+        $min = $this->tickets->min('ticket_price');
+        $max = $this->tickets->max('ticket_price');
+        return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
     }
 }

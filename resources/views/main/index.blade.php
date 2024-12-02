@@ -32,7 +32,7 @@
                 @foreach ($creators as $creator)
 
                 <div class="snap-start shrink-0 ">
-                    <a class="flex flex-col items-center justify-center text-center  md:text-left">
+                    <a href="" class="flex flex-col items-center justify-center text-center  md:text-left">
                         <img src="{{ $creator->image }}" class="rounded-full w-24 md:w-28 mb-3"
                             alt="{{ $creator->fullname }}">
                         <div class="detail-creator flex items-center justify-center">
@@ -67,14 +67,14 @@
             <div class="w-full flex gap-3 snap-x scroll-pl-1 overflow-x-auto py-3">
                 @foreach ($eventlocation as $event)
                 <div class="snap-start shrink-0 ">
-                    <a href="/event/"
+                    <a href="/event/{{ $event->slug }}"
                         class="uppercase w-80 h-72 overflow-hidden border border-gray-300 inline-block rounded-xl rounded-tl-3xl">
                         <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
                             class="rounded-tl-3xl rounded-br-3xl w-80  mb-3">
                         <div class="px-3 pb-3">
                             <p class="font-bold text-lg line-clamp-1 uppercase">{{ $event->event_name }}</p>
                             <p class="font-regular text-sm text-gray-500 mb-2">{{ $event->duration }}</p>
-                            <p class="text-m font-semibold">Rp. 125.000</p>
+                            <p class="text-m font-semibold capitalize">{{ $event->price_range }}</p>
                             <div class="img mt-3 flex items-center  gap-3">
                                 <img src="https://assets.loket.com/neo/production/images/organization/20240404153109_660e654d3c31b.png"
                                     class="w-7 rounded-full" alt="">
@@ -108,14 +108,14 @@
             <div class="w-full flex gap-3 snap-x scroll-pl-1 overflow-x-auto py-3">
                 @foreach ($latest as $event)
                 <div class="snap-start shrink-0 ">
-                    <a href="/event/"
+                    <a href="/event/{{ $event->slug }}"
                         class="uppercase w-80 h-72 overflow-hidden border border-gray-300 inline-block rounded-xl rounded-tl-3xl">
                         <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
                             class="rounded-tl-3xl rounded-br-3xl w-80  mb-3">
                         <div class="px-3 pb-3">
                             <p class="font-bold text-lg line-clamp-1 uppercase">{{ $event->event_name }}</p>
                             <p class="font-regular text-sm text-gray-500 mb-2">{{ $event->duration }}</p>
-                            <p class="text-m font-semibold">Rp. 125.000</p>
+                            <p class="text-m font-semibold capitalize">{{ $event->price_range }}</p>
                             <div class="img mt-3 flex items-center  gap-3">
                                 <img src="https://assets.loket.com/neo/production/images/organization/20240404153109_660e654d3c31b.png"
                                     class="w-7 rounded-full" alt="">

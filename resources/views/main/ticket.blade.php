@@ -65,28 +65,29 @@
                     <p> {{ $event->price_range }}</p>
                 </div>
             </div>
-
-            <a href="/event/{{ $event->slug }}/tickets"
-                class="text-white bg-purple-600 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-bold rounded-lg w-full inline-block text-lg p-3 text-center me-2 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800 ">BELI
-                TIKET</a>
         </div>
         <div class="text-xl text-center w-full text-gray-500 dark:text-gray-400 my-4">
             <ul class="flex w-full justify-between">
                 <li class=" w-full">
                     <a href="/event/{{ $event->slug }}"
-                        class="inline-block p-1 text-black font-bold border-b-4 border-blue-600 rounded-t-lg active  dark:border-blue-500 w-full text-base"
+                        class="inline-block p-1 text-black font-bold border-b-4 rounded-t-lg active w-full text-base"
                         aria-current="page">DETAIL</a>
                 </li>
                 <li class="w-full">
                     <a href="/event/{{ $event->slug }}/tickets"
-                        class="inline-block p-1 text-black font-bold border-b-4  rounded-t-lg active   w-full text-base"
+                        class="inline-block p-1 text-black font-bold border-b-4 border-blue-600 rounded-t-lg active  dark:border-blue-500 w-full text-base"
                         aria-current="page">TICKET</a>
                 </li>
             </ul>
         </div>
 
-        <div class="text-base leading-loose text-gray-700 my-4">
-            {!! $event->description !!}
+        <div class="text-base leading-loose my-4">
+            @foreach ($event->tickets as $ticket )
+            <div class="bg-gray-200 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl ">
+                <p class="text-xl uppercase font-bold block">{{ $ticket->jenis_ticket }}</p>
+                <p>{{ $ticket->price }}</p>
+            </div>
+            @endforeach
         </div>
     </div>
 
@@ -147,10 +148,6 @@
                     <p> {{ $event->price_range }}</p>
                 </div>
             </div>
-
-            <a href="/event/{{ $event->slug }}/tickets"
-                class="text-white bg-purple-600 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-bold rounded-lg w-full inline-block text-lg p-3 text-center me-2 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800 ">BELI
-                TIKET</a>
         </div>
     </div>
 </div>
