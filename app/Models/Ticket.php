@@ -9,7 +9,7 @@ class Ticket extends Model
 {
     //
 
-    protected $primaryKey = 'ticket _id';
+    protected $primaryKey = 'ticket_id';
 
     public function events()
     {
@@ -19,5 +19,11 @@ class Ticket extends Model
     public function getPriceAttribute()
     {
         return Number::currency($this->ticket_price, 'IDR', 'ID');
+    }
+
+    // order by min price to highest price
+    public function scopeMinPrice($query)
+    {
+        return $query->orderBy('ticket_price');
     }
 }

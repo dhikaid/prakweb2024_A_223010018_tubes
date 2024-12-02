@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
@@ -50,5 +51,19 @@ class ServiceAPIController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
+
+    public function addTicket(Ticket $ticket, Request $request)
+    {
+        $validatedData = $request->validate([
+            'qty' => 'required|min:1|max:10|integer',
+        ]);
+
+        return response()->json($validatedData);
+    }
+
+    public function checkTicket(Ticket $ticket, Request $request)
+    {
+        return response()->json($ticket);
     }
 }

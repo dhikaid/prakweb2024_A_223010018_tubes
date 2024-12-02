@@ -50,7 +50,9 @@ class HomeController extends Controller
 
         $data = [
             'title' => "Buy ticket: $event->event_name",
-            'event' => $event,
+            'event' => $event->load(['tickets' => function ($q) {
+                $q->minprice();
+            }]),
         ];
         return view('main.ticket', $data);
     }

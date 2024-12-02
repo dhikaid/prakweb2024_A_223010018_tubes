@@ -64,10 +64,11 @@
 
         <!-- Buttons -->
         <div class="hidden md:flex items-center space-x-4">
-            <a href="#" class="px-4 py-2 border border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50">
+            <a href="{{ route('register') }}"
+                class="px-4 py-2 border border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50">
                 Daftar
             </a>
-            <a href="#" class="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-500">
+            <a href="{{ route('login') }}" class="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-500">
                 Masuk
             </a>
         </div>
@@ -88,11 +89,11 @@
             </button>
         </form>
         <div class="flex flex-col items-start space-y-4">
-            <a href="#"
+            <a href="{{ route('register') }}"
                 class="block px-4 py-2 border border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50 w-full text-center">
                 Daftar
             </a>
-            <a href="#"
+            <a href="{{ route('login') }}"
                 class="block px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-500 w-full text-center">
                 Masuk
             </a>

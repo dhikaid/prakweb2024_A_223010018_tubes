@@ -21,13 +21,13 @@ Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
 Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
 
-//ROUTE HOME
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
 
 // SERVICES API
 Route::prefix('service/api')->group(function () {
     Route::get('/getcity', [ServiceAPIController::class, 'getCity']);
+
+    Route::post('/ticket/{ticket:ticket_uuid}', [ServiceAPIController::class, 'addTicket'])->middleware('auth');
+    Route::get('/ticket/{ticket:ticket_uuid}', [ServiceAPIController::class, 'checkTicket'])->middleware('auth');
 });
 
 
@@ -70,3 +70,7 @@ route::group(['middleware' => 'auth'], function () {
 // ROUTE EVENT DETAILS
 Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
 // Route::get('/main/event-details/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
+
+//ROUTE HOME
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');

@@ -9,6 +9,9 @@
 
 {{-- SCRIPTS --}}
 <script src="{{ asset('js/location.js') }}"></script>
+<script src="{{ asset('js/addCart.js') }}"></script>
+
+
 @include('main.layouts.footer')
 
 @endsection

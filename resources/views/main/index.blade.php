@@ -30,9 +30,8 @@
         <div class="relative overflow-auto">
             <div class="w-full flex gap-8 snap-x scroll-pl-1 overflow-x-auto py-3">
                 @foreach ($creators as $creator)
-
                 <div class="snap-start shrink-0 ">
-                    <a href="" class="flex flex-col items-center justify-center text-center  md:text-left">
+                    <a href="" class="flex flex-col items-center justify-center text-center  md:text-left w-36">
                         <img src="{{ $creator->image }}" class="rounded-full w-24 md:w-28 mb-3"
                             alt="{{ $creator->fullname }}">
                         <div class="detail-creator flex items-center justify-center">

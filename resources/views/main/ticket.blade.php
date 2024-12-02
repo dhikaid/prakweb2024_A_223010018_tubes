@@ -2,7 +2,7 @@
 @section('main')
 
 
-<div class="md:flex gap-5  ">
+<div class="md:flex gap-5" x-data="useForm">
     <div class="md:w-2/3">
         <div class=" rounded-lg mb-4">
             <img class="h-auto w-full rounded-lg shadow-xl dark:shadow-gray-200"
@@ -10,6 +10,11 @@
                 alt="image description">
         </div>
         <div class="detail-info block md:hidden">
+
+            {{-- MOBILE --}}
+            <div class="block fixed md:hidden w-full -bottom-5 left-0 mt-10">
+                @include('main.layouts.partials.cardbayar')
+            </div>
             <h2 class="text-2xl font-bold mb-2 uppercase">
                 {{ $event->event_name }}
             </h2>
@@ -83,13 +88,32 @@
 
         <div class="text-base leading-loose my-4">
             @foreach ($event->tickets as $ticket )
-            <div class="bg-gray-200 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl ">
-                <p class="text-xl uppercase font-bold block">{{ $ticket->jenis_ticket }}</p>
-                <p>{{ $ticket->price }}</p>
+            <div class="bg-gray-200 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl flex justify-between items-center ">
+                <div class="info">
+                    <p class="text-xl uppercase font-bold block">{{ $ticket->jenis_ticket }}</p>
+                    <p>{{ $ticket->price }}</p>
+                    <p class="text-xs">*minimal pemesanan 1 tiket, maksimal 10 tiket</p>
+                </div>
+                @auth
+                <form class="form" @submit.prevent="post('{{ $ticket->ticket_uuid }}')">
+                    <div class="flex ticket gap-2">
+                        <input type="number" min="1" max="10" required value="1" class="rounded-lg w-10 text-center"
+                            name="qty" required>
+                        <input type="hidden" value="{{ $ticket->jenis_ticket }}" class="rounded-lg w-10 text-center"
+                            name="name" readonly required>
+                        <button
+                            class="bg-blue-700 text-white font-bold rounded-lg px-8 py-2 uppercase text-sm md:text-base">BELI</button>
+                    </div>
+                </form>
+                @else
+                <a href="{{ route('login') }}"
+                    class="bg-blue-700 text-white font-bold rounded-lg px-8 py-2 uppercase text-sm md:text-base">MASUK</a>
+                @endauth
             </div>
             @endforeach
         </div>
     </div>
+
 
     <div class="md:w-1/3 md:pl-6 mt-6 md:mt-0">
         <div class="detail-info hidden md:block">
@@ -148,8 +172,11 @@
                     <p> {{ $event->price_range }}</p>
                 </div>
             </div>
+
+            @include('main.layouts.partials.cardbayar')
         </div>
     </div>
+
 </div>
 
 
