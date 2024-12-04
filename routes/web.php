@@ -17,6 +17,10 @@ Route::get('/dashboard', function () {
 // ROUTE SEARCH
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 
+// if (request('search')) {
+//     $event->where('title', 'like', '%' . request('search') . '%');
+// }
+
 // ROUTE DETAIL
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
 Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
