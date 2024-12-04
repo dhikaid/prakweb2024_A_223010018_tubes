@@ -21,6 +21,14 @@ Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 //     $event->where('title', 'like', '%' . request('search') . '%');
 // }
 
+// DASHBOARD
+Route::get('/dashboard', function () {
+    $data = [
+        'title' => 'Dashboard',
+    ];
+    return view('dashboard.index', $data);
+});
+
 // ROUTE DETAIL
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
 Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
