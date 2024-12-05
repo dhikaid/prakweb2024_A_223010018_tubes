@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ServiceAPIController;
 
@@ -40,6 +41,8 @@ Route::prefix('service/api')->group(function () {
 
     Route::post('/ticket/{ticket:ticket_uuid}', [ServiceAPIController::class, 'addTicket'])->middleware('auth');
     Route::get('/ticket/{ticket:ticket_uuid}', [ServiceAPIController::class, 'checkTicket'])->middleware('auth');
+
+    Route::post('/transaction', [PaymentController::class, 'createCharge']);
 });
 
 

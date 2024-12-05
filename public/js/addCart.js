@@ -5,28 +5,28 @@ document.addEventListener("alpine:init", () => {
         maxTickets: 10, // Batas maksimal tiket
         errorMessage: "", // Menyimpan pesan kesalahan
 
-        // Fungsi untuk mengambil data input
-        data() {
+        // Fungsi untuk mengambil data input langsung dari form
+        getFormData() {
             const inputs = Array.from(this.$el.querySelectorAll("input"));
-            const data = inputs.reduce(
-                (object, key) => ({ ...object, [key.name]: key.value }),
+            return inputs.reduce(
+                (data, input) => ({ ...data, [input.name]: input.value }),
                 {}
             );
-            return data;
         },
 
         // Fungsi untuk menambahkan tiket atau menambah qty jika tiket sudah ada
         async post(uuid) {
-            const qty = parseInt(this.data().qty, 10);
+            const formData = this.getFormData();
+            const qty = parseInt(formData.qty, 10);
 
             // Validasi jumlah tiket yang dibeli
             if (qty < this.minTickets) {
                 this.errorMessage = `Minimal beli ${this.minTickets} tiket per kategori`;
-                return; // Jangan lanjutkan jika qty kurang dari batas minimal
+                return;
             }
             if (qty > this.maxTickets) {
                 this.errorMessage = `Maksimal beli ${this.maxTickets} tiket per kategori`;
-                return; // Jangan lanjutkan jika qty lebih dari batas maksimal
+                return;
             }
 
             this.errorMessage = ""; // Reset pesan kesalahan jika validasi lolos
@@ -53,10 +53,9 @@ document.addEventListener("alpine:init", () => {
                 if (existingTicket) {
                     // Jika tiket sudah ada, tambah qty-nya
                     const newQty = existingTicket.qty + ticketData.qty;
-                    // Pastikan qty tidak melebihi batas maksimal
                     if (newQty > this.maxTickets) {
                         this.errorMessage = `Maksimal beli ${this.maxTickets} tiket per kategori`;
-                        return; // Jangan lanjutkan jika qty lebih dari batas maksimal
+                        return;
                     }
                     existingTicket.qty = newQty;
                 } else {
@@ -67,10 +66,38 @@ document.addEventListener("alpine:init", () => {
             });
         },
 
+        // Fungsi untuk mengurangi jumlah tiket
+        decreaseTicket(name) {
+            const ticket = this.tickets.find((t) => t.name === name);
+            if (ticket) {
+                ticket.qty -= 1;
+                if (ticket.qty <= 0) {
+                    this.tickets = this.tickets.filter((t) => t.name !== name);
+                }
+            }
+        },
+
+        increaseTicket(name) {
+            const ticket = this.tickets.find((t) => t.name === name);
+            if (ticket) {
+                ticket.qty += 1;
+                // block jika melebihi 10
+                if (ticket.qty > this.maxTickets) {
+                    ticket.qty = this.maxTickets;
+                    this.errorMessage = `Maksimal beli ${this.maxTickets} tiket per kategori`;
+                }
+            }
+        },
+
+        // Fungsi untuk menghapus tiket
+        deleteTicket(name) {
+            this.tickets = this.tickets.filter((t) => t.name !== name);
+        },
+
         // Fungsi untuk menghitung total harga dari tiket yang ada
         getTotal() {
             return this.tickets.reduce((total, ticket) => {
-                return total + ticket.qty * ticket.price; // Total harga = qty * price
+                return total + ticket.qty * ticket.price;
             }, 0);
         },
     }));
