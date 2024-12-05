@@ -13,7 +13,7 @@ class Ticket extends Model
 
     public function events()
     {
-        return $this->hasMany(Event::class);
+        return $this->belongsTo(Event::class, 'event_id', 'event_id');
     }
 
     public function getPriceAttribute()
