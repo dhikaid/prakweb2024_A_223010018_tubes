@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardRolesController;
+use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
@@ -11,9 +13,19 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ServiceAPIController;
 
 // ROUTE DASHBOARD
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->name('dashboard');
+Route::prefix('dashboard')->group(function () {
+    Route::get('/', function () {
+        return view('dashboard.index');
+    });
+    // /dashboard/users
+    Route::resource('/users', DashboardUsersController::class);
+    // /dashboard/roles
+    Route::resource('/roles', DashboardRolesController::class);
+})->middleware('auth');
+
+
+
+
 
 // ROUTE SEARCH
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
