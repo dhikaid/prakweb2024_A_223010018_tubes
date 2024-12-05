@@ -11,12 +11,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->id('event_id');
-            $table->uuid('event_uuid');
+            $table->id('event_id')->unique();
+            $table->string('slug')->unique();
             $table->string('event_name');
             $table->string('image');
             $table->text('description');
-            $table->string('location');
+            $table->foreignId('location')->references('location_id')->on('locations');
+            $table->foreignId('user')->references('user_id')->on('users');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->integer('capacity');

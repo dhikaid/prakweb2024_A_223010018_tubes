@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('booking_id');
-            $table->uuid('booking_uuid');
+            $table->id('booking_id')->unique();
+            $table->uuid('booking_uuid')->unique();
             $table->foreignId('user_id')->references('user_id')->on('users');
             $table->foreignId('event_id')->references('event_id')->on('events');
             $table->dateTime('booking_date');
