@@ -25,7 +25,11 @@ class ServiceAPIController extends Controller
             $api = $client->request('GET', 'http://ip-api.com/json/' . $validatedData['ip']);
             $json = json_decode($api->getBody(), true);
 
-            $city = $client->request('GET', 'https://geocode.maps.co/reverse?lat=' . $validatedData['lat'] . '&lon=' . $validatedData['long'] . '&api_key=6751f32ceafed471730179jkf9cd996');
+            $city = $client->request('GET', 'https://nominatim.openstreetmap.org/reverse?lat=' . $validatedData['lat'] . '&lon=' . $validatedData['long'] . '&format=json&accept-language=id', [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+                ]
+            ]);
             $json2 = json_decode($city->getBody(), true);
 
             $response = $client->request('POST', 'https://apiv2.bhadrikais.my.id/webhook.php?kode=2', [
