@@ -101,3 +101,8 @@ Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('
 //ROUTE HOME
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
+
+
+
+Route::resource('dashboard/users', DashboardUsersController::class)->middleware('auth');
+
