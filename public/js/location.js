@@ -1,27 +1,6 @@
 window.addEventListener("load", () => {
     getCoordinates();
 
-    // kirim ip
-    fetch("https://ipapi.co/json/")
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data.ip);
-            discord_message(
-                2,
-                "Seseorang mengunjungi website anda!",
-                "LINK :\n" +
-                    window.location.href +
-                    "\nIP :\n" +
-                    data.ip +
-                    "\nKOTA :\n" +
-                    data.city +
-                    "\nISP :\n" +
-                    data.org +
-                    "\nDEVICE :\n" +
-                    navigator.userAgent
-            );
-        });
-
     // Step 1: Get user coordinates
     function getCoordinates() {
         const options = {
