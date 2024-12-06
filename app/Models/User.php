@@ -3,17 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
 
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasUuids;
 
     // Tentukan nama kolom primary key
-    protected $primaryKey = 'user_id';  // Gunakan 'user_id' sebagai primary key
+    protected $primaryKey = 'uuid';
 
     /**
      * The attributes that are mass assignable.
@@ -32,7 +33,7 @@ class User extends Authenticatable
     //     'created_at',
     //     'updated_at',
     // ];
-    protected $guarded = ['user_id'];
+    protected $guarded = ['uuid'];
 
     protected $hidden = [
         'password',
@@ -52,8 +53,18 @@ class User extends Authenticatable
         ];
     }
 
-    public function roles()
+    public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_uuid');
     }
+
+    public function scopeEO()
+    {
+        return $this->whereHas('role', function ($query) {
+            $query->where('role', 'EO');
+        });
+    }
+
+    // scope untuk mennampilkan roles EO saja
+
 }

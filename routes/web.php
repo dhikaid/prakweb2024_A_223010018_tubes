@@ -7,7 +7,6 @@ use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
-use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ServiceAPIController;
@@ -23,8 +22,9 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('/roles', DashboardRolesController::class);
 })->middleware('auth');
 
-
-
+Route::get('/creators', [HomeController::class, 'showCreators']);
+Route::get('/events', [HomeController::class, 'showEvents']);
+Route::get('/events/{location}', [HomeController::class, 'showEventsLocation']);
 
 
 // ROUTE SEARCH
@@ -51,10 +51,11 @@ Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])
 Route::prefix('service/api')->group(function () {
     Route::get('/getcity', [ServiceAPIController::class, 'getCity']);
 
-    Route::post('/ticket/{ticket:ticket_uuid}', [ServiceAPIController::class, 'addTicket'])->middleware('auth');
-    Route::get('/ticket/{ticket:ticket_uuid}', [ServiceAPIController::class, 'checkTicket'])->middleware('auth');
+    Route::post('/ticket/{ticket:uuid}', [ServiceAPIController::class, 'addTicket'])->middleware('auth');
+    Route::get('/ticket/{ticket:uuid}', [ServiceAPIController::class, 'checkTicket'])->middleware('auth');
 
-    Route::post('/transaction', [PaymentController::class, 'createCharge']);
+    Route::post('/transaction/{event:slug}', [PaymentController::class, 'createCharge']);
+    Route::post('/transaction/{event:slug}/pay', [PaymentController::class, 'createPay']);
 });
 
 
@@ -89,7 +90,6 @@ Route::group(['middleware' => 'guest'], function () {
 
 // Route Group for Middleware Auth
 route::group(['middleware' => 'auth'], function () {
-
     // LOGOUT
     Route::get('/logout', [AuthController::class, 'logout']);
 });
@@ -105,4 +105,3 @@ Route::get('/{location}', [HomeController::class, 'index'])->name('home.location
 
 
 Route::resource('dashboard/users', DashboardUsersController::class)->middleware('auth');
-

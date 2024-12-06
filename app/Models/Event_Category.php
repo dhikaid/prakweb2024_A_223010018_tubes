@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Event_Category extends Model
 {
-    //
-    protected $primaryKey = 'category_id';
+    use HasUuids;
+    protected $primaryKey = 'uuid';
 
     public function events()
     {

@@ -11,12 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('booking__details', function (Blueprint $table) {
-            $table->id('detail_id')->unique();
-            $table->uuid('detail_uuid')->unique();
-            $table->foreignId('booking_id')->references('booking_id')->on('bookings');
-            $table->foreignId('ticket_id')->references('ticket_id')->on('tickets');
-            $table->integer('jumlah_pesan_ticket');
-            $table->decimal('total_price');
+            $table->uuid()->unique();
+            $table->foreignUuid('booking_uuid')->references('uuid')->on('bookings');
+            $table->foreignUuid('ticket_uuid')->references('uuid')->on('tickets');
+            $table->integer('qty');
+            $table->decimal('total', 15, 2);
             $table->timestamps();
         });
     }

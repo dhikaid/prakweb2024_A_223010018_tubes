@@ -7,9 +7,9 @@
             </a>
 
             <!-- Search Bar -->
-            <form
+            <form method="GET" action='/search'
                 class="flex items-center w-full max-w-lg mx-4 hidden md:flex bg-gray-100 border border-gray-300 rounded-lg overflow-hidden h-full">
-                <input type="text" placeholder="Cari event menarik"
+                <input type="text" name="query" placeholder="Cari event menarik"
                     class="flex-grow bg-gray-100 px-4 py-2 focus:ring-2 focus:ring-violet-300 focus:outline-none" />
                 <button type="submit" class="bg-violet-600 text-white px-4 flex items-center justify-center h-11">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

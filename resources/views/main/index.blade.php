@@ -25,7 +25,7 @@
     <div class="my-10">
         <div class="flex justify-between">
             <h1 class="font-bold text-lg md:text-xl mb-7">Creator Event</h1>
-            <a class="text-sm mb-7 text-blue-600">Lihat semua</a>
+            <a class="text-sm mb-7 text-blue-600" href="/creators">Lihat semua</a>
         </div>
         <div class="relative overflow-auto">
             <div class="w-full flex gap-8 snap-x scroll-pl-1 overflow-x-auto py-3">
@@ -60,7 +60,7 @@
         <div class="flex justify-between">
             <h1 class="font-bold text-lg md:text-xl mb-7">Event di <span class="text-violet-600 uppercase">{{ $location
                     }}</span></h1>
-            <a class="text-sm mb-7 text-blue-600">Lihat semua</a>
+            <a class="text-sm mb-7 text-blue-600" href="/events/{{ $location }}">Lihat semua</a>
         </div>
         <div class="relative overflow-auto">
             <div class="w-full flex gap-3 snap-x scroll-pl-1 overflow-x-auto py-3">
@@ -71,7 +71,7 @@
                         <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
                             class="rounded-tl-3xl rounded-br-3xl w-80  mb-3">
                         <div class="px-3 pb-3">
-                            <p class="font-bold text-lg line-clamp-1 uppercase">{{ $event->event_name }}</p>
+                            <p class="font-bold text-lg line-clamp-1 uppercase">{{ $event->name }}</p>
                             <p class="font-regular text-sm text-gray-500 mb-2">{{ $event->duration }}</p>
                             <p class="text-m font-semibold capitalize">{{ $event->price_range }}</p>
                             <div class="img mt-3 flex items-center  gap-3">
@@ -101,7 +101,7 @@
     <div class="my-10">
         <div class="flex justify-between">
             <h1 class="font-bold text-lg md:text-xl mb-7">Event Terbaru</h1>
-            <a class="text-sm mb-7 text-blue-600">Lihat semua</a>
+            <a class="text-sm mb-7 text-blue-600" href="/events">Lihat semua</a>
         </div>
         <div class="relative overflow-auto">
             <div class="w-full flex gap-3 snap-x scroll-pl-1 overflow-x-auto py-3">
@@ -112,7 +112,7 @@
                         <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
                             class="rounded-tl-3xl rounded-br-3xl w-80  mb-3">
                         <div class="px-3 pb-3">
-                            <p class="font-bold text-lg line-clamp-1 uppercase">{{ $event->event_name }}</p>
+                            <p class="font-bold text-lg line-clamp-1 uppercase">{{ $event->name }}</p>
                             <p class="font-regular text-sm text-gray-500 mb-2">{{ $event->duration }}</p>
                             <p class="text-m font-semibold capitalize">{{ $event->price_range }}</p>
                             <div class="img mt-3 flex items-center  gap-3">

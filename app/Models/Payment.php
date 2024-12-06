@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Payment extends Model
 {
-    //
-    protected $primaryKey = 'payment_id';
-
-
+    use HasUuids;
+    protected $primaryKey = 'uuid';
+    protected $guarded = ['uuid'];
 }

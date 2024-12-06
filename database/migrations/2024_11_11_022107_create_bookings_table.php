@@ -11,12 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('booking_id')->unique();
-            $table->uuid('booking_uuid')->unique();
-            $table->foreignId('user_id')->references('user_id')->on('users');
-            $table->foreignId('event_id')->references('event_id')->on('events');
-            $table->dateTime('booking_date');
-            $table->string('status_booking');
+            $table->uuid()->unique();
+            $table->foreignUuid('user_uuid')->references('uuid')->on('users');
+            $table->foreignUuid('event_uuid')->references('uuid')->on('events');
+            $table->enum('status', ['pending', 'settlement', 'failed'])->default('pending');
             $table->timestamps();
         });
     }

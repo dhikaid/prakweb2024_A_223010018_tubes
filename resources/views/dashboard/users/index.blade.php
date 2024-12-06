@@ -1,11 +1,6 @@
 @extends('dashboard.layouts.main')
 @section('main')
 
-{{-- TULIS CODE DISINI --}}
-
-@extends('dashboard.layouts.main')
-@section('main')
-
 
 
 <section class="container px-4 mx-auto w-full">
@@ -458,9 +453,5 @@
         </a>
     </div>
 </section>
-
-@endsection
-
-{{-- END TULIS CODE --}}
 
 @endsection

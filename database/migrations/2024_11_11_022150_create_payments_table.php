@@ -11,13 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id('payment_id')->unique();
-            $table->uuid('payment_uuid')->unique();
-            $table->foreignId('booking_id')->references('booking_id')->on('bookings');
-            $table->decimal('jumlah_pembayaran');
-            $table->string('payment_method');
-            $table->enum('status_payment', ['pending', 'in_progress', 'completed']);
-            $table->dateTime('payment_date');
+            $table->uuid()->unique();
+            $table->foreignUuid('booking_uuid')->references('uuid')->on('bookings');
+            $table->decimal('total', 15, 2);
+            $table->enum('status', ['pending', 'settlement', 'failed'])->default('pending');
+            $table->string('method')->nullable();
+            $table->dateTime('payment_date')->nullable();
             $table->timestamps();
         });
     }

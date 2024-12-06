@@ -11,12 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('queues', function (Blueprint $table) {
-            $table->id('queue_id')->unique();
-            $table->uuid('queue_uuid')->unique();
-            $table->foreignId('event_id')->references('event_id')->on('events');
-            $table->foreignId('user_id')->references('user_id')->on('users');
-            $table->dateTime('queue_time');
-            $table->enum('queue_status', ['pending', 'in_progress', 'completed']); // Menggunakan enum dengan pilihan status
+            $table->uuid()->unique();
+            $table->foreignUuid('event_uuid')->references('uuid')->on('events');
+            $table->foreignUuid('user_uuid')->references('uuid')->on('users');
+            $table->dateTime('time');
+            $table->enum('status', ['pending', 'in_progress', 'completed']); // Menggunakan enum dengan pilihan status
             $table->timestamps();
         });
     }

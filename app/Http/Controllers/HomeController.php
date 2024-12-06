@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class HomeController extends Controller
 {
@@ -19,7 +20,11 @@ class HomeController extends Controller
 
         $data = [
             'title' => 'Home',
-            'creators' => User::where('role_id', 2)->inRandomOrder()->take(7)->get(),
+            'creators' => User::whereHas('role', function ($query) {
+                $query->onlyEO(); // Adjust 'name' to your roles table column
+            })->inRandomOrder()
+                ->take(7)
+                ->get(),
             'latest' => $event->with(['locations', 'tickets', 'creator'])->upcoming()->latest()->inRandomOrder()->take('5')->get(),
             'eventlocation' => $eventlocation,
             'location' => $location
@@ -28,10 +33,16 @@ class HomeController extends Controller
         return view('main.index', $data);
     }
 
-    public function showSearch()
+    public function showSearch(Request $request)
     {
+        $validatedData = $request->validate([
+            'query' => 'required'
+        ]);
+
         $data = [
             'title' => 'Search',
+            'events' => Event::filter($validatedData)->paginate(4)->withQueryString(),
+            'query' => $validatedData['query'],
         ];
         return view('main.search', $data);
     }
@@ -39,9 +50,10 @@ class HomeController extends Controller
     public function showDetail(Event $event)
     {
         $data = [
-            'title' => $event->event_name,
+            'title' => $event->name,
             'event' => $event,
         ];
+
         return view('main.detail', $data);
     }
 
@@ -49,11 +61,20 @@ class HomeController extends Controller
     {
 
         $data = [
-            'title' => "Buy ticket: $event->event_name",
+            'title' => "Buy ticket: $event->name",
             'event' => $event->load(['tickets' => function ($q) {
                 $q->minprice();
             }]),
         ];
         return view('main.ticket', $data);
+    }
+
+    public function showCreators()
+    {
+        $data = [
+            'title' => 'Search',
+            'datas' => User::EO()->latest()->get(),
+        ];
+        return view('main.showall', $data);
     }
 }

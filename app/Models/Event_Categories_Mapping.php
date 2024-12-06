@@ -3,12 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Event_Categories_Mapping extends Model
 {
-    //
-    protected $primaryKey = 'mapping_id';
-
-
-
+    use HasUuids;
+    protected $primaryKey = 'uuid';
 }

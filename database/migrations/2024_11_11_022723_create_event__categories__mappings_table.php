@@ -11,10 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('event__categories__mappings', function (Blueprint $table) {
-            $table->id('mapping_id')->unique();
-            $table->uuid('mapping_uuid')->unique();
-            $table->foreignId('event_id')->references('event_id')->on('events');
-            $table->foreignId('category_id')->references('category_id')->on('event__categories');
+            $table->uuid()->unique();
+            $table->foreignUuid('event_uuid')->references('uuid')->on('events');
+            $table->foreignUuid('category_uuid')->references('uuid')->on('event__categories');
             $table->timestamps();
         });
     }

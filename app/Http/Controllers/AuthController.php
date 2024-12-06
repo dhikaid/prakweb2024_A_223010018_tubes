@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -41,8 +41,7 @@ class AuthController extends Controller
         ]);
 
         $validatedData['password'] = Hash::make($validatedData['password']);
-        $validatedData['user_uuid'] = fake()->uuid();
-        $validatedData['role_id'] = 1;
+        $validatedData['role_uuid'] = Role::where('role', 'User')->first()->uuid;
         $validatedData['image'] = "default.png";
 
         User::create($validatedData);

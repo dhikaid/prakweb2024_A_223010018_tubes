@@ -15,35 +15,33 @@ class EventCategorySeeder extends Seeder
     public function run(): void
     {
         Event_Category::create([
-            'category_uuid' => Str::uuid(),
-            'category_name' => 'Technology',
-            'category_description' => 'Events related to technology and innovation.',
+
+            'name' => 'Technology',
+            'description' => 'Events related to technology and innovation.',
         ]);
 
         Event_Category::create([
-            'category_uuid' => Str::uuid(),
-            'category_name' => 'Business',
-            'category_description' => 'Events related to business and entrepreneurship.',
+
+            'name' => 'Business',
+            'description' => 'Events related to business and entrepreneurship.',
         ]);
 
         Event_Category::create([
-            'category_uuid' => Str::uuid(),
-            'category_name' => 'Sport',
-            'category_description' => 'Events related to sport and atletic.',
+
+            'name' => 'Sport',
+            'description' => 'Events related to sport and atletic.',
         ]);
 
         Event_Category::create([
-            'category_uuid' => Str::uuid(),
-            'category_name' => 'Art and Fashion',
-            'category_description' => 'Events related to Fashion and Art.',
+
+            'name' => 'Art and Fashion',
+            'description' => 'Events related to Fashion and Art.',
         ]);
 
         Event_Category::create([
-            'category_uuid' => Str::uuid(),
-            'category_name' => 'Music',
-            'category_description' => 'Events related to music.',
+
+            'name' => 'Music',
+            'description' => 'Events related to music.',
         ]);
-
-
     }
 }

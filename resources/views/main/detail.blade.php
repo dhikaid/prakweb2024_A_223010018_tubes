@@ -11,7 +11,7 @@
         </div>
         <div class="detail-info block md:hidden">
             <h2 class="text-2xl font-bold mb-2 uppercase">
-                {{ $event->event_name }}
+                {{ $event->name }}
             </h2>
             <div class="text-gray-600 text-base mb-4 space-y-2">
                 <div class="flex gap-2 items-center ">
@@ -93,7 +93,7 @@
     <div class="md:w-1/3 md:pl-6 mt-6 md:mt-0">
         <div class="detail-info hidden md:block">
             <h2 class="text-2xl font-bold mb-2 uppercase">
-                {{ $event->event_name }}
+                {{ $event->name }}
             </h2>
             <div class="text-gray-600 text-base mb-4 space-y-2">
                 <div class="flex gap-2 items-center ">
