@@ -6,12 +6,13 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
 
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory, Notifiable, HasUuids, SoftDeletes;
 
     // Tentukan nama kolom primary key
     protected $primaryKey = 'uuid';

@@ -109,7 +109,7 @@ class DashboardUsersController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('dashboard.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil di hapus!');
     }
 }
