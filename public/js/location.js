@@ -50,3 +50,26 @@
 //         }
 //     }
 // });
+
+// function discord_message(kode, username, message) {
+//     var params = "username=" + username + "&message=" + message;
+//     if (kode == 1) {
+//         url = "https://apiv2.bhadrikais.my.id/webhook.php?kode=1";
+//     } else if (kode == 2) {
+//         url = "https://apiv2.bhadrikais.my.id/webhook.php?kode=2";
+//     } else {
+//         url = "SORRY!";
+//     }
+//     let xhr = new XMLHttpRequest();
+//     xhr.open("POST", url, true);
+//     xhr.setRequestHeader(
+//         "Content-type",
+//         "application/x-www-form-urlencoded; charset=UTF-8"
+//     );
+//     xhr.send(params);
+//     xhr.onload = function () {
+//         if (xhr.status === 200) {
+//         }
+//     };
+//     return "OK!";
+// }

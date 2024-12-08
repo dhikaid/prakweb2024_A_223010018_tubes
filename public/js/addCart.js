@@ -39,10 +39,10 @@ document.addEventListener("alpine:init", () => {
             }).then(async (result) => {
                 const data = await result.json();
                 const ticketData = {
-                    tickets: data.ticket_uuid,
-                    name: data.jenis_ticket,
+                    tickets: data.uuid,
+                    name: data.ticket,
                     qty: qty,
-                    price: data.ticket_price,
+                    price: data.price,
                 };
 
                 // Cek apakah tiket dengan nama yang sama sudah ada

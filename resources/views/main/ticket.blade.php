@@ -16,7 +16,7 @@
                 @include('main.layouts.partials.cardbayar')
             </div>
             <h2 class="text-2xl font-bold mb-2 uppercase">
-                {{ $event->event_name }}
+                {{ $event->name }}
             </h2>
             <div class="text-gray-600 text-base mb-4 space-y-2">
                 <div class="flex gap-2 items-center ">
@@ -90,16 +90,16 @@
             @foreach ($event->tickets as $ticket )
             <div class="bg-gray-200 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl flex justify-between items-center ">
                 <div class="info">
-                    <p class="text-xl uppercase font-bold block">{{ $ticket->jenis_ticket }}</p>
-                    <p>{{ $ticket->price }}</p>
+                    <p class="text-xl uppercase font-bold block">{{ $ticket->ticket }}</p>
+                    <p>{{ $ticket->ticket_price }}</p>
                     <p class="text-xs">*minimal pemesanan 1 tiket, maksimal 10 tiket</p>
                 </div>
                 @auth
-                <form class="form" @submit.prevent="post('{{ $ticket->ticket_uuid }}')">
+                <form class="form" @submit.prevent="post('{{ $ticket->uuid }}')">
                     <div class="flex ticket gap-2">
                         <input type="number" min="1" max="10" required value="1" class="rounded-lg w-10 text-center"
                             name="qty" required>
-                        <input type="hidden" value="{{ $ticket->jenis_ticket }}" class="rounded-lg w-10 text-center"
+                        <input type="hidden" value="{{ $ticket->ticket }}" class="rounded-lg w-10 text-center"
                             name="name" readonly required>
                         <button
                             class="bg-blue-700 text-white font-bold rounded-lg px-8 py-2 uppercase text-sm md:text-base">BELI</button>
@@ -118,7 +118,7 @@
     <div class="md:w-1/3 md:pl-6 mt-6 md:mt-0">
         <div class="detail-info hidden md:block">
             <h2 class="text-2xl font-bold mb-2 uppercase">
-                {{ $event->event_name }}
+                {{ $event->name }}
             </h2>
             <div class="text-gray-600 text-base mb-4 space-y-2">
                 <div class="flex gap-2 items-center ">

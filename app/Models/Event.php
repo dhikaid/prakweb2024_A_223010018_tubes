@@ -3,26 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Number;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Number;
 
 class Event extends Model
 {
-    //
-    protected $primaryKey = 'event_id';
+    use HasUuids;
+    protected $primaryKey = 'uuid';
+    protected $guarded = ['uuid'];
 
     public function categories()
     {
         return $this->belongsToMany(
             Event_Category::class,
             'event__categories__mappings', // Nama tabel pivot
-            'event_id',                   // Foreign key di tabel pivot
-            'category_id',                // Foreign key di tabel categories
-            'event_id',                   // Primary key di tabel events
-            'category_id'                 // Primary key di tabel categories
+            'uuid',                   // Foreign key di tabel pivot
+            'uuid',                // Foreign key di tabel categories
+            'uuid',                   // Primary key di tabel events
+            'uuid'                 // Primary key di tabel categories
         );
     }
 
@@ -32,19 +34,36 @@ class Event extends Model
         return $query->where('start_date', '>=', now());
     }
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['query'] ?? false, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%')
+                ->orWhereHas('locations', function ($q) use ($search) {
+                    $q->where('city', 'like', '%' . $search . '%')
+                        ->orWhere('venue', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('categories', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                })->orWhereHas('creator', function ($q) use ($search) {
+                    $q->where('username', 'like', '%' . $search . '%');
+                });
+        });
+    }
+
+
     public function tickets(): HasMany
     {
-        return $this->hasMany(Ticket::class, 'event_id', 'event_id');
+        return $this->hasMany(Ticket::class);
     }
 
     public function locations(): HasOne
     {
-        return $this->hasOne(Location::class, 'location_id', 'location');
+        return $this->hasOne(Location::class, 'uuid', 'location_uuid');
     }
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user', 'user_id');
+        return $this->belongsTo(User::class, 'user_uuid');
     }
 
     // return date from start to end
@@ -62,8 +81,8 @@ class Event extends Model
     public function getPriceRangeAttribute()
     {
 
-        $min = $this->tickets->min('ticket_price');
-        $max = $this->tickets->max('ticket_price');
+        $min = $this->tickets->min('price');
+        $max = $this->tickets->max('price');
         return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
     }
 }

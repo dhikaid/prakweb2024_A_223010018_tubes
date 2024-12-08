@@ -42,7 +42,7 @@
         <p class="text-black text-lg md:text-2xl font-bold" x-text="'Rp. ' + getTotal().toLocaleString()"></p>
     </div>
 
-    <div x-data="startTransaction('{{ csrf_token() }}')">
+    <div x-data="startTransaction('{{ csrf_token() }}', '{{ $event->slug }}')">
         <button id="pay-button"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-bold rounded-lg w-full inline-block text-lg p-3 text-center me-2 mb-2 dark:bg-blue-700 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-sm md:text-base"
             x-on:click="start">

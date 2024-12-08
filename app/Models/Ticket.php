@@ -2,28 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Number;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Ticket extends Model
 {
-    //
+    use HasUuids;
 
-    protected $primaryKey = 'ticket_id';
+    protected $primaryKey = 'uuid';
 
     public function events()
     {
-        return $this->belongsTo(Event::class, 'event_id', 'event_id');
+        return $this->belongsTo(Event::class, 'event_uuid');
     }
 
-    public function getPriceAttribute()
+    public function getTicketPriceAttribute()
     {
-        return Number::currency($this->ticket_price, 'IDR', 'ID');
+        return Number::currency($this->price, 'IDR', 'ID');
     }
 
     // order by min price to highest price
     public function scopeMinPrice($query)
     {
-        return $query->orderBy('ticket_price');
+        return $query->orderBy('price');
     }
 }
