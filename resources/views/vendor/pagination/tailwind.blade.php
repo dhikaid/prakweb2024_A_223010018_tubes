@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div class="hidden sm:flex flex-col ">
+    <div class="hidden sm:flex items-center justify-center flex-col ">
         <div class="flex justify-center mb-3">
             <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
                 {!! __('Showing') !!}

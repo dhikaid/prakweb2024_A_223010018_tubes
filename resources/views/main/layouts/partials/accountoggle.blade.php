@@ -24,8 +24,11 @@
         type="button">
         <div class="profile flex items-center">
             <img src="{{ Auth::user()->image }}" alt="User Avatar" class="w-10 h-10 rounded-full" />
-            <div class="ml-2">
-                <span class="text-sm font-medium text-gray-700">{{ Auth::user()->username }}</span>
+            <div class="flex items-center gap-1">
+                <div class="ml-2">
+                    <span class="text-sm font-medium text-gray-700">{{ Auth::user()->username }}</span>
+                </div>
+                @include('layouts.partials.verified')
             </div>
         </div>
     </button>

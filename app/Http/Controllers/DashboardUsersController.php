@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +28,8 @@ class DashboardUsersController extends Controller
     public function create()
     {
         return view('dashboard.users.create', [
-            'title' => 'Create New User'
+            'title' => 'Create New User',
+            'roles' => Role::all(),
         ]);
     }
 
@@ -37,21 +39,35 @@ class DashboardUsersController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'image' => 'required|image|file|max:10240',
             'username' => ['required', 'min:3', 'max:100', 'unique:users'],
             'fullname' => 'required|max:255',
-            'email' => 'required|email:dns|unique:users',
+            'role' => 'required|exists:roles,uuid',
+            'isVerified' => 'in:true,false',
+            'email' => 'required|email:rfc,dns|unique:users',
             'password' => 'required|min:8',
-            'password_confirmation' => 'required|min:8|same:password',
+            'password2' => 'required|min:8|same:password',
         ]);
 
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('avatar');
+        }
+
+        if ($validatedData['isVerified']) {
+            if ($validatedData['isVerified'] === 'true') {
+                $validatedData['isVerified'] = true;
+            } else {
+                $validatedData['isVerified'] = false;
+            }
+        }
+
         $validatedData['password'] = Hash::make($validatedData['password']);
-        $validatedData['user_uuid'] = fake()->uuid();
-        $validatedData['role_id'] = 1;
+        $validatedData['role_uuid'] = $validatedData['role'];
         $validatedData['image'] = "default.png";
 
         User::create($validatedData);
 
-        return redirect()->route('dashboard.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil dibuat!');
     }
 
@@ -62,7 +78,7 @@ class DashboardUsersController extends Controller
     {
         return view('dashboard.users.show', [
             'title' => 'User Details',
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -73,7 +89,8 @@ class DashboardUsersController extends Controller
     {
         return view('dashboard.users.edit', [
             'title' => 'Edit User',
-            'user' => $user
+            'user' => $user,
+            'roles' => Role::all(),
         ]);
     }
 
