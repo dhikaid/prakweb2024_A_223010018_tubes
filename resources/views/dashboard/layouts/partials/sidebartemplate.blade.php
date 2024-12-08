@@ -1,5 +1,5 @@
 <div
-    class="md:hidden justify-end absolute -right-5 z-30 top-5 bg-white shadow-md border  p-2  rounded-full items-center">
+    class="md:hidden justify-end absolute -right-5 z-30 top-5 bg-blue-100 shadow-md border  p-2  rounded-full items-center">
     <button @click="isOpen = !isOpen" class="text-gray-600 hover:text-gray-800 focus:outline-none flex items-center"
         aria-label="Toggle navigation">
         <svg x-show="!isOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
