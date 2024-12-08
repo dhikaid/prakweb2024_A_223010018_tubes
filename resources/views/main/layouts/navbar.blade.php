@@ -1,9 +1,9 @@
-<nav x-data="{ isOpen: false }" class="fixed top-0 z-50 w-full bg-white shadow-md">
+<nav x-data="{ isOpen: false }" class="fixed top-0 z-50 w-full bg-blue-100 shadow-md">
     <div class="container mx-auto px-6 py-3 flex items-center justify-between">
         <div class="flex w-full items-center">
             <!-- Logo -->
             <a href="/" class="flex items-center">
-                <img src="/assets/logo.png" class="w-10 md:w-14" alt="logo">
+                <img src="/assets/newlogo.png" class="w-10 md:w-14" alt="logo">
             </a>
 
             <!-- Search Bar -->
@@ -11,7 +11,7 @@
                 class="flex items-center w-full max-w-lg mx-4 hidden md:flex bg-gray-100 border border-gray-300 rounded-lg overflow-hidden h-full">
                 <input type="text" name="query" placeholder="Cari event menarik"
                     class="flex-grow bg-gray-100 px-4 py-2 focus:ring-2 focus:ring-violet-300 focus:outline-none" />
-                <button type="submit" class="bg-violet-600 text-white px-4 flex items-center justify-center h-11">
+                <button type="submit" class="bg-violet-300 hover:bg-violet-200 text-white px-4 flex items-center justify-center h-11">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="white" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -41,10 +41,10 @@
             @include('main.layouts.partials.accountoggle')
             @else
             <a href="{{ route('register') }}"
-                class="px-4 py-2 border border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50">
+                class="px-4 py-2 border border-violet-300 text-gray-700 rounded-lg hover:bg-violet-50">
                 Daftar
             </a>
-            <a href="{{ route('login') }}" class="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-500">
+            <a href="{{ route('login') }}" class="px-4 py-2 bg-violet-300 text-gray-700 rounded-lg hover:bg-violet-200">
                 Masuk
             </a>
             @endauth
@@ -57,7 +57,7 @@
             <input type="text" placeholder="Cari event menarik"
                 class="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-300 focus:outline-none" />
             <button type="submit"
-                class="absolute right-0 top-0 bottom-0 flex items-center justify-center bg-violet-600 text-white w-12 h-full rounded-r-lg">
+                class="absolute right-0 top-0 bottom-0 flex items-center justify-center bg-violet-300 text-gray-700 w-12 h-full rounded-r-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="white" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -71,11 +71,11 @@
             @else
             <div class="flex items-center w-full justify-between gap-2">
                 <a href="{{ route('register') }}"
-                    class="px-4 py-2 border border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50 w-full text-center">
+                    class="px-4 py-2 border border-violet-300 text-gray-700 rounded-lg hover:bg-violet-50 w-full text-center">
                     Daftar
                 </a>
                 <a href="{{ route('login') }}"
-                    class="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-500 w-full text-center">
+                    class="px-4 py-2 bg-violet-300 hover:bg-violet-200 text-gray-700 rounded-lg w-full text-center">
                     Masuk
                 </a>
             </div>

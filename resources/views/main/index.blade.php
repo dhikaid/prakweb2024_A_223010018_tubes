@@ -25,7 +25,7 @@
     <div class="my-10">
         <div class="flex justify-between">
             <h1 class="font-bold text-lg md:text-xl mb-7">Creator Event</h1>
-            <a class="text-sm mb-7 text-blue-600" href="/creators">Lihat semua</a>
+            <a class="text-sm mb-7 text-blue-300" href="/creators">Lihat semua</a>
         </div>
         <div class="relative overflow-auto">
             <div class="w-full flex gap-8 snap-x scroll-pl-1 overflow-x-auto py-3">
@@ -58,9 +58,9 @@
 
     <div class="my-10">
         <div class="flex justify-between">
-            <h1 class="font-bold text-lg md:text-xl mb-7">Event di <span class="text-violet-600 uppercase">{{ $location
+            <h1 class="font-bold text-lg md:text-xl mb-7">Event di <span class="text-violet-300 uppercase">{{ $location
                     }}</span></h1>
-            <a class="text-sm mb-7 text-blue-600" href="/events/{{ $location }}">Lihat semua</a>
+            <a class="text-sm mb-7 text-blue-300" href="/events/{{ $location }}">Lihat semua</a>
         </div>
         <div class="relative overflow-auto">
             <div class="w-full flex gap-3 snap-x scroll-pl-1 overflow-x-auto py-3">
@@ -101,7 +101,7 @@
     <div class="my-10">
         <div class="flex justify-between">
             <h1 class="font-bold text-lg md:text-xl mb-7">Event Terbaru</h1>
-            <a class="text-sm mb-7 text-blue-600" href="/events">Lihat semua</a>
+            <a class="text-sm mb-7 text-blue-300" href="/events">Lihat semua</a>
         </div>
         <div class="relative overflow-auto">
             <div class="w-full flex gap-3 snap-x scroll-pl-1 overflow-x-auto py-3">
