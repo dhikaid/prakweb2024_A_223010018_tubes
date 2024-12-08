@@ -38,12 +38,7 @@
         <!-- Buttons -->
         <div class="hidden md:flex items-center space-x-4">
             @auth
-            <div class="profile flex items-center">
-                <img src="{{ Auth::user()->image }}" alt="User Avatar" class="w-10 h-10 rounded-full" />
-                <div class="ml-2">
-                    <span class="text-sm font-medium text-gray-700">{{ Auth::user()->username }}</span>
-                </div>
-            </div>
+            @include('main.layouts.partials.accountoggle')
             @else
             <a href="{{ route('register') }}"
                 class="px-4 py-2 border border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50">
@@ -70,14 +65,9 @@
                 </svg>
             </button>
         </form>
-        <div class="flex flex-col items-start space-y-4">
+        <div class="flex flex-col items-start space-y-4 w-full">
             @auth
-            <div class="profile flex items-center">
-                <img src="{{ Auth::user()->image }}" alt="User Avatar" class="w-10 h-10 rounded-full" />
-                <div class="ml-2">
-                    <span class="text-sm font-medium text-gray-700">{{ Auth::user()->username }}</span>
-                </div>
-            </div>
+            @include('main.layouts.partials.accountoggle')
             @else
             <div class="flex items-center w-full justify-between gap-2">
                 <a href="{{ route('register') }}"

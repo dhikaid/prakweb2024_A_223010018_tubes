@@ -1,4 +1,3 @@
-
 <div
     class="md:hidden justify-end absolute -right-5 z-30 top-5 bg-white shadow-md border  p-2  rounded-full items-center">
     <button @click="isOpen = !isOpen" class="text-gray-600 hover:text-gray-800 focus:outline-none flex items-center"

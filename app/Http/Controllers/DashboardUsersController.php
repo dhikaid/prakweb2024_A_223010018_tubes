@@ -15,7 +15,7 @@ class DashboardUsersController extends Controller
     {
         $data = [
             'title' => 'Dashboard Users',
-            'users' => User::all() // Ambil semua data user
+            'users' => User::with('role')->get() // Ambil semua data user
         ];
 
         return view('dashboard.users.index', $data);
@@ -44,7 +44,7 @@ class DashboardUsersController extends Controller
             'password_confirmation' => 'required|min:8|same:password',
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']); 
+        $validatedData['password'] = Hash::make($validatedData['password']);
         $validatedData['user_uuid'] = fake()->uuid();
         $validatedData['role_id'] = 1;
         $validatedData['image'] = "default.png";
@@ -52,7 +52,7 @@ class DashboardUsersController extends Controller
         User::create($validatedData);
 
         return redirect()->route('dashboard.users.index')
-                         ->with('success', 'User berhasil dibuat!');
+            ->with('success', 'User berhasil dibuat!');
     }
 
     /**
@@ -85,7 +85,7 @@ class DashboardUsersController extends Controller
         $validatedData = $request->validate([
             'username' => ['required', 'min:3', 'max:100', 'unique:users'],
             'fullname' => 'required|max:255',
-            'email' => 'required|email:dns|unique:users,' .$user->id,
+            'email' => 'required|email:dns|unique:users,' . $user->id,
             'password' => 'required|min:8',
             'password_confirmation' => 'required|min:8|same:password',
         ]);
@@ -99,7 +99,7 @@ class DashboardUsersController extends Controller
         $user->update($validatedData);
 
         return redirect()->route('dashboard.users.index')
-                         ->with('success', 'User berhasil diperbaharui!');
+            ->with('success', 'User berhasil diperbaharui!');
     }
 
     /**
@@ -110,6 +110,6 @@ class DashboardUsersController extends Controller
         $user->delete();
 
         return redirect()->route('dashboard.users.index')
-                         ->with('success', 'User berhasil di hapus!');
+            ->with('success', 'User berhasil di hapus!');
     }
 }

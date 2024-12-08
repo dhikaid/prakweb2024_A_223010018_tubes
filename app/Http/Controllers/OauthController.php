@@ -79,7 +79,7 @@ class OauthController extends Controller
             ], $data);
 
             Auth::login($user);
-            return redirect('/dashboard');
+            return redirect('/');
         }
 
         return back()->with('error', "Something wrong!");

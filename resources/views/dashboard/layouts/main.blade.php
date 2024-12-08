@@ -3,7 +3,7 @@
 @section('content')
 
 @include('dashboard.layouts.navbar')
-<div class="container m-auto mt-14 pl-28 px-5">
+<div class="ms-16 md:ms-72 me-10">
     @yield('main')
 </div>
 
