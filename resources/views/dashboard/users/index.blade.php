@@ -28,8 +28,21 @@
         </div>
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                @if(session()->has('success'))
+                <div class="flex w-full overflow-hidden bg-white rounded-lg shadow-sm mb-3">
+                    <div class="flex items-center justify-center w-5 bg-green-500">
+                    </div>
+                    <div class="px-4 py-2 -mx-3">
+                        <div class="mx-3">
+                            <span class="font-semibold text-green-500 ">Success</span>
+                            <p class="text-sm text-gray-600 ">
+                                {{ session('success') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @endif
                 <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" id="myTable">
                         <thead class="bg-slate-100 dark:bg-gray-800">
                             <tr>
@@ -107,6 +120,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="my-4 flex justify-center items-center w-full">
+                    {{ $users->links() }}
                 </div>
             </div>
         </div>

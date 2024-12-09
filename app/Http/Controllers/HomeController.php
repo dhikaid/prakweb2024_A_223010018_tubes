@@ -73,7 +73,8 @@ class HomeController extends Controller
     {
         $data = [
             'title' => 'Search',
-            'datas' => User::EO()->latest()->get(),
+            'datas' => User::EO()->latest()->paginate(10),
+            'query' => "Creators"
         ];
         return view('main.showall', $data);
     }

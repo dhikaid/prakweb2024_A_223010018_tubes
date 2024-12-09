@@ -28,7 +28,10 @@
                 <div class="ml-2">
                     <span class="text-sm font-medium text-gray-700">{{ Auth::user()->username }}</span>
                 </div>
+                @if (auth()->user()->isVerified)
+
                 @include('layouts.partials.verified')
+                @endif
             </div>
         </div>
     </button>

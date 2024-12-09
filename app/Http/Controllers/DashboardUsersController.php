@@ -16,7 +16,7 @@ class DashboardUsersController extends Controller
     {
         $data = [
             'title' => 'Dashboard Users',
-            'users' => User::with('role')->get() // Ambil semua data user
+            'users' => User::with('role')->paginate(5), // Ambil semua data user
         ];
 
         return view('dashboard.users.index', $data);
@@ -63,7 +63,7 @@ class DashboardUsersController extends Controller
 
         $validatedData['password'] = Hash::make($validatedData['password']);
         $validatedData['role_uuid'] = $validatedData['role'];
-        $validatedData['image'] = "default.png";
+
 
         User::create($validatedData);
 
@@ -89,7 +89,7 @@ class DashboardUsersController extends Controller
     {
         return view('dashboard.users.edit', [
             'title' => 'Edit User',
-            'user' => $user,
+            'user' => $user->load('role'),
             'roles' => Role::all(),
         ]);
     }
@@ -99,23 +99,63 @@ class DashboardUsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validatedData = $request->validate([
-            'username' => ['required', 'min:3', 'max:100', 'unique:users'],
+        $rules = [
+            'username' => 'required|min:3|max:100',
             'fullname' => 'required|max:255',
-            'email' => 'required|email:dns|unique:users,' . $user->id,
-            'password' => 'required|min:8',
-            'password_confirmation' => 'required|min:8|same:password',
-        ]);
+            'role' => 'required|exists:roles,uuid',
+            'isVerified' => 'in:true,false',
+            'email' => 'required|email:rfc,dns',
+        ];
 
-        if ($request->filled('password')) {
-            $validatedData['password'] = Hash::make($request->password);
-        } else {
-            unset($validatedData['password']);
+        if ($request->file('image')) {
+            $rules['image'] = 'required|image|file|max:10240';
         }
+
+
+        if ($request->get('username') !== $user->username) {
+            $rules['username'] = 'required|min:3|max:100|unique:users';
+        }
+
+        if ($request->get('email') !== $user->email) {
+            $rules['email'] = 'required|email:rfc,dns|unique:users';
+        }
+
+        if ($request->get('password')) {
+            $rules['password'] =  'required|min:8';
+            $rules['password2'] =  'required|min:8|same:password';
+        }
+
+        $validatedData = $request->validate($rules);
+
+
+
+        if ($request->get('password')) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('avatar');
+        }
+
+
+        if ($request->get('role') === Role::where('role', 'EO')->first()->uuid) {
+
+            if ($validatedData['isVerified']) {
+                if ($validatedData['isVerified'] === 'true') {
+                    $validatedData['isVerified'] = true;
+                } else {
+                    $validatedData['isVerified'] = false;
+                }
+            }
+        } else {
+            $validatedData['isVerified'] = false;
+        }
+
+        $validatedData['role_uuid'] = $validatedData['role'];
 
         $user->update($validatedData);
 
-        return redirect()->route('dashboard.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil diperbaharui!');
     }
 

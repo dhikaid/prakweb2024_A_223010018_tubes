@@ -15,7 +15,9 @@
 
                 <div class="flex items-center gap-1">
                     <h1 class="text-2xl md:text-3xl uppercase font-bold">Edit User: {{ $user->username }}</h1>
+                    @if ($user->isVerified)
                     @include('layouts.partials.verified')
+                    @endif
                 </div>
             </div>
         </div>
@@ -24,9 +26,10 @@
                 <div class="overflow-hidden md:rounded-lg">
                     <div class=" rounded-lg flex items-start justify-between">
                         <div class="w-full">
-                            <form class="space-y-5" method="POST" action="/dashboard/users"
+                            <form class="space-y-5" method="POST" action="/dashboard/users/{{ $user->uuid }}"
                                 enctype="multipart/form-data"
-                                x-data="{verified:{{ $user->isVerified ? 'true' : 'false' }}}">
+                                x-data="{verified:{{ $user->role->role === 'EO' ? 'true' : 'false' }}}">
+                                @method('PUT')
                                 @csrf
                                 {{-- START FILE FORM --}}
                                 <div>
@@ -56,7 +59,7 @@
                                         <p class="mt-2 text-xs tracking-wide text-black dark:text-gray-400">Upload or
                                             darg & drop your file SVG, PNG, JPG or GIF. </p>
 
-                                        <input id="dropzone-file" type="file" class="hidden" name="image" required />
+                                        <input id="dropzone-file" type="file" class="hidden" name="image" />
                                     </label>
                                     @error('image') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -183,7 +186,7 @@
                                         </span>
                                         <input type="password" placeholder="***"
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="password" required>
+                                            name="password">
                                     </div>
                                     @error('password') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
                                     @enderror
@@ -205,7 +208,7 @@
                                         </span>
                                         <input type="password" placeholder="***"
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="password2" required>
+                                            name="password2">
                                     </div>
                                 </div>
                                 {{-- ENDFORM --}}
@@ -213,11 +216,11 @@
                                 <button
                                     class="flex items-center px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        stroke-width="1.5" stroke="currentColor" class="size-4">
                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                                     </svg>
-                                    <span class="mx-1">Create</span>
+                                    <span class="mx-1">Update</span>
                                 </button>
                             </form>
                         </div>

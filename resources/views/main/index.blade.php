@@ -7,14 +7,14 @@
         <div class="swiper progress-slide-carousel swiper-container relative">
             <div class="swiper-wrapper mb-6">
                 <div class="swiper-slide">
-                    <img src="https://assets.loket.com/images/ss/1730425780_fGx3mu.jpg" class="rounded-xl">
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://staticassets.kiostix.com/banner/1727060869672_Artboard%201-2.png"
+                    <img src="https://loket-production-sg.s3.ap-southeast-1.amazonaws.com/images/ss/1721803506_tkCKPu.jpg"
                         class="rounded-xl">
                 </div>
                 <div class="swiper-slide">
-                    <img src="https://assets.loket.com/images/ss/1730425780_fGx3mu.jpg" class="rounded-xl">
+                    <img src="https://assets.loket.com/images/ss/1724041803_0wxM2s.jpg" class="rounded-xl">
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://assets.loket.com/images/ss/1730276568_GdNISN.png" class="rounded-xl">
                 </div>
             </div>
             <div class="swiper-pagination !bottom-2 !top-auto !w-80 right-0 mx-auto bg-gray-100"></div>
