@@ -23,8 +23,9 @@ Route::prefix('dashboard')->group(function () {
 })->middleware(['auth']);
 
 Route::get('/creators', [HomeController::class, 'showCreators']);
-Route::get('/events', [HomeController::class, 'showEvents']);
-Route::get('/events/{location}', [HomeController::class, 'showEventsLocation']);
+Route::get('/events', [HomeController::class, 'showLatestEvent']);
+Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
+
 
 
 // ROUTE SEARCH
@@ -105,3 +106,4 @@ Route::get('/{location}', [HomeController::class, 'index'])->name('home.location
 
 
 Route::resource('dashboard/users', DashboardUsersController::class)->middleware('auth');
+

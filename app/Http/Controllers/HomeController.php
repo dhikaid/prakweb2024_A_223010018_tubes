@@ -78,4 +78,27 @@ class HomeController extends Controller
         ];
         return view('main.showall', $data);
     }
+    public function showLatestEvent()
+    {
+        $data = [
+            'title' => 'Latest',
+            'datas' =>  Event::with(['locations', 'tickets', 'creator'])->upcoming()->latest()->inRandomOrder()->paginate(10),
+            'query' => "Latest Event"
+        ];
+        return view('main.showall', $data);
+    }
+    
+    public function showLocationEvent($location ='jakarta')
+    {
+        $data = [
+            'title' => 'Location',
+            'datas' =>  Event::whereHas('locations', function ($query) use ($location) {
+            $query->where('city', 'LIKE', '%' . strtolower($location) . '%');
+        })
+            ->with(['tickets', 'creator', 'locations'])->upcoming()->inRandomOrder()
+            ->paginate(10),
+            'query' => "Location Event"
+        ];   
+        return view('main.showall', $data);
+    }
 }
