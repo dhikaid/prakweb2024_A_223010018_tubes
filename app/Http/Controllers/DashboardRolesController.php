@@ -24,7 +24,10 @@ class DashboardRolesController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.roles.create', [
+            'title' => 'Create New User',
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
@@ -32,7 +35,14 @@ class DashboardRolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'role' => 'required|unique:roles,role|min:3|max:100',
+        ]);
+
+        Role::create($validatedData);
+
+        return redirect()->route('dashboard.roles.index')
+            ->with('success', 'Role berhasil ditambahkan!');
     }
 
     /**
@@ -64,6 +74,8 @@ class DashboardRolesController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        
+        return redirect()->route('dashboard.roles.index')->with('success', 'Role berhasil di hapus!');
     }
 }
