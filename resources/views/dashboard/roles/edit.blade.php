@@ -35,13 +35,13 @@
                                         class="block text-sm text-black font-semibold dark:text-gray-300">Roles</label>
 
                                     <div class="relative flex items-center mt-2">
-                                        <select id="countries"
+                                        <input id="countries"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             name="role"
                                             x-on:change="verified = $event.target.options[$event.target.selectedIndex].text === 'EO'"
                                             required>
 
-                                        </select>
+                                    </input>
 
                                     </div>
                                     @error('role') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
