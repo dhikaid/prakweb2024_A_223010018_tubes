@@ -27,6 +27,13 @@
             <input type="hidden" name="token" value="{{ $token }}" required>
             <input type="hidden" name="email" value="{{ $email ?? old('email') }}" required>
             <div>
+                <label class="block text-sm font-medium mb-1" for="password">Kata Sandi Lama</label>
+                <input
+                    class="w-full {{ $errors->has('password') ? 'border border-red-500' : 'border border-gray-300' }} rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
+                    id="password" name="password" type="password" required />
+                @error('password') <p class="text-xs text-red-500 m-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
                 <label class="block text-sm font-medium mb-1" for="password">Kata Sandi Baru</label>
                 <input
                     class="w-full {{ $errors->has('password') ? 'border border-red-500' : 'border border-gray-300' }} rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300 hover:border-blue-400 transition duration-200"
@@ -43,6 +50,9 @@
             <button
                 class="w-full bg-purple-600 text-white py-2 rounded-full hover:bg-blue-500 hover:text-white transition duration-300">Ganti
                 Kata Sandi</button>
+            <button
+                class="w-full border-purple-600 text-white py-2 rounded-full hover:bg-blue-500 hover:text-white transition duration-300">Batal</button>
+                
         </form>
     </div>
 </div>
