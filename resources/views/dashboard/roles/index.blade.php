@@ -69,8 +69,7 @@
                             <tr>
                                 <td
                                     class="px-4 py-4 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap lowercase">
-                                    <div class="flex items-center gap-2">
-                                        <div class="flex items-center gap-1">
+                                    <div class="flex items-center gap-2">                                        <div class="flex items-center gap-1">
                                             <p class="line-clamp-1">{{ $role->role }}</p>
                                         </div>
                                     </div>
