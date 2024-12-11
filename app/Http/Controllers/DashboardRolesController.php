@@ -59,7 +59,10 @@ class DashboardRolesController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        return view('dashboard.roles.edit', [
+            'title' => 'Edit User',
+            'role' =>  $role,
+        ]);
     }
 
     /**
@@ -76,7 +79,7 @@ class DashboardRolesController extends Controller
     public function destroy(Role $role)
     {
         $role->delete();
-        
+
         return redirect()->route('dashboard.roles.index')->with('success', 'Role berhasil di hapus!');
     }
 }

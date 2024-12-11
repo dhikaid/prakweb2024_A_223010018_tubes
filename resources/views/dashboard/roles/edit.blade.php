@@ -6,7 +6,7 @@
 <section class="users">
     <div class="flex flex-col">
         <div class="info my-4">
-            @include('dashboard.layouts.partials.breadcumb',[$datas = ['Users', strtolower($user->username) , 'Edit']])
+            @include('dashboard.layouts.partials.breadcumb',[$datas = ['Roles', strtolower($role->role) , 'Edit']])
             <div class="flex items-center gap-3 my-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                     <path
@@ -14,10 +14,7 @@
                 </svg>
 
                 <div class="flex items-center gap-1">
-                    <h1 class="text-2xl md:text-3xl uppercase font-bold">Edit User: {{ $user->username }}</h1>
-                    @if ($user->isVerified)
-                    @include('layouts.partials.verified')
-                    @endif
+                    <h1 class="text-2xl md:text-3xl uppercase font-bold">Edit Roles: {{ $role->role }}</h1>
                 </div>
             </div>
         </div>
@@ -26,12 +23,12 @@
                 <div class="overflow-hidden md:rounded-lg">
                     <div class=" rounded-lg flex items-start justify-between">
                         <div class="w-full">
-                            <form class="space-y-5" method="POST" action="/dashboard/users/{{ $role->uuid }}"
+                            <form class="space-y-5" method="POST" action="/dashboard/role/{{ $role->uuid }}"
                                 enctype="multipart/form-data"
-                                x-data="{verified:{{ $user->role->role === 'EO' ? 'true' : 'false' }}}">
+                                x-data="{verified:{{ $role->role === 'EO' ? 'true' : 'false' }}}">
                                 @method('PUT')
                                 @csrf
-                                          
+
                                 {{-- START ROLE --}}
                                 <div>
                                     <label for="roles"
@@ -43,13 +40,7 @@
                                             name="role"
                                             x-on:change="verified = $event.target.options[$event.target.selectedIndex].text === 'EO'"
                                             required>
-                                            @foreach ($roles as $role)
-                                            <option value="{{ $role->uuid }}" {{ old('role', $user->
-                                                role->uuid)===$role->uuid ? 'selected'
-                                                : '' }}>
-                                                {{ $role->role }}
-                                            </option>
-                                            @endforeach
+
                                         </select>
 
                                     </div>
@@ -66,8 +57,6 @@
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             name="isVerified">
                                             <option value="false">Tidak</option>
-                                            <option value="true" {{ $user->isVerified ? 'selected' :'' }}>Verified
-                                            </option>
                                         </select>
                                     </div>
                                     @error('isVerified') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
