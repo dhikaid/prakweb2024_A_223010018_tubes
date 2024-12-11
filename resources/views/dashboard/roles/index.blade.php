@@ -69,7 +69,8 @@
                             <tr>
                                 <td
                                     class="px-4 py-4 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap lowercase">
-                                    <div class="flex items-center gap-2">                                        <div class="flex items-center gap-1">
+                                    <div class="flex items-center gap-2">                                        
+                                        <div class="flex items-center gap-1">
                                             <p class="line-clamp-1">{{ $role->role }}</p>
                                         </div>
                                     </div>
@@ -77,7 +78,7 @@
 
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div class="flex items-center gap-5">
-                                        <a href="users/{{ $role->uuid }}/edit"
+                                        <a href="roles/{{ $role->uuid }}/edit"
                                             class="text-gray-500 transition-colors duration-200 text-lime-400 dark:hover:text-lime-500 dark:text-gray-300 hover:text-lime-500 focus:outline-none inline-block">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -85,11 +86,12 @@
                                                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                             </svg>
                                         </a>
-                                        <form action="users/{{ $role->uuid }}" method="post" class=" flex items-center">
+                                        <form action="roles/{{ $role->uuid }}" method="post" class=" flex items-center">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="text-gray-500 transition-colors duration-200 text-red-400 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                class="text-gray-500 transition-colors duration-200 text-red-400 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus role ini?')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -97,7 +99,6 @@
                                                 </svg>
                                             </button>
                                         </form>
-
                                     </div>
                                 </td>
                             </tr>

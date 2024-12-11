@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class DashboardRolesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // VIEW DASHBOAD ROLES
     public function index()
     {
         $data = [
@@ -54,20 +52,26 @@ class DashboardRolesController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //VIEW EDIT ROLES
     public function edit(Role $role)
     {
-        //
+        return view('dashboard.roles.edit', [
+            'title' => 'Edit Role',
+            'role' => $role,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // UPDATE(EDIT) ROLE 
     public function update(Request $request, Role $role)
     {
-        //
+        $validatedData = $request->validate([
+            'role' => 'required|unique:roles,role,' . $role->uuid . '|min:3|max:100',
+        ]);
+
+        $role->update($validatedData);
+
+        return redirect()->route('dashboard.roles.index')
+            ->with('success', 'Role berhasil diperbarui!');
     }
 
     /**
@@ -76,7 +80,7 @@ class DashboardRolesController extends Controller
     public function destroy(Role $role)
     {
         $role->delete();
-        
+
         return redirect()->route('dashboard.roles.index')->with('success', 'Role berhasil di hapus!');
     }
 }
