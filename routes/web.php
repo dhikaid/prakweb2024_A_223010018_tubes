@@ -20,6 +20,8 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('/users', DashboardUsersController::class);
     // /dashboard/roles
     Route::resource('/roles', DashboardRolesController::class);
+    // /dashboard/events
+    Route::resource('/events', DashboardEventsController::class);
 })->middleware(['auth']);
 
 Route::get('/creators', [HomeController::class, 'showCreators']);
@@ -93,7 +95,6 @@ Route::group(['middleware' => 'guest'], function () {
 route::group(['middleware' => 'auth'], function () {
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
-
 });
 
 // ROUTE EVENT DETAILS
@@ -108,4 +109,3 @@ Route::get('/{location}', [HomeController::class, 'index'])->name('home.location
 
 Route::resource('dashboard/users', DashboardUsersController::class)->middleware('auth');
 Route::resource('dashboard/roles', DashboardRolesController::class)->middleware('auth');
-
