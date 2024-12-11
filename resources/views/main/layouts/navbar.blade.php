@@ -1,5 +1,5 @@
 <nav x-data="{ isOpen: false }" class="fixed top-0 z-50 w-full bg-blue-100 shadow-md">
-    <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="container mx-auto px-6 py-3 flex items-center justify-between max-w-screen-xl">
         <div class="flex w-full items-center">
             <!-- Logo -->
             <a href="/" class="flex items-center">
@@ -11,7 +11,8 @@
                 class="flex items-center w-full max-w-lg mx-4 hidden md:flex bg-gray-100 border border-gray-300 rounded-lg overflow-hidden h-full">
                 <input type="text" name="query" placeholder="Cari event menarik"
                     class="flex-grow bg-gray-100 px-4 py-2 focus:ring-2 focus:ring-violet-300 focus:outline-none" />
-                <button type="submit" class="bg-violet-300 hover:bg-violet-200 text-white px-4 flex items-center justify-center h-11">
+                <button type="submit"
+                    class="bg-violet-300 hover:bg-violet-200 text-white px-4 flex items-center justify-center h-11">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="white" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"

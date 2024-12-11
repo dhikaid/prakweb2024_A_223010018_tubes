@@ -13,7 +13,8 @@ class DashboardRolesController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Dashboard Roles'
+            'title' => 'Dashboard Roles',
+            'roles' => Role::paginate(10),
         ];
 
         return view('dashboard.roles.index', $data);
