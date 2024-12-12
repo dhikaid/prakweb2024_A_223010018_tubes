@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
+use App\Http\Controllers\DashboardEventsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
