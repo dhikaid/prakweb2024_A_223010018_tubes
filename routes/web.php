@@ -93,7 +93,6 @@ Route::group(['middleware' => 'guest'], function () {
 route::group(['middleware' => 'auth'], function () {
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
-
 });
 
 // ROUTE EVENT DETAILS
@@ -108,4 +107,3 @@ Route::get('/{location}', [HomeController::class, 'index'])->name('home.location
 
 Route::resource('dashboard/users', DashboardUsersController::class)->middleware('auth');
 Route::resource('dashboard/roles', DashboardRolesController::class)->middleware('auth');
-

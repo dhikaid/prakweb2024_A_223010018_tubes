@@ -3,7 +3,7 @@
 
 {{-- TULIS CODE DISINI --}}
 
-<section class="users">
+<section class="roles">
     <div class="flex flex-col">
         <div class="info my-4">
             @include('dashboard.layouts.partials.breadcumb',[$datas = ['Roles', strtolower($role->role) , 'Edit']])
