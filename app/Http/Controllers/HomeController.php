@@ -82,23 +82,23 @@ class HomeController extends Controller
     {
         $data = [
             'title' => 'Latest',
-            'datas' =>  Event::with(['locations', 'tickets', 'creator'])->upcoming()->latest()->inRandomOrder()->paginate(10),
+            'datas' =>  Event::with(['locations', 'tickets', 'creator'])->upcoming()->latest()->inRandomOrder()->paginate(10)->withQueryString(),
             'query' => "Latest Event"
         ];
         return view('main.showall', $data);
     }
-    
-    public function showLocationEvent($location ='jakarta')
+
+    public function showLocationEvent($location = 'jakarta')
     {
         $data = [
             'title' => 'Location',
             'datas' =>  Event::whereHas('locations', function ($query) use ($location) {
-            $query->where('city', 'LIKE', '%' . strtolower($location) . '%');
-        })
-            ->with(['tickets', 'creator', 'locations'])->upcoming()->inRandomOrder()
-            ->paginate(10),
-            'query' => "Location Event"
-        ];   
+                $query->where('city', 'LIKE', '%' . strtolower($location) . '%');
+            })
+                ->with(['tickets', 'creator', 'locations'])->upcoming()->inRandomOrder()
+                ->paginate(4)->withQueryString(),
+            'query' => $location
+        ];
         return view('main.showall', $data);
     }
 }

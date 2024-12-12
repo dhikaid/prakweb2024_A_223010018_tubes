@@ -3,10 +3,10 @@
 
 {{-- TULIS CODE DISINI --}}
 
-<section class="events">
+<section class="users">
     <div class="flex flex-col">
         <div class="info my-4">
-            @include('dashboard.layouts.partials.breadcumb',[$datas = ['Events', strtolower($user->username) , 'Edit']])
+            @include('dashboard.layouts.partials.breadcumb',[$datas = ['Users', strtolower($user->username) , 'Edit']])
             <div class="flex items-center gap-3 my-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                     <path
