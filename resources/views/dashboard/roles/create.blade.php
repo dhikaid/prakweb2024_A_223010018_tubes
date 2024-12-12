@@ -21,7 +21,7 @@
                     <div class=" rounded-lg flex items-start justify-between">
                         <div class="w-full">
                             <form class="space-y-5" method="POST" action="/dashboard/roles"
-                                enctype="multipart/form-data" x-data="{ verified: false }">
+                                enctype="multipart/form-data" >
                                 @csrf
                                 {{-- START ROLE --}}
                                 <div>
@@ -41,22 +41,7 @@
                                     @enderror
                                 </div>
                                 {{-- ENDFORM --}}
-                                {{-- START ROLE --}}
-                                <div x-show="verified">
-                                    <label for="roles"
-                                        class="block text-sm text-black font-semibold dark:text-gray-300">Verified</label>
-                                    <div class="relative flex items-center mt-2">
-                                        <select id="countries"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            name="isVerified">
-                                            <option value="false">Tidak</option>
-                                            <option value="true">Verified</option>
-                                        </select>
-                                    </div>
-                                    @error('isVerified') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                {{-- ENDFORM --}}
+                                
                                 <button
                                     class="flex items-center px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
