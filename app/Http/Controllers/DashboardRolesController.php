@@ -86,6 +86,6 @@ class DashboardRolesController extends Controller
     {
         $role->delete();
 
-        return redirect()->route('dashboard.roles.index')->with('success', 'Role berhasil di hapus!');
+        return redirect()->route('roles.index')->with('success', 'Role berhasil di hapus!');
     }
 }
