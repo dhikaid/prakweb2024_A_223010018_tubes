@@ -20,6 +20,8 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('/users', DashboardUsersController::class);
     // /dashboard/roles
     Route::resource('/roles', DashboardRolesController::class);
+    // /dashboard/events
+    Route::resource('/events', DashboardEventsController::class);
 })->middleware(['auth']);
 
 Route::get('/creators', [HomeController::class, 'showCreators']);
