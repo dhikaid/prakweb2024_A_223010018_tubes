@@ -28,6 +28,11 @@ class Event extends Model
         );
     }
 
+    public function queue()
+    {
+        return $this->hasMany(Queue::class, 'event_uuid');
+    }
+
     // tampilka event dengan tanggal yang akan datang, yang sudah selesai jangan ditampilkan secara default
     public function scopeUpcoming($query)
     {

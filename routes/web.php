@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\Test;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -11,6 +12,14 @@ use App\Http\Controllers\ServiceAPIController;
 use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
+use App\Http\Controllers\QueueController;
+
+Route::get(
+    '/test',
+    function () {
+        broadcast(new Test('halo'));
+    }
+);
 
 // ROUTE DASHBOARD
 Route::prefix('dashboard')->group(function () {
@@ -28,8 +37,7 @@ Route::prefix('dashboard')->group(function () {
 Route::get('/creators', [HomeController::class, 'showCreators']);
 Route::get('/events', [HomeController::class, 'showLatestEvent']);
 Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
-
-
+Route::get('/transaction/{payment:uuid}', [PaymentController::class, 'showTransaction'])->middleware('auth');
 
 // ROUTE SEARCH
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
@@ -49,6 +57,10 @@ Route::get('/dashboard', function () {
 // ROUTE DETAIL
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
 Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
+Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->name('war');
+Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->name('war')->middleware('auth');
+Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->name('queue');
+Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
 
 
 // SERVICES API

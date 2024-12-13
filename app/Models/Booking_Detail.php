@@ -10,4 +10,9 @@ class Booking_Detail extends Model
     use HasUuids;
     protected $primaryKey = 'uuid';
     protected $guarded = ['uuid'];
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class, 'booking_uuid');
+    }
 }

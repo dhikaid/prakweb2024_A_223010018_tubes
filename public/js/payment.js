@@ -21,13 +21,20 @@ const startTransaction = (token, eventid) => {
 
             // Wait for the JSON response and log it
             const responseData = await response.json();
-
-            paymentHandler(
-                responseData.message.booking_uuid,
-                eventid,
-                responseData.message.token,
-                token
-            ).pay();
+            if (responseData.status == "error") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: responseData.message,
+                });
+            } else {
+                paymentHandler(
+                    responseData.message.booking_uuid,
+                    eventid,
+                    responseData.message.token,
+                    token
+                ).pay();
+            }
         },
     };
 };
@@ -81,7 +88,38 @@ const payment = async (bookingid, eventid, data, token) => {
     const responseData = await response.json();
 
     if (responseData.status === "success") {
-        // reload
-        location.reload();
+        //    redirect to urll google
+        window.location.href = `/transaction/${responseData.message.uuid}`;
     }
 };
+
+function countdown(date, status) {
+    return {
+        targetDate: new Date(date),
+        minutes: 0,
+        seconds: 0,
+        startCountdown() {
+            this.updateCountdown();
+            setInterval(() => {
+                this.updateCountdown();
+            }, 1000);
+        },
+        updateCountdown() {
+            const now = new Date();
+            const distance = this.targetDate - now;
+            this.minutes = Math.floor(
+                (distance % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (distance < 0) {
+                clearInterval(this);
+                this.minutes = 0;
+                this.seconds = 0;
+                if (status) {
+                    location.reload();
+                }
+            }
+        },
+    };
+}

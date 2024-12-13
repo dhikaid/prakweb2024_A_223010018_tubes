@@ -55,12 +55,7 @@
                         alt="">
                     <p class="uppercase">{{ $event->creator->fullname }}</p>
                     @if ($event->creator->isVerified)
-
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="blue" class="size-5">
-                        <path fill-rule="evenodd"
-                            d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    @include('layouts.partials.verified')
                     @endif
                 </div>
             </div>
@@ -88,9 +83,10 @@
 
         <div class="text-base leading-loose my-4">
             @foreach ($event->tickets as $ticket )
+            @if (!$ticket->is_empty)
             <div class="bg-gray-200 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl flex justify-between items-center ">
                 <div class="info">
-                    <p class="text-xl uppercase font-bold block">{{ $ticket->ticket }}</p>
+                    <p class="text-xl uppercase font-bold block">{{ $ticket->ticket }}</span></p>
                     <p>{{ $ticket->ticket_price }}</p>
                     <p class="text-xs">*minimal pemesanan 1 tiket, maksimal 10 tiket</p>
                 </div>
@@ -110,6 +106,28 @@
                     class="bg-blue-700 text-white font-bold rounded-lg px-8 py-2 uppercase text-sm md:text-base">MASUK</a>
                 @endauth
             </div>
+            @else
+            <div
+                class="bg-gray-200/60 text-black/60 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl flex justify-between items-center ">
+                <div class="info">
+                    <p class="text-xl uppercase font-bold block">{{ $ticket->ticket }}</p>
+                    <p>{{ $ticket->ticket_price }}</p>
+                    <p class="text-xs">*minimal pemesanan 1 tiket, maksimal 10 tiket</p>
+                </div>
+                @auth
+                <div class="form">
+                    <div class="flex ticket gap-2">
+                        <button
+                            class="bg-blue-600/50 text-white font-bold rounded-lg px-8 py-2 uppercase text-sm md:text-base"
+                            disabled>HABIS</button>
+                    </div>
+                </div>
+                @else
+                <a href="{{ route('login') }}"
+                    class="bg-blue-700 text-white font-bold rounded-lg px-8 py-2 uppercase text-sm md:text-base">MASUK</a>
+                @endauth
+            </div>
+            @endif
             @endforeach
         </div>
     </div>
@@ -157,12 +175,7 @@
                         alt="">
                     <p class="uppercase">{{ $event->creator->fullname }}</p>
                     @if ($event->creator->isVerified)
-
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="blue" class="size-5">
-                        <path fill-rule="evenodd"
-                            d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    @include('layouts.partials.verified')
                     @endif
                 </div>
             </div>
@@ -179,5 +192,17 @@
 
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function(e){
+    Echo.channel(`channel-name`)
+    .listen('QueueUpdated', (e) => {
+        Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: e,
+                });
+    });
+   });
+</script>
 
 @endsection

@@ -10,7 +10,15 @@ class DashboardEventsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index()
+    {
+        $data = [
+            'title' => 'Dashboard Events',
+            'roles' => Event::paginate(10),
+        ];
+
+        return view('dashboard.events.index', $data);
+    }
 
     /**
      * Show the form for creating a new resource.

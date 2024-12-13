@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Queue;
+use App\Events\QueueUpdated;
 use Illuminate\Http\Request;
 use Spatie\LaravelPdf\Facades\Pdf;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -33,6 +37,8 @@ class HomeController extends Controller
         return view('main.index', $data);
     }
 
+
+
     public function showSearch(Request $request)
     {
         $validatedData = $request->validate([
@@ -59,6 +65,11 @@ class HomeController extends Controller
 
     public function showTicket(Event $event)
     {
+
+        $userUuid = Auth::user()->uuid;
+        // if ($event->is_tiket_war && !$event->queue->where('user_uuid', Auth::user()->uuid)->first()->status !== 'in_progress') {
+        //     return redirect()->to('/event/' . $event->slug . '/war');
+        // }
 
         $data = [
             'title' => "Buy ticket: $event->name",
