@@ -29,7 +29,7 @@ class EventSeeder extends Seeder
             'end_date' => '2024-12-01 17:00:00',
             'capacity' => 500,
             'is_tiket_war' => true,
-            'queue_limit' => 50,
+            'queue_limit' => 1,
         ]);
 
         Event::create([
