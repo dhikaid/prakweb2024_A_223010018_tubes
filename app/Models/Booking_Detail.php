@@ -15,4 +15,9 @@ class Booking_Detail extends Model
     {
         return $this->belongsTo(Booking::class, 'booking_uuid');
     }
+
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class, 'ticket_uuid');
+    }
 }

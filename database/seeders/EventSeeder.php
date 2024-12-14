@@ -21,7 +21,7 @@ class EventSeeder extends Seeder
         Event::create([
             'slug' => fake()->slug(),
             'user_uuid' => User::inRandomOrder()->first()->uuid,
-            'name' => 'Tech Conference 2024',
+            'name' => 'Roasting by Rafli',
             'image' => 'tech_conference.jpg',
             'description' => 'A conference about the latest in tech, focusing on AI, Cloud, and IoT.',
             'location_uuid' => Location::inRandomOrder()->first()->uuid,

@@ -9,10 +9,11 @@
     </div>
     <div class="p-5 md:p-10 flex flex-col justify-between h-full w-full">
         <div class="main">
-            <div class="rules mb-7">
-                <p class="font-bold text-4xl">Renggangkan jarimu dan amankan tiketmu!</p>
-            </div>
             <div class="event space-y-3">
+                <a href="/"> <img src="{{ asset('assets/bookrn.png') }}" class="w-16" alt=""></a>
+                <div class="rules mb-7">
+                    <p class="font-bold text-2xl md:text-4xl">Renggangkan jarimu dan amankan tiketmu!</p>
+                </div>
                 <p class="">Anda akan memulai WAR Ticket: </p>
                 <h1 class="text-3xl md:text-4xl font-bold">{{ $event->name }}</h1>
                 <div class="text-gray-800 text-base mb-10 space-y-2 ">
@@ -54,14 +55,55 @@
                 </div>
                 </p>
             </div>
-            <div class="w-full space-y-3 mt-10">
-                <p class="text-xl">Anda sekarang berada di posisi: </p>
-                <p class="text-5xl font-bold" id="position">{{ $queue }}</p>
+        </div>
+        <div class="w-full space-y-3 my-4">
+            <p class="text-md md:text-xl">Anda sekarang berada di posisi antrian: </p>
+            <div class="flex items-center gap-2 text-black">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-10">
+                    <path
+                        d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+                </svg>
+                <p class="text-4xl md:text-5xl font-bold" id="position">{{ $queue }}</p>
             </div>
-            <div class="w-full space-y-3 mt-10">
-                <p class="text-xl">Perkiraan giliran anda tiba: </p>
-                <p class="text-5xl font-bold bg-indigo-500 text-white px-4 py-3 rounded-lg" id="estimate">{{$time}}
+        </div>
+        <div class="w-full space-y-3 ">
+            <p class="text-md md:text-xl">Perkiraan giliran anda tiba: </p>
+            <div class="flex items-center gap-3  bg-indigo-500 text-white px-4 py-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-10">
+                    <path fill-rule="evenodd"
+                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                        clip-rule="evenodd" />
+                </svg>
+
+                <p class="text-4xl md:text-5xl font-bold" id="estimate">
+                    {{$time}}
+                    menit
                 </p>
+            </div>
+        </div>
+        <div class="w-full space-y-3 mt-10">
+            <p class="text-xl">Informasi Tiket Sekarang: </p>
+            <div class="md:flex gap-1">
+                @foreach ($tickets as $ticket)
+                <div class="bg-gray-200 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl flex justify-between items-center"
+                    id="ticket-{{ $ticket->uuid }}">
+                    <p class="font-bold text-xl">{{ $ticket->ticket }}</p>
+                    <div class="">
+                        @if (!$ticket->is_empty)
+                        <div class="masihAda">
+                            <p class="bg-emerald-600 text-white p-2 rounded-lg status">Masih tersedia</p>
+                            <p class="available">Sisa {{ $ticket->qty_available }}</p>
+                        </div>
+                        @else
+
+                        <p class="bg-red-600 text-white p-2 rounded-lg status">Sudah Habis</p>
+
+                        @endif
+
+                    </div>
+                </div>
+                @endforeach
+
             </div>
         </div>
 
@@ -71,18 +113,65 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function(e){
-        Echo.channel("queue.{{ $event->uuid }}.{{ auth()->user()->uuid }}")
-        .listen('QueueUpdated', (event) => {
-        // Update posisi antrian pengguna
-        document.getElementById('position').textContent = data.position;
-                    document.getElementById('estimate').textContent = `${data.estimate} minutes`;
+        const userUuid = "{{ auth()->user()->uuid }}";
 
-                    // Jika status antrean selesai, arahkan pengguna ke halaman tiket
-                    if (data.status === 'completed') {
-                        window.location.href = "{{ route('start', ['event'=> $event->slug]) }}";
+        Echo.private(`queue.${userUuid}`)
+            .listen("QueueUpdated", (data) => {
+                console.log("Pembaruan antrian diterima:", data);
+                document.getElementById("position").innerText = `${data.position}`;
+                document.getElementById("estimate").innerText = `${data.estimate} menit`;
+                console.log(data.status);
+                if (data.status === 'in_progress') {
+                        window.location.href = "{{ route('ticket', ['event'=> $event->slug]) }}";
+                }
+            });
+
+            Echo.channel('tickets.{{ $event->uuid }}')
+                .listen('TicketUpdated', (event) => {
+                    // Ambil data tiket dari event
+                    const ticket = event;
+                    console.log(event);
+                    // Update tampilan tiket
+                    const ticketElement = document.querySelector(`#ticket-${ticket.ticket_id}`);
+                    if (ticketElement) {
+
+                        const availableElement = ticketElement.querySelector('.available');
+                        const statusElement = ticketElement.querySelector('.status');
+
+                        if (ticket.is_empty) {
+                            statusElement.textContent = 'Sudah Habis';
+                            statusElement.classList.add('bg-red-600');
+                            statusElement.classList.remove('bg-emerald-600');
+                            availableElement.textContent = ``;
+                        } else {
+                            availableElement.textContent = `Sisa ${ticket.qty_available}`;
+                            statusElement.textContent = 'Masih tersedia';
+                            statusElement.classList.add('bg-emerald-600');
+                            statusElement.classList.remove('bg-red-600');
+                        }
                     }
-        });
+                });
 
+            window.addEventListener('beforeunload', function (event) {
+                // Ambil UUID antrian dari data yang ada di halaman
+                const queueUuid = "{{ $qid }}";
+
+                // Kirim request untuk mengubah status antrian menjadi 'completed'
+                fetch(`/api/complete-queue-on-close/${queueUuid}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ queueUuid: queueUuid })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log('Status antrian berhasil diperbarui menjadi completed');
+                    }
+                }).catch(error => {
+                    console.error('Terjadi kesalahan saat memperbarui status:', error);
+                });
+            });
     });
 </script>
 @endsection

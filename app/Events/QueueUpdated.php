@@ -38,8 +38,9 @@ class QueueUpdated  implements ShouldBroadcast, ShouldDispatchAfterCommit
      */
     public function broadcastOn()
     {
-        return [new PresenceChannel('queue.' . $this->eventUuid . '.' . $this->userUuid)];
+        return [new PrivateChannel('queue.' . $this->userUuid)];
     }
+
 
 
     public function broadcastWith(): array

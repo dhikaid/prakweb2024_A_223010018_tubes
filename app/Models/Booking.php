@@ -16,4 +16,9 @@ class Booking extends Model
     {
         return $this->belongsTo(Event::class, 'event_uuid');
     }
+
+    public function bookingDetail()
+    {
+        return $this->hasMany(Booking_Detail::class, 'booking_uuid');
+    }
 }

@@ -20,6 +20,14 @@ Route::get(
         broadcast(new Test('halo'));
     }
 );
+Route::get(
+    '/test/{payment:uuid}',
+    [PaymentController::class, 'testSelesai']
+);
+Route::get(
+    '/test2/{event:uuid}',
+    [PaymentController::class, 'updateTicket']
+);
 
 // ROUTE DASHBOARD
 Route::prefix('dashboard')->group(function () {
@@ -56,11 +64,6 @@ Route::get('/dashboard', function () {
 
 // ROUTE DETAIL
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
-Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
-Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->name('war');
-Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->name('war')->middleware('auth');
-Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->name('queue');
-Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
 
 
 // SERVICES API
@@ -106,6 +109,13 @@ Route::group(['middleware' => 'guest'], function () {
 
 // Route Group for Middleware Auth
 route::group(['middleware' => 'auth'], function () {
+    Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
+
+    Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware('war')->name('war');
+    Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware('war')->name('war');
+    Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware('queue')->name('queue');
+    Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
+    Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
 });

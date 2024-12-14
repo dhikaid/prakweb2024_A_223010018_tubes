@@ -84,6 +84,7 @@
         <div class="text-base leading-loose my-4">
             @foreach ($event->tickets as $ticket )
             @if (!$ticket->is_empty)
+
             <div class="bg-gray-200 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl flex justify-between items-center ">
                 <div class="info">
                     <p class="text-xl uppercase font-bold block">{{ $ticket->ticket }}</span></p>
@@ -107,6 +108,7 @@
                 @endauth
             </div>
             @else
+
             <div
                 class="bg-gray-200/60 text-black/60 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl flex justify-between items-center ">
                 <div class="info">
@@ -196,6 +198,7 @@
     document.addEventListener('DOMContentLoaded', function(e){
     Echo.channel(`channel-name`)
     .listen('QueueUpdated', (e) => {
+        console.log(e);
         Swal.fire({
                     icon: "error",
                     title: "Oops...",

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Event;
 use App\Models\Queue;
 use App\Events\QueueUpdated;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelPdf\Facades\Pdf;
@@ -19,7 +20,7 @@ class QueueController extends Controller
 
         $userUuid = Auth::user()->uuid;
         $queue = Queue::where('event_uuid', $event->uuid)
-            ->where('user_uuid', $userUuid)
+            ->where('user_uuid', $userUuid)->where('status', '!=', 'completed')
             ->first();
 
         if (!$queue) {
@@ -29,6 +30,7 @@ class QueueController extends Controller
         $event->load(['queue']);
 
         // Jika status antrean selesai, arahkan ke halaman tiket
+
         if ($queue->status === 'pending') {
             if ($event->queue->where('status', 'in_progress')->count() < $event->queue_limit) {
 
@@ -43,6 +45,8 @@ class QueueController extends Controller
             'event' => $event,
             'queue' => $this->getQueuePosition($event->uuid, $userUuid),
             'time' => $this->getQueueEstimate($event->uuid, $userUuid),
+            'qid' => $queue->uuid,
+            'tickets' => Ticket::where('event_uuid', $event->uuid)->get()
         ];
 
         return view('main.queue', $data);
@@ -52,6 +56,7 @@ class QueueController extends Controller
 
     public function showWar(Event $event)
     {
+
         $data = [
             'title' => 'War Ticket: ' . $event->name,
             'event' => $event,
@@ -59,24 +64,10 @@ class QueueController extends Controller
         return view('main.war', $data);
     }
 
-
-    public function processQueue($queueUuid)
-    {
-        $queue = Queue::where('uuid', $queueUuid)->first();
-        if ($queue) {
-            // Perbarui status antrean
-            $queue->update(['status' => 'completed']);
-
-            // Kirim pembaruan antrian ke klien yang terhubung
-            $this->sendQueueUpdate($queue->event_uuid, $queue->user_uuid);
-        }
-    }
-
-
     function getQueuePosition($eventUuid, $userUuid)
     {
         $currentQueue = Queue::where('event_uuid', $eventUuid)
-            ->where('user_uuid', $userUuid)
+            ->where('user_uuid', $userUuid)->where('status', '!=', 'completed')
             ->first();
 
         if (!$currentQueue) {
@@ -143,13 +134,79 @@ class QueueController extends Controller
         $this->processQueue($eventUuid);
     }
 
-    public function sendQueueUpdate($eventUuid, $userUuid)
+    public function processQueue($queueUuid)
     {
-        $position = $this->getQueuePosition($eventUuid, $userUuid);
-        $estimate = $this->getQueueEstimate($eventUuid, $userUuid);
+        $queue = Queue::where('uuid', $queueUuid)->first();
 
-        broadcast(new QueueUpdated($eventUuid, $userUuid, $position, $estimate, 'pending'));
+        if ($queue) {
+            // Tandai pengguna saat ini sebagai 'completed'
+            $queue->update(['status' => 'completed']);
+        }
+
+        // Ambil event_uuid dari queue saat ini
+        $eventUuid = $queue->event_uuid;
+
+        // Cek jumlah pengguna dengan status 'in_progress'
+        $currentInProgress = Queue::where('event_uuid', $eventUuid)
+            ->where('status', 'in_progress')
+            ->count();
+
+        // Ambil queue_limit dari Event
+        $queueLimit = Event::where('uuid', $eventUuid)->value('queue_limit');
+
+        // Hitung jumlah slot yang tersedia
+        $slotsAvailable = $queueLimit - $currentInProgress;
+
+        // Proses pengguna berikutnya jika ada slot kosong
+        for ($i = 0; $i < $slotsAvailable; $i++) {
+            $nextQueue = $this->getNextInQueue($eventUuid);
+            if ($nextQueue) {
+                $nextQueue->update(['status' => 'in_progress']);
+
+                // Broadcast ke pengguna baru
+                broadcast(new QueueUpdated(
+                    $nextQueue->event_uuid,
+                    $nextQueue->user_uuid,
+                    1, // Posisi baru
+                    2, // Estimasi waktu
+                    'in_progress'
+                ));
+            } else {
+                break; // Jika tidak ada antrian lagi, hentikan loop
+            }
+        }
+
+        // Kirim pembaruan posisi untuk semua pengguna yang masih pending
+        $this->sendQueueUpdate($eventUuid);
     }
+
+
+    public function sendQueueUpdate($eventUuid)
+    {
+        // Ambil semua antrian dengan status 'pending' berdasarkan waktu
+        $queues = Queue::where('event_uuid', $eventUuid)
+            ->where('status', 'pending')
+            ->orderBy('time', 'asc')
+            ->get();
+
+        $estimatedMinutesPerUser = 2; // Estimasi waktu per pengguna
+
+        // Loop melalui setiap pengguna dalam antrian
+        foreach ($queues as $index => $queue) {
+            $position = $index + 1; // Posisi dimulai dari 1
+            $estimate = $position * $estimatedMinutesPerUser;
+
+            // Kirim pembaruan ke setiap pengguna
+            broadcast(new QueueUpdated(
+                $eventUuid,
+                $queue->user_uuid,
+                $position,
+                $estimate,
+                $queue->status // Kirim status saat ini
+            ));
+        }
+    }
+
 
 
     public function checkAndProcessQueue($eventUuid)
@@ -197,5 +254,19 @@ class QueueController extends Controller
 
         // Jika batas antrian terlampaui, kembali ke halaman sebelumnya
         return back()->with('error', 'Batas antrian telah terlampaui.');
+    }
+
+    public function completeQueueOnClose($queueUuid)
+    {
+        $queue = Queue::where('uuid', $queueUuid)->first();
+        if ($queue) {
+            // Perbarui status menjadi 'completed'
+            $queue->update(['status' => 'completed']);
+        }
+
+        // Setelah selesai, kirim pembaruan
+        $this->sendQueueUpdate($queue->event_uuid);
+
+        return response()->json(['message' => 'Queue status updated to completed']);
     }
 }

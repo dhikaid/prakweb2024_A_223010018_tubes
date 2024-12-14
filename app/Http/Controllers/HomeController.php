@@ -65,11 +65,11 @@ class HomeController extends Controller
 
     public function showTicket(Event $event)
     {
-
-        $userUuid = Auth::user()->uuid;
-        // if ($event->is_tiket_war && !$event->queue->where('user_uuid', Auth::user()->uuid)->first()->status !== 'in_progress') {
-        //     return redirect()->to('/event/' . $event->slug . '/war');
-        // }
+        if ($event->is_tiket_war) {
+            if (!Gate::allows('access-tiket-war', $event)) {
+                return redirect()->to('/event/' . $event->slug . '/war');
+            }
+        }
 
         $data = [
             'title' => "Buy ticket: $event->name",

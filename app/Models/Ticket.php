@@ -31,19 +31,31 @@ class Ticket extends Model
 
     public function getQtyAvailableAttribute()
     {
-        // Get all booking details
+        // Get all booking details with their associated bookings
         $bookingDetails = $this->bookingDetail()->with('booking')->get();
+
+        // Filter valid bookings: status not 'failed' and created_at less than 10 minutes ago
         $totalBookedQty = $bookingDetails->filter(function ($bookingDetail) {
-            return $bookingDetail->booking && $bookingDetail->booking->status !== 'failed';
+            $isValidStatus = $bookingDetail->booking && $bookingDetail->booking->status !== 'failed';
+            $isWithin10Minutes = $bookingDetail->created_at->greaterThan(now()->subMinutes(1));
+            return $isValidStatus && $isWithin10Minutes;
         })->sum('qty');
 
-        return ($this->qty - $totalBookedQty);
+        // Calculate the available quantity
+        $result = $this->qty - $totalBookedQty;
+
+        if ($result < 0) {
+            $result = 0;
+        }
+        return $result;
     }
+
+
 
     // if ticket is empty
     public function getIsEmptyAttribute()
     {
-        return ($this->getQtyAvailableAttribute()) === 0;
+        return ($this->getQtyAvailableAttribute() <= 0);
     }
 
     // order by min price to highest price

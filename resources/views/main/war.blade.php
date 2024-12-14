@@ -10,6 +10,7 @@
     <div class="p-5 md:p-10 flex flex-col justify-between h-full w-full">
         <div class="main">
             <div class="event space-y-3">
+                <a href="/"> <img src="{{ asset('assets/bookrn.png') }}" class="w-16" alt=""></a>
                 <p class="">Anda akan memulai WAR Ticket: </p>
                 <h1 class="text-3xl md:text-4xl font-bold">{{ $event->name }}</h1>
                 <div class="text-gray-800 text-base mb-10 space-y-2 ">
@@ -53,8 +54,7 @@
             </div>
             <div class="rules mt-7">
                 <p class="font-bold text-xl">Tata Cara Penggunaan</p>
-                <div
-                    class="overflow-y-scroll h-[calc(100vh-25rem)] md:h-[calc(100vh-30rem)] space-y-4 text-sm md:text-base">
+                <div class="overflow-y-scroll h-[calc(100vh-33rem)] space-y-4 text-sm md:text-base">
                     <div class="mt-3 ">
                         <ol class="list-decimal list-inside space-y-2 text-gray-800">
                             <li><span class="font-medium">Buat Akun:</span> Pastikan kamu sudah memiliki akun BookRN
