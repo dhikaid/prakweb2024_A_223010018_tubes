@@ -18,23 +18,21 @@ class TicketSeeder extends Seeder
         // Tech Conference 2024
         $event = Event::where('name', 'Roasting by Rafli')->first();
         Ticket::create([
-
-            'ticket' => 'VIP',
+            'ticket' => 'Bangku Depan',
             'price' => 1500000,
-            'qty' => 50,
+            'qty' => 3,
             'event_uuid' => $event->uuid,
         ]);
         Ticket::create([
-            'ticket' => 'Regular',
+            'ticket' => 'Bangku Tengah',
             'price' => 750000,
-            'qty' => 200,
+            'qty' => 2,
             'event_uuid' => $event->uuid,
         ]);
 
         // Startup Weekend 2024
         $event = Event::where('name', 'Startup Weekend 2024')->first();
         Ticket::create([
-
             'ticket' => 'VIP',
             'price' => 1000000,
             'qty' => 30,
