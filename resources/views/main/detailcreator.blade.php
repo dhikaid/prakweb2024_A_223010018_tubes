@@ -2,11 +2,15 @@
 @section('main')
 
 
-{{ $user->username }}
+<p>{{ $user->image }}</p>
+<p>{{ $user->username }}</p>
+
 {{-- verified --}}
 @if ($user->isVerified)
 @include('layouts.partials.verified')
 @endif
+<br>
+
 
 @foreach ($events as $event)
 <p>{{ $event->image }}</p>
