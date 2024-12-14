@@ -20,7 +20,7 @@
                 <div class="overflow-hidden md:rounded-lg">
                     <div class=" rounded-lg flex items-start justify-between">
                         <div class="w-full">
-                            <form class="space-y-5" method="POST" action="/dashboard/events"
+                            <form class="space-y-5" method="POST" action="{{ route('dashboard.events.store') }}"
                                 enctype="multipart/form-data" x-data="{ verified: false }">
                                 @csrf
                                 {{-- START FILE FORM --}}
