@@ -16,7 +16,7 @@ class TicketSeeder extends Seeder
     public function run(): void
     {
         // Tech Conference 2024
-        $event = Event::where('name', 'Tech Conference 2024')->first();
+        $event = Event::where('name', 'Roasting by Rafli')->first();
         Ticket::create([
 
             'ticket' => 'VIP',
@@ -25,7 +25,6 @@ class TicketSeeder extends Seeder
             'event_uuid' => $event->uuid,
         ]);
         Ticket::create([
-
             'ticket' => 'Regular',
             'price' => 750000,
             'qty' => 200,
