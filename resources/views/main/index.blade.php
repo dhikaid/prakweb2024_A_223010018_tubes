@@ -31,7 +31,8 @@
             <div class="w-full flex gap-8 snap-x scroll-pl-1 overflow-x-auto py-3">
                 @foreach ($creators as $creator)
                 <div class="snap-start shrink-0 ">
-                    <a href="" class="flex flex-col items-center justify-center text-center  md:text-left w-36">
+                    <a href="/creator/{{ strtolower($creator->username ) }}"
+                        class="flex flex-col items-center justify-center text-center  md:text-left w-36">
                         <img src="{{ $creator->image }}" class="rounded-full w-24 md:w-28 mb-3"
                             alt="{{ $creator->fullname }}">
                         <div class="detail-creator flex items-center justify-center">
@@ -69,8 +70,7 @@
                             <p class="font-regular text-sm text-gray-500 mb-2">{{ $event->duration }}</p>
                             <p class="text-m font-semibold capitalize">{{ $event->price_range }}</p>
                             <div class="img mt-3 flex items-center  gap-3">
-                                <img src="https://assets.loket.com/neo/production/images/organization/20240404153109_660e654d3c31b.png"
-                                    class="w-7 rounded-full" alt="">
+                                <img src="{{ $event->creator->image }}" class="w-7 rounded-full" alt="">
                                 <div class="badge flex items-center justify-center gap-1">
                                     <p class="flex justify-center items-center gap-1">{{ $event->creator->fullname }}
                                     </p>
@@ -110,8 +110,7 @@
                             <p class="font-regular text-sm text-gray-500 mb-2">{{ $event->duration }}</p>
                             <p class="text-m font-semibold capitalize">{{ $event->price_range }}</p>
                             <div class="img mt-3 flex items-center  gap-3">
-                                <img src="https://assets.loket.com/neo/production/images/organization/20240404153109_660e654d3c31b.png"
-                                    class="w-7 rounded-full" alt="">
+                                <img src="{{ $event->creator->image }}" class="w-7 rounded-full" alt="">
                                 <div class="badge flex items-center justify-center gap-1">
                                     <p class="flex justify-center items-center gap-1">{{ $event->creator->fullname }}
                                     </p>

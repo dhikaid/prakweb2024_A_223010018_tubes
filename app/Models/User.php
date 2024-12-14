@@ -3,10 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Scopes\EOScope;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -76,6 +79,15 @@ class User extends Authenticatable
         return asset('storage/' . $value);
     }
 
-    // scope untuk mennampilkan roles EO saja
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['query'] ?? false, function ($query, $search) {
+            return $query->where('username', 'like', '%' . $search . '%')->orWhere('fullname', 'like', '%' . $search . '%');
+        });
+    }
 
+    public function event()
+    {
+        return $this->hasMany(Event::class, 'user_uuid');
+    }
 }

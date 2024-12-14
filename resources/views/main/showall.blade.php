@@ -9,7 +9,8 @@
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-1.5  py-3  w-full">
             @if ($query === "Creators")
             @foreach ($datas as $creator )
-            <a href="" class="flex flex-col items-center justify-start inline-block">
+            <a href="/creator/{{ strtolower($creator->username ) }}"
+                class="flex flex-col items-center justify-start inline-block">
                 <img src="{{ $creator->image }}" class="rounded-full w-24 md:w-28 mb-3" alt="{{ $creator->fullname }}">
                 <div class="detail-creator flex items-center justify-center">
                     <p class="items-center mr-1 text-sm md:text-base font-semibold line-clamp-1 uppercase text-center">

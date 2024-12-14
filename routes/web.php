@@ -17,7 +17,7 @@ use App\Http\Controllers\QueueController;
 Route::get(
     '/test',
     function () {
-        broadcast(new Test('halo'));
+        dd(broadcast(new Test('halo')));
     }
 );
 Route::get(
@@ -43,6 +43,7 @@ Route::prefix('dashboard')->group(function () {
 })->middleware(['auth']);
 
 Route::get('/creators', [HomeController::class, 'showCreators']);
+Route::get('/creator/{user:username}', [HomeController::class, 'showDetailCreator']);
 Route::get('/events', [HomeController::class, 'showLatestEvent']);
 Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
 Route::get('/transaction/{payment:uuid}', [PaymentController::class, 'showTransaction'])->middleware('auth');

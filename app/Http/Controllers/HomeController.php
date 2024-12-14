@@ -112,4 +112,15 @@ class HomeController extends Controller
         ];
         return view('main.showall', $data);
     }
+
+    public function showDetailCreator(User $user)
+    {
+        $user->load('event');
+        $data = [
+            'title' => $user->username,
+            'user' => $user,
+            'events' => $user->event,
+        ];
+        return view('main.detailcreator', $data);
+    }
 }

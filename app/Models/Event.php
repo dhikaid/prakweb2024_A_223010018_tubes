@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Number;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ScopedBy([ActiveScope::class])]
 class Event extends Model
 {
     use HasUuids;
