@@ -3,31 +3,39 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+
+    use HasFactory, Notifiable, HasUuids, SoftDeletes;
+
+    // Tentukan nama kolom primary key
+    protected $primaryKey = 'uuid';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    // protected $fillable = [
+    //     'user_uuid',
+    //     'fullname',
+    //     'name',
+    //     'email',
+    //     'password',
+    //     'image',
+    //     'role_id',
+    //     'created_at',
+    //     'updated_at',
+    // ];
+    protected $guarded = ['uuid'];
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -45,4 +53,29 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_uuid', 'uuid');
+    }
+
+    public function scopeEO()
+    {
+        return $this->whereHas('role', function ($query) {
+            $query->where('role', 'EO');
+        });
+    }
+
+    // ubah image jadi link
+    public function getImageAttribute($value)
+    {
+        // cek kalo diawali dari link tinggal return aja
+        if (strpos($value, 'http') === 0) {
+            return $value;
+        }
+        return asset('storage/' . $value);
+    }
+
+    // scope untuk mennampilkan roles EO saja
+
 }
