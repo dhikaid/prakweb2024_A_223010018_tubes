@@ -39,12 +39,14 @@ class QueueController extends Controller
             }
         }
 
+        $total_queue = Queue::where('event_uuid', $event->uuid)->where('status', 'pending')->count();
         // Tampilkan halaman tunggu antrian
         $data = [
             'title' => 'War Ticket: ' . $event->name,
             'event' => $event,
             'queue' => $this->getQueuePosition($event->uuid, $userUuid),
             'time' => $this->getQueueEstimate($event->uuid, $userUuid),
+            'total_queue' => $total_queue,
             'qid' => $queue->uuid,
             'tickets' => Ticket::where('event_uuid', $event->uuid)->get()
         ];

@@ -1,115 +1,273 @@
 @extends('layouts.layouts')
 
 @section('content')
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex flex-col">
+    @include('main.layouts.navbar')
 
-
-<div class="main flex h-screen">
-    <div class="hidden md:flex flex-col justify-center items-center  w-1/2 bg-indigo-500">
-        <img src="{{ asset('assets/undraw_notify_re_65on.svg') }}" alt="">
-    </div>
-    <div class="p-5 md:p-10 flex flex-col justify-between h-full w-full">
-        <div class="main">
-            <div class="event space-y-3">
-                <a href="/"> <img src="{{ asset('assets/bookrn.png') }}" class="w-16" alt=""></a>
-                <div class="rules mb-7">
-                    <p class="font-bold text-2xl md:text-4xl">Renggangkan jarimu dan amankan tiketmu!</p>
-                </div>
-                <p class="">Anda akan memulai WAR Ticket: </p>
-                <h1 class="text-3xl md:text-4xl font-bold">{{ $event->name }}</h1>
-                <div class="text-gray-800 text-base mb-10 space-y-2 ">
-                    <div class="flex gap-2 items-center ">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path
-                                d="M12 11.993a.75.75 0 0 0-.75.75v.006c0 .414.336.75.75.75h.006a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75H12ZM12 16.494a.75.75 0 0 0-.75.75v.005c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H12ZM8.999 17.244a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.006ZM7.499 16.494a.75.75 0 0 0-.75.75v.005c0 .414.336.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H7.5ZM13.499 14.997a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.005a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.005ZM14.25 16.494a.75.75 0 0 0-.75.75v.006c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75h-.005ZM15.75 14.995a.75.75 0 0 1 .75-.75h.005a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75H16.5a.75.75 0 0 1-.75-.75v-.006ZM13.498 12.743a.75.75 0 0 1 .75-.75h2.25a.75.75 0 1 1 0 1.5h-2.25a.75.75 0 0 1-.75-.75ZM6.748 14.993a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" />
-                            <path fill-rule="evenodd"
-                                d="M18 2.993a.75.75 0 0 0-1.5 0v1.5h-9V2.994a.75.75 0 1 0-1.5 0v1.497h-.752a3 3 0 0 0-3 3v11.252a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3V7.492a3 3 0 0 0-3-3H18V2.993ZM3.748 18.743v-7.5a1.5 1.5 0 0 1 1.5-1.5h13.5a1.5 1.5 0 0 1 1.5 1.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <p class="uppercase">{{ $event->duration }}</p>
-                    </div>
-                    <div class="flex gap-2 items-center ">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path fill-rule="evenodd"
-                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <p>09:00 - 15:00 WIB</p>
-                    </div>
-                    <div class="flex gap-2 items-start ">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path fill-rule="evenodd"
-                                d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <p>{{ $event->locations->venue }}</p>
-                    </div>
-                </div>
-                <p class="mt-3">Diselenggarakan oleh:
-                <div class="text-black font-bold text-xl flex  items-center gap-1">
-                    <img src="https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1" class="rounded-full w-10 h-10"
-                        alt="">
-                    <p class="uppercase">{{ $event->creator->fullname }}</p>
-                    @if ($event->creator->isVerified)
-                    @include('layouts.partials.verified')
-                    @endif
-                </div>
-                </p>
-            </div>
-        </div>
-        <div class="w-full space-y-3 my-4">
-            <p class="text-md md:text-xl">Anda sekarang berada di posisi antrian: </p>
-            <div class="flex items-center gap-2 text-black">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-10">
-                    <path
-                        d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+    <div class="container max-w-7xl mx-auto px-4 pt-24 pb-12 flex-grow">
+        <!-- Back Button -->
+        <div class="mb-8 transform hover:-translate-x-2 transition-transform duration-300 inline-block">
+            <a href="{{ url()->previous() }}" class="flex items-center text-gray-700 hover:text-blue-600 group">
+                <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none">
+                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M9 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
                 </svg>
-                <p class="text-4xl md:text-5xl font-bold" id="position">{{ $queue }}</p>
-            </div>
+                <span class="font-semibold">Kembali ke Event</span>
+            </a>
         </div>
-        <div class="w-full space-y-3 ">
-            <p class="text-md md:text-xl">Perkiraan giliran anda tiba: </p>
-            <div class="flex items-center gap-3  bg-indigo-500 text-white px-4 py-3 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-10">
-                    <path fill-rule="evenodd"
-                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-                        clip-rule="evenodd" />
-                </svg>
 
-                <p class="text-4xl md:text-5xl font-bold" id="estimate">
-                    {{$time}}
-                    menit
-                </p>
-            </div>
-        </div>
-        <div class="w-full space-y-3 mt-10">
-            <p class="text-xl">Informasi Tiket Sekarang: </p>
-            <div class="md:flex gap-1">
-                @foreach ($tickets as $ticket)
-                <div class="bg-gray-200 w-full p-5 mb-4 rounded-tl-3xl rounded-br-3xl flex justify-between items-center"
-                    id="ticket-{{ $ticket->uuid }}">
-                    <p class="font-bold text-xl">{{ $ticket->ticket }}</p>
-                    <div class="">
-                        @if (!$ticket->is_empty)
-                        <div class="masihAda">
-                            <p class="bg-emerald-600 text-white p-2 rounded-lg status">Masih tersedia</p>
-                            <p class="available">Sisa {{ $ticket->qty_available }}</p>
+        <!-- Main Content Grid -->
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Left Column - Event Info -->
+            <div>
+                <!-- Event Header Card -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl animate-fadeIn border border-blue-100">
+                    <div class="flex justify-between items-start mb-8">
+                        <a href="/" class="group">
+                            <img src="{{ asset('assets/bookrn.png') }}"
+                                class="w-20 h-auto transform group-hover:scale-105 transition-all duration-300"
+                                alt="Logo BookRN">
+                        </a>
+                        <div class="flex items-center px-4 py-2 bg-blue-50 rounded-full animate-pulse">
+                            <svg class="w-5 h-5 text-blue-600 mr-2" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            <p class="text-blue-600 font-semibold">War Ticket Berlangsung</p>
                         </div>
-                        @else
+                    </div>
 
-                        <p class="bg-red-600 text-white p-2 rounded-lg status">Sudah Habis</p>
+                    <div class="space-y-6">
+                        <!-- Event Name & Date -->
+                        <div class="space-y-3">
+                            <h1 class="text-3xl font-bold text-gray-900">{{ $event->name }}</h1>
+                            <div class="flex items-center text-gray-600">
+                                <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor"
+                                        stroke-width="2" />
+                                    <path d="M3 10H21" stroke="currentColor" stroke-width="2" />
+                                    <path d="M8 2V6M16 2V6" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" />
+                                </svg>
+                                <p>{{ $event->duration }}</p>
+                            </div>
+                        </div>
 
-                        @endif
+                        <!-- Event Details Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- Time -->
+                            <div
+                                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+                                <div
+                                    class="flex-none w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                                        <path d="M12 7V12L15 15" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Waktu Event</p>
+                                    <p class="font-semibold text-gray-900">09:00 - 15:00 WIB</p>
+                                </div>
+                            </div>
 
+                            <!-- Location -->
+                            <div
+                                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+                                <div
+                                    class="flex-none w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none">
+                                        <path
+                                            d="M12 14C13.6569 14 15 12.6569 15 11C15 9.34315 13.6569 8 12 8C10.3431 8 9 9.34315 9 11C9 12.6569 10.3431 14 12 14Z"
+                                            stroke="currentColor" stroke-width="2" />
+                                        <path
+                                            d="M12 22C16 18 20 14.4183 20 11C20 6.58172 16.4183 3 12 3C7.58172 3 4 6.58172 4 11C4 14.4183 8 18 12 22Z"
+                                            stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Lokasi</p>
+                                    <p class="font-semibold text-gray-900">{{ $event->locations->venue }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Organizer -->
+                        <div class="border-t border-gray-100 pt-6">
+                            <p class="text-sm text-gray-500 mb-3">Diselenggarakan oleh:</p>
+                            <div
+                                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+                                <img src="https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1"
+                                    alt="{{ $event->creator->fullname }}"
+                                    class="w-12 h-12 rounded-xl border-2 border-blue-100">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <p class="font-bold text-gray-900">{{ $event->creator->fullname }}</p>
+                                        @if ($event->creator->isVerified)
+                                        @include('layouts.partials.verified')
+                                        @endif
+                                    </div>
+                                    <p class="text-sm text-gray-500">Penyelenggara Event</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                @endforeach
+            </div>
 
+            <!-- Right Column - Available Tickets -->
+            <div>
+                <div class="bg-white rounded-3xl p-8 shadow-xl animate-slideUp border border-blue-100">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="text-xl font-bold text-gray-900">Tiket Tersedia</h3>
+                        <svg class="w-8 h-8 text-blue-500" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="8" width="18" height="12" rx="2" stroke="currentColor" stroke-width="2" />
+                            <path d="M7 8V6C7 4.34315 8.34315 3 10 3H14C15.6569 3 17 4.34315 17 6V8"
+                                stroke="currentColor" stroke-width="2" />
+                            <circle cx="12" cy="14" r="2" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+
+                    <!-- Tickets List -->
+                    <div class="space-y-4 mb-8">
+                        @foreach ($tickets as $ticket)
+                        <div class="group p-6 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
+                            id="ticket-{{ $ticket->uuid }}">
+                            <div class="flex justify-between items-center">
+                                <div class="space-y-2">
+                                    <h4
+                                        class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                        {{ $ticket->ticket }}
+                                    </h4>
+                                    <p class="text-base text-gray-600">Rp {{ number_format($ticket->price, 0, ',', '.')
+                                        }}</p>
+                                </div>
+                                <div>
+                                    @if (!$ticket->is_empty)
+                                    <div class="text-right space-y-2">
+                                        <div
+                                            class="inline-flex items-center px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full">
+                                            <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none">
+                                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            <span class="font-semibold">Tersedia</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500">
+                                            Sisa {{ $ticket->qty_available }} tiket
+                                        </p>
+                                    </div>
+                                    @else
+                                    <div class="inline-flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-full">
+                                        <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none">
+                                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <span class="font-semibold">Habis</span>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Queue Status Cards -->
+                    <div class="border-t border-gray-100 pt-8">
+                        <h3 class="text-lg font-bold text-gray-900 mb-6">Status Antrian</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- Position Card -->
+                            <div class="bg-gray-50 rounded-3xl p-6 hover:bg-gray-100 transition-all duration-300">
+                                <div class="flex items-start justify-between mb-4">
+                                    <h3 class="text-lg font-bold text-gray-900">Posisi Antrian</h3>
+                                    <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="none">
+                                        <path
+                                            d="M17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z"
+                                            stroke="currentColor" stroke-width="2" />
+                                        <path d="M3 21C3 17.134 7.02944 14 12 14C16.9706 14 21 17.134 21 21"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div
+                                        class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center shadow-inner">
+                                        <span class="text-2xl font-bold text-blue-600" id="position">{{ $queue }}</span>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm text-gray-500">Dari Total Antrian</span>
+                                        <span class="text-xl font-bold text-gray-900" id="queue">{{ $total_queue ??
+                                            '---' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Time Card -->
+                            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <h3 class="text-lg font-bold text-white">Estimasi Waktu</h3>
+                                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                                        <path d="M12 7V12L15 15" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div
+                                        class="w-16 h-16 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+                                        <span class="text-2xl font-bold text-white" id="estimate">{{ $time }}</span>
+                                    </div>
+                                    <span class="text-xl font-semibold text-white">menit</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
 
+    <div class="">
+        @include('main.layouts.footer')
+    </div>
 </div>
+
+<style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    .animate-slideUp {
+        animation: slideUp 1s ease-out;
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function(e){
@@ -117,61 +275,83 @@
 
         Echo.private(`queue.${userUuid}`)
             .listen("QueueUpdated", (data) => {
-                console.log("Pembaruan antrian diterima:", data);
-                document.getElementById("position").innerText = `${data.position}`;
-                document.getElementById("estimate").innerText = `${data.estimate} menit`;
-                console.log(data.status);
+                const positionElement = document.getElementById("position");
+                const estimateElement = document.getElementById("estimate");
+                const queueElement = document.getElementById("queue");
+
+                if (positionElement) {
+                    positionElement.classList.add('animate-pulse');
+                    positionElement.innerText = data.position;
+                    setTimeout(() => positionElement.classList.remove('animate-pulse'), 1000);
+                }
+
+                if (estimateElement) {
+                    estimateElement.classList.add('animate-pulse');
+                    estimateElement.innerText = data.estimate;
+                    setTimeout(() => estimateElement.classList.remove('animate-pulse'), 1000);
+                }
+
+                if(queueElement){
+                    queueElement.classList.add('animate-pulse');
+                    queueElement.innerText = data.total_queue;
+                    setTimeout(() => queueElement.classList.remove('animate-pulse'), 1000);
+                }
+
                 if (data.status === 'in_progress') {
-                        window.location.href = "{{ route('ticket', ['event'=> $event->slug]) }}";
+                    window.location.href = "{{ route('ticket', ['event'=> $event->slug]) }}";
                 }
             });
 
-            Echo.channel('tickets.{{ $event->uuid }}')
-                .listen('TicketUpdated', (event) => {
-                    // Ambil data tiket dari event
-                    const ticket = event;
-                    console.log(event);
-                    // Update tampilan tiket
-                    const ticketElement = document.querySelector(`#ticket-${ticket.ticket_id}`);
-                    if (ticketElement) {
+        Echo.channel('tickets.{{ $event->uuid }}')
+            .listen('TicketUpdated', (event) => {
+                const ticket = event;
+                const ticketElement = document.querySelector(`#ticket-${ticket.ticket_id}`);
+                if (ticketElement) {
+                    ticketElement.classList.add('animate-pulse');
+                    setTimeout(() => ticketElement.classList.remove('animate-pulse'), 1000);
 
-                        const availableElement = ticketElement.querySelector('.available');
-                        const statusElement = ticketElement.querySelector('.status');
-
-                        if (ticket.is_empty) {
-                            statusElement.textContent = 'Sudah Habis';
-                            statusElement.classList.add('bg-red-600');
-                            statusElement.classList.remove('bg-emerald-600');
-                            availableElement.textContent = ``;
-                        } else {
-                            availableElement.textContent = `Sisa ${ticket.qty_available}`;
-                            statusElement.textContent = 'Masih tersedia';
-                            statusElement.classList.add('bg-emerald-600');
-                            statusElement.classList.remove('bg-red-600');
-                        }
-                    }
-                });
-
-            window.addEventListener('beforeunload', function (event) {
-                // Ambil UUID antrian dari data yang ada di halaman
-                const queueUuid = "{{ $qid }}";
-
-                // Kirim request untuk mengubah status antrian menjadi 'completed'
-                fetch(`/api/complete-queue-on-close/${queueUuid}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({ queueUuid: queueUuid })
-                }).then(response => {
-                    if (response.ok) {
-                        console.log('Status antrian berhasil diperbarui menjadi completed');
-                    }
-                }).catch(error => {
-                    console.error('Terjadi kesalahan saat memperbarui status:', error);
-                });
+                    updateTicketStatus(ticketElement, ticket);
+                }
             });
+
+        // window.addEventListener('beforeunload', function (event) {
+        //     const queueUuid = "{{ $qid }}";
+        //     fetch(`/api/complete-queue-on-close/${queueUuid}`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        //         },
+        //         body: JSON.stringify({ queueUuid: queueUuid })
+        //     });
+        // });
     });
+
+    function updateTicketStatus(element, ticket) {
+        const statusContainer = element.querySelector('[class*="inline-flex"]');
+        const quantityElement = element.querySelector('p.text-sm.text-gray-500');
+
+        if (ticket.is_empty) {
+            statusContainer.className = 'inline-flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-full';
+            statusContainer.innerHTML = `
+                <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="font-semibold">Habis</span>
+            `;
+            if (quantityElement) quantityElement.remove();
+        } else {
+            statusContainer.className = 'inline-flex items-center px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full';
+            statusContainer.innerHTML = `
+                <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="font-semibold">Tersedia</span>
+            `;
+            if (quantityElement) {
+                quantityElement.textContent = `Sisa ${ticket.qty_available} tiket`;
+            }
+        }
+    }
 </script>
 @endsection
