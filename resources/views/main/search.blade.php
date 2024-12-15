@@ -18,7 +18,7 @@
         <p class="text-gray-600 mt-2">Menampilkan {{ $events->count() }} event yang sesuai dengan pencarian Anda</p>
     </div>
 
-    <section class="mb-12">
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         @if($events->isEmpty())
         <div class="text-center py-16 bg-white rounded-2xl border border-gray-100 shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none"
@@ -76,7 +76,7 @@
 
     <!-- Pagination -->
     @if($events->hasPages())
-    <div class="flex justify-center">
+    <div class="flex justify-center mt-5">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
             {{ $events->links() }}
         </div>

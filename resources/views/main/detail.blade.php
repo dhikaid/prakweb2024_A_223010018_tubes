@@ -13,7 +13,8 @@
 
         <!-- Info Mobile -->
         <div class="detail-info block md:hidden bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
-            <h2 class="text-2xl font-bold mb-4 uppercase bg-gradient-to-r text-slate-800 bg-clip-text text-transparent">
+            <h2
+                class="text-2xl font-bold mb-4 uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 {{ $event->name }}
             </h2>
 

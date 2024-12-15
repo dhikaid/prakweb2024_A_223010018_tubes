@@ -2,10 +2,10 @@
 
 @section('content')
 
-<div class="flex flex-col min-h-screen">
+<div class="flex flex-col min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
     @include('main.layouts.navbar')
-    
-    <div class="container max-w-screen-xl mx-auto px-5 mt-28 flex-grow">
+
+    <div class="container max-w-screen-xl mx-auto px-5 mt-16 md:mt-28 flex-grow">
         @yield('main')
     </div>
 

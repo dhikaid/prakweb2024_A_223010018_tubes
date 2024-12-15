@@ -1,13 +1,19 @@
 @extends('main.layouts.main')
 @section('main')
 
-<div class="main max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Bagian Header Pencarian -->
     <div class="mb-8">
-        <h1 class="text-2xl sm:text-3xl font-bold">
-            HASIL PENCARIAN <span
-                class="bg-gradient-to-r from-blue-500 to-blue-400 bg-clip-text text-transparent uppercase">"{{ $query
-                }}"</span>
+        <h1 class="text-2xl sm:text-3xl font-bold flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            HASIL PENCARIAN
+            <span class="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent uppercase">
+                "{{ $query }}"
+            </span>
         </h1>
         <p class="text-gray-600 mt-2">Menemukan hasil pencarian yang sesuai dengan kata kunci Anda</p>
     </div>
@@ -79,7 +85,7 @@
                             class="font-bold text-gray-900 group-hover:text-blue-500 transition-colors duration-200 line-clamp-1 uppercase">
                             {{ $event->name }}
                         </h3>
-                        <p class="text-blue-500 font-medium mt-2">{{ $event->price_range }}</p>
+                        <p class="text-slate-700 font-medium mt-2">{{ $event->price_range }}</p>
 
                         <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-3">
                             <img src="{{ $event->creator->image }}"

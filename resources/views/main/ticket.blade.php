@@ -90,6 +90,8 @@
             <div class="mt-6">
                 <p class="text-sm text-gray-500">Mulai dari</p>
                 <p class="text-2xl font-bold text-blue-600">{{ $event->price_range }}</p>
+
+                @include('main.layouts.partials.cardbayar')
             </div>
         </div>
 
@@ -115,9 +117,9 @@
                 class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h3 class="text-xl font-bold uppercase mb-2">{{ $ticket->ticket }}</h3>
-                        <p class="text-2xl text-blue-600 font-bold mb-2">{{ $ticket->ticket_price }}</p>
-                        <p class="text-sm text-gray-500">*minimal pemesanan 1 tiket, maksimal 10 tiket</p>
+                        <h3 class="text-lg md:text-xl font-bold uppercase mb-2">{{ $ticket->ticket }}</h3>
+                        <p class="text-xl md:text-2xl text-blue-600 font-bold mb-2">{{ $ticket->ticket_price }}</p>
+                        <p class="text-xs md:text-sm text-gray-500">*minimal pemesanan 1 tiket, maksimal 10 tiket</p>
                     </div>
                     @auth
                     <form class="form" @submit.prevent="post('{{ $ticket->uuid }}')">

@@ -18,8 +18,8 @@
                 </div>
 
                 <div class="text-center md:text-left">
-                    <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                        {{ $user->username }}
+                    <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2 uppercase">
+                        {{ $user->fullname }}
                     </h1>
                     <p class="text-gray-600 mt-1">Event Organizer</p>
                 </div>
