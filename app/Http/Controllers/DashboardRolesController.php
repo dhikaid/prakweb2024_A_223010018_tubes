@@ -58,7 +58,7 @@ class DashboardRolesController extends Controller
     public function edit(Role $role)
     {
         return view('dashboard.roles.edit', [
-            'title' => 'Edit User',
+            'title' => 'Edit Roles',
             'role' => $role,
         ]);
     }
