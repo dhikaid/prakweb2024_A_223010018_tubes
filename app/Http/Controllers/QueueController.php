@@ -113,7 +113,10 @@ class QueueController extends Controller
         ];
         if (!Queue::where('event_uuid', $event->uuid)
             ->where('user_uuid', Auth::user()->uuid)->where('status', '!=', 'completed')->first()) {
-            Queue::create($data);
+            DB::transaction(function () use ($data) {
+                //
+                Queue::create($data);
+            });
         }
         // Kirim pembaruan posisi antrian secara real-time
         $this->sendQueueUpdate($event->uuid, Auth::user()->uuid);
