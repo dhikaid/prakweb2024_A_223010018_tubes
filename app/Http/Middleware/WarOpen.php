@@ -18,10 +18,10 @@ class WarOpen
     public function handle(Request $request, Closure $next): Response
     {
         $event = $request->route('event'); // Pastikan parameter 'event' ada di route
-        $queue = $event->queue->where('user_uuid', Auth::user()->uuid)->where('status', '!=', 'completed')->first();
-        $tenggatWaktu = Carbon::parse($event->queue_start)->timestamp;
 
-        if ($tenggatWaktu >= now()->timestamp) {
+        $open = Carbon::parse($event->queue_open)->timestamp;
+
+        if (now()->timestamp <= $open) {
             return redirect()->to('/event/' . $event->slug . '/war');
         }
 

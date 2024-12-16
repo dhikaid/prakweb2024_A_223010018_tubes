@@ -93,4 +93,11 @@ class Event extends Model
         $max = $this->tickets->max('price');
         return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
     }
+
+
+    public function getIsWarOpenAttribute()
+    {
+        $open = Carbon::parse($this->queue_open)->timestamp;
+        return now()->timestamp >= $open;
+    }
 }

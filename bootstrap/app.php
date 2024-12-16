@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\War;
+use App\Http\Middleware\WarOpen;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'war' => War::class,
             'queue' => Queue::class,
+            'waropen' => WarOpen::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

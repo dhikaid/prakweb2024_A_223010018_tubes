@@ -21,8 +21,9 @@ return new class extends Migration {
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->integer('capacity');
-            $table->boolean('is_tiket_war');
+            $table->boolean('is_tiket_war')->default(false);
             $table->integer('queue_limit')->nullable();
+            $table->dateTime('queue_open')->nullable();
             $table->timestamps();
         });
     }

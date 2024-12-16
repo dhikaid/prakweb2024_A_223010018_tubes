@@ -113,8 +113,8 @@ route::group(['middleware' => 'auth'], function () {
     Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
 
     Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware('war')->name('war');
-    Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware('war')->name('war');
-    Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware('queue')->name('queue');
+    Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware(['war', 'waropen'])->name('war');
+    Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen'])->name('queue');
     Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
     Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
     // LOGOUT

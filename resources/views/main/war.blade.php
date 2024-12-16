@@ -100,6 +100,9 @@
 
                 <!-- Action Button -->
                 <div class="mt-8">
+                    @if ($event->is_war_open)
+
+
                     <form action="{{ route('war', ['event' => $event->slug]) }}" method="POST">
                         @csrf
                         <button type="submit"
@@ -110,6 +113,28 @@
                             </div>
                         </button>
                     </form>
+
+                    @else
+                    <div class="" x-data="countdown('{{ $event->queue_open }}', false, true)" x-init="startCountdown()">
+                        >
+
+                        <button
+                            class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold px-6 py-4 rounded-xl shadow-lg shadow-blue-600/20 transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group">
+                            <span class="relative z-10 flex items-center gap-2 justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="size-6">
+                                    <path fill-rule="evenodd"
+                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span x-text="output"></span>
+                            </span>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000">
+                            </div>
+                        </button>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
