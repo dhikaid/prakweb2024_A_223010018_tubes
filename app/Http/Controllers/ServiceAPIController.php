@@ -24,10 +24,11 @@ class ServiceAPIController extends Controller
             // Request ke API ip-api
             $api = $client->request('GET', 'http://ip-api.com/json/' . $validatedData['ip']);
             $json = json_decode($api->getBody(), true);
-
-            $city = $client->request('GET', 'https://nominatim.openstreetmap.org/reverse?lat=' . $validatedData['lat'] . '&lon=' . $validatedData['long'] . '&format=json&accept-language=id', [
+            $apilokasi = 'https://nominatim.openstreetmap.org/reverse?lat=' . $validatedData['lat'] . '&lon=' . $validatedData['long'] . '&format=json&accept-language=id';
+            // dd($apilokasi);
+            $city = $client->request('GET', $apilokasi, [
                 'headers' => [
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+                    'User-Agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_7_6; like Mac OS X) AppleWebKit/600.11 (KHTML, like Gecko)  Chrome/53.0.1036.219 Mobile Safari/600.6'
                 ]
             ]);
             $json2 = json_decode($city->getBody(), true);
