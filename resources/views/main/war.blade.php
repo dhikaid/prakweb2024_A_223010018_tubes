@@ -116,7 +116,7 @@
 
                     @else
                     <div class="" x-data="countdown('{{ $event->queue_open }}', false, true)" x-init="startCountdown()">
-                        >
+
 
                         <button
                             class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold px-6 py-4 rounded-xl shadow-lg shadow-blue-600/20 transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group">
