@@ -190,14 +190,14 @@ class PaymentController extends Controller
         $tenggatWaktu = Carbon::parse($payment->tenggatWaktu)->timestamp;
         // dd($tenggatWaktu . " = " . now()->timestamp);
         if (now()->timestamp >= $tenggatWaktu) {
-            if ($payment->status !== 'failed') {
+            $payment->update([
+                'status' => 'failed'
+            ]);
+            $payment->booking->update([
+                'status' => 'failed'
+            ]);
+            if ($payment->status === 'failed') {
                 Transaction::cancel($payment->uuid);
-                $payment->update([
-                    'status' => 'failed'
-                ]);
-                $payment->booking->update([
-                    'status' => 'failed'
-                ]);
             }
         }
 
