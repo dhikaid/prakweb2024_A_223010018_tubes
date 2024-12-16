@@ -192,13 +192,13 @@ class PaymentController extends Controller
         if (now()->timestamp >= $tenggatWaktu) {
             if ($payment->status === 'pending') {
                 Transaction::cancel($payment->uuid);
+                $payment->update([
+                    'status' => 'failed'
+                ]);
+                $payment->booking->update([
+                    'status' => 'failed'
+                ]);
             }
-            $payment->update([
-                'status' => 'failed'
-            ]);
-            $payment->booking->update([
-                'status' => 'failed'
-            ]);
         }
 
         if ($payment->booking->event->is_tiket_war) {
