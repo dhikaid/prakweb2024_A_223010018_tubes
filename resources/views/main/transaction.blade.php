@@ -22,7 +22,7 @@
         <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
             <!-- Header Section -->
             <div
-                class="relative h-24 bg-gradient-to-r {{ $payment->status != 'pending' ? 'from-green-500 to-green-400' : 'from-red-500 to-red-400' }}">
+                class="relative h-24 bg-gradient-to-r {{ $payment->status === 'settlement' ? 'from-green-500 to-green-400' : 'from-red-500 to-red-400' }}">
                 <div class="absolute -bottom-10 inset-x-0 flex justify-center">
                     <div class="bg-white rounded-full p-3 shadow-md">
                         @if($payment->status == 'pending')
