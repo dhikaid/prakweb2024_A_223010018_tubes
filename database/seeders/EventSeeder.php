@@ -19,7 +19,7 @@ class EventSeeder extends Seeder
         Location::factory(10)->create();
 
         Event::create([
-            'slug' => fake()->slug(),
+            'slug' => 'roasting-by-rafli',
             'user_uuid' => User::inRandomOrder()->first()->uuid,
             'name' => 'Roasting by Rafli',
             'image' => 'tech_conference.jpg',
