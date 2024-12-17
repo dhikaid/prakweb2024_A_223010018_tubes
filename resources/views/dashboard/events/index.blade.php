@@ -48,51 +48,117 @@
                             <tr>
                                 <th scope="col"
                                     class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
+                                    No</th>
+
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
                                     <div class="flex items-center gap-x-2">
-                                        <span>Username</span>
+                                        <span>Name</span>
                                     </div>
                                 </th>
 
                                 <th scope="col"
                                     class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
-                                    Role</th>
+                                    Image</th>
 
                                 <th scope="col"
                                     class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
-                                    Action</th>
+                                    Description</th>
 
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
+                                    Start Date</th>
+
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
+                                    End Date</th>
+                                
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
+                                    Capacity</th>
+                                
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
+                                    Queue Limit</th>
+                                
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm uppercase text-left rtl:text-right text-black font-bold dark:text-gray-400">
+                                    Action</th>
+                                
+                                
                                 <th scope="col" class="relative py-3.5 px-4">
                                     <span class="sr-only">Edit</span>
                                 </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                            @foreach ($events as $event)
                             <tr>
-                                <td
-                                    class="px-4 py-4 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap lowercase">
-                                    <div class="flex items-center gap-2">
-                                        <img class="object-cover w-10 h-10 rounded-full" src="{{ $user->image }}"
-                                            alt="">
-                                        <div class="flex items-center gap-1">
-                                            <p class="line-clamp-1">{{ $user->username }}</p>
-                                            @if ($user->isVerified)
-                                            @include('layouts.partials.verified')
-                                            @endif
-                                        </div>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-2">
+                                        <p
+                                            class="px-3 py-1 text-xs rounded-full dark:bg-gray-800 ">
+                                            p
+                                        </p>
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div class="flex items-center gap-x-2">
                                         <p
-                                            class="px-3 py-1 text-xs {{ $user->role->role === 'Admin' ? 'text-red-500 bg-red-100/60' : 'text-indigo-500 bg-indigo-100/60' }}  rounded-full dark:bg-gray-800 ">
-                                            {{ $user->role->role }}
+                                            class="px-3 py-1 text-xs rounded-full dark:bg-gray-800 ">
+                                            p
+                                        </p>
+                                    </div>
+                                </td>
+                                <td
+                                    class="px-4 py-4 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap lowercase">
+                                    <div class="flex items-center gap-2">
+                                        <img class="object-cover w-10 h-10 rounded-full" src=""
+                                            alt="">
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-2">
+                                        <p
+                                            class="px-3 py-1 text-xs rounded-full dark:bg-gray-800 ">
+                                            p
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-2">
+                                        <p
+                                            class="px-3 py-1 text-xs rounded-full dark:bg-gray-800 ">
+                                            p
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-2">
+                                        <p
+                                            class="px-3 py-1 text-xs rounded-full dark:bg-gray-800 ">
+                                            p
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-2">
+                                        <p
+                                            class="px-3 py-1 text-xs rounded-full dark:bg-gray-800 ">
+                                            p
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-2">
+                                        <p
+                                            class="px-3 py-1 text-xs rounded-full dark:bg-gray-800 ">
+                                            p
                                         </p>
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div class="flex items-center gap-5">
-                                        <a href="users/{{ $user->uuid }}/edit"
+                                        <a href="p"
                                             class="text-gray-500 transition-colors duration-200 text-lime-400 dark:hover:text-lime-500 dark:text-gray-300 hover:text-lime-500 focus:outline-none inline-block">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -100,7 +166,7 @@
                                                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                             </svg>
                                         </a>
-                                        <form action="users/{{ $user->uuid }}" method="post" class=" flex items-center">
+                                        <form action="" method="post" class=" flex items-center">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -116,13 +182,8 @@
                                     </div>
                                 </td>
                             </tr>
-
-                            @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="my-4 flex justify-center items-center w-full">
-                    {{ $users->links() }}
                 </div>
             </div>
         </div>
