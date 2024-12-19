@@ -90,4 +90,20 @@ class Event extends Model
         $max = $this->tickets->max('price');
         return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
     }
+
+    protected $fillable = [
+    'uuid',
+    'slug',
+    'name',
+    'image',
+    'description',
+    'location_uuid',
+    'user_uuid',
+    'start_date',
+    'end_date',
+    'capacity',
+    'is_tiket_war',
+    'queue_limit',
+];
+
 }

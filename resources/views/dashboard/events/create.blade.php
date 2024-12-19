@@ -9,8 +9,8 @@
             @include('dashboard.layouts.partials.breadcumb',[$datas = ['Events', 'Create']])
             <div class="flex items-center gap-3 my-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
-                    <path
-                        d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+                <path 
+                d="M15 5V7M15 11V13M15 17V19M5 5C3.89543 5 3 5.89543 3 7V10C4.10457 10 5 10.8954 5 12C5 13.1046 4.10457 14 3 14V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V14C19.8954 14 19 13.1046 19 12C19 10.8954 19.8954 10 21 10V7C21 5.89543 20.1046 5 19 5H5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 <h1 class="text-2xl md:text-3xl uppercase font-bold">Create Event</h1>
             </div>
@@ -20,7 +20,7 @@
                 <div class="overflow-hidden md:rounded-lg">
                     <div class=" rounded-lg flex items-start justify-between">
                         <div class="w-full">
-                            <form class="space-y-5" method="POST" action="{{ route('dashboard.events.store') }}"
+                            <form class="space-y-5" method="POST" action="/dashboard/events"
                                 enctype="multipart/form-data" x-data="{ verified: false }">
                                 @csrf
                                 {{-- START FILE FORM --}}
@@ -49,153 +49,204 @@
                                     @error('image') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
                                 {{-- ENDFORM --}}
-                                {{-- START FULL NAME --}}
+                                {{-- START Event NAME --}}
                                 <div>
-                                    <label for="fullname"
-                                        class="block text-sm text-black font-semibold dark:text-gray-300">Fullname</label>
+                                    <label for="name"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">Event Name</label>
 
                                     <div class="relative flex items-center mt-2">
                                         <span class="absolute">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" />
-                                            </svg>
+                                                
+                                                <path d="M15 5V7M15 11V13M15 17V19M5 5C3.89543 5 3 5.89543 3 7V10C4.10457 10 5 10.8954 5 12C5 13.1046 4.10457 14 3 14V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V14C19.8954 14 19 13.1046 19 12C19 10.8954 19.8954 10 21 10V7C21 5.89543 20.1046 5 19 5H5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
                                         </span>
-                                        <input type="text" placeholder="Rafli Ramdhani"
+                                        <input type="text" placeholder="Music Festival"
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="fullname" required value="{{ old('fullname') }}">
+                                            name="name" required value="{{ old('name') }}">
                                     </div>
-                                    @error('fullname') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
+                                    @error('name') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
                                 {{-- ENDFORM --}}
-                                {{-- START USERNAME --}}
+                                {{-- START DESKRIPTION --}}
+                                <div class="mt-4">
+                                    <label for="description" class="block text-sm text-black font-semibold dark:text-gray-300">Deskription</label>
+
+                                    <textarea name="description" id="description" placeholder="Enter event description here"
+                                        class="block w-full py-2.5 pl-3 pr-3 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                        rows="4" required>{{ old('description') }}</textarea>
+                                        
+                                    @error('description') 
+                                        <p class="mt-3 text-xs text-red-400">{{ $message }}</p> 
+                                    @enderror
+                                </div>
+                                {{-- END Description --}}
+                                {{-- Start START DATE --}}
                                 <div>
-                                    <label for="username"
-                                        class="block text-sm text-black font-semibold dark:text-gray-300">Username</label>
+                                    <label for="start_date"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">Start Date</label>
 
                                     <div class="relative flex items-center mt-2">
                                         <span class="absolute">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
                                             </svg>
                                         </span>
-                                        <input type="text" placeholder="rafliramdhani1"
+                                        <input type="date" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="username" required value="{{ old('username') }}">
+                                            name="start_date" required value="{{ old('start_date') }}">
                                     </div>
-                                    @error('username') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
-                                    @enderror
+                                    @error('start_date') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
-                                {{-- ENDFORM --}}
-                                {{-- START ROLE --}}
+                                {{-- END START DATE --}}
+                                {{-- START END DATE --}}
                                 <div>
-                                    <label for="roles"
-                                        class="block text-sm text-black font-semibold dark:text-gray-300">Roles</label>
+                                    <label for="end_date"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">End Date</label>
 
-                                    <div class="relative flex items-center mt-2">
-                                        <select id="countries"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            name="role"
-                                            x-on:change="verified = $event.target.options[$event.target.selectedIndex].text === 'EO'"
-                                            required>
-                                            @foreach ($roles as $role)
-                                            <option value="{{ $role->uuid }}" {{ old('role')===$role->uuid ? 'selected'
-                                                : '' }}>
-                                                {{ $role->role }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-
-                                    </div>
-                                    @error('role') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                {{-- ENDFORM --}}
-                                {{-- START ROLE --}}
-                                <div x-show="verified">
-                                    <label for="roles"
-                                        class="block text-sm text-black font-semibold dark:text-gray-300">Verified</label>
-                                    <div class="relative flex items-center mt-2">
-                                        <select id="countries"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            name="isVerified">
-                                            <option value="false">Tidak</option>
-                                            <option value="true">Verified</option>
-                                        </select>
-                                    </div>
-                                    @error('isVerified') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                {{-- ENDFORM --}}
-                                {{-- START EMAIL --}}
-                                <div>
-                                    <label for="email"
-                                        class="block text-sm text-black font-semibold dark:text-gray-300">Email</label>
                                     <div class="relative flex items-center mt-2">
                                         <span class="absolute">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
                                             </svg>
+
                                         </span>
-                                        <input type="email" placeholder="rafliramdhani1@gmail.com"
+                                        <input type="date" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="email" required value="{{ old('email') }}">
+                                            name="end_date" required value="{{ old('end_date') }}">
                                     </div>
-                                    @error('email') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
-                                    @enderror
+                                    @error('end_date') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
-                                {{-- ENDFORM --}}
-                                {{-- START PASSWORD --}}
+                                {{-- END END DATE --}}
+                                {{-- START LOCATION --}}
                                 <div>
-                                    <label for="password"
-                                        class="block text-sm text-black font-semibold dark:text-gray-300">Password</label>
+                                    <label for="country"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">Country</label>
+
                                     <div class="relative flex items-center mt-2">
                                         <span class="absolute">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                             </svg>
                                         </span>
-                                        <input type="password" placeholder="***"
+                                        <input type="text" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="password" required>
+                                            name="country" required value="{{ old('country') }}">
                                     </div>
-                                    @error('password') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
-                                    @enderror
+                                    @error('country') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
-                                {{-- ENDFORM --}}
-                                {{-- START PASSWORD --}}
+
                                 <div>
-                                    <label for="password2"
-                                        class="block text-sm text-black font-semibold dark:text-gray-300">Konfirmasi
-                                        Password</label>
+                                    <label for="province"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">Province</label>
+
                                     <div class="relative flex items-center mt-2">
                                         <span class="absolute">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                             </svg>
                                         </span>
-                                        <input type="password" placeholder="***"
+                                        <input type="text" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="password2" required>
+                                            name="province" required value="{{ old('province') }}">
                                     </div>
+                                    @error('province') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
-                                {{-- ENDFORM --}}
 
+                                <div>
+                                    <label for="city"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">City</label>
+
+                                    <div class="relative flex items-center mt-2">
+                                        <span class="absolute">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor"
+                                                class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" 
+                                            class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                            name="city" required value="{{ old('city') }}">
+                                    </div>
+                                    @error('city') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
+                                </div>
+
+                                <div>
+                                    <label for="venue"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">Venue</label>
+
+                                    <div class="relative flex items-center mt-2">
+                                        <span class="absolute">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor"
+                                                class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" 
+                                            class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                            name="venue" required value="{{ old('venue') }}">
+                                    </div>
+                                    @error('venue') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
+                                </div>
+
+                                {{-- START CAPACITY --}}
+                                <div>
+                                    <label for="capacity"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">Capacity</label>
+
+                                    <div class="relative flex items-center mt-2">
+                                        <span class="absolute">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 17C10.34 17 9 15.66 9 14H15C15 15.66 13.66 17 12 17ZM12 7C9.79 7 8 8.79 8 11H16C16 8.79 14.21 7 12 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                        </span>
+                                        <input type="number" 
+                                            class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                            name="capacity" required value="{{ old('capacity') }}" min="1">
+                                    </div>
+                                    @error('capacity') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
+                                </div>
+                                {{-- END CAPACITY --}}
+                                {{-- START QUEUE LIMIT --}}
+                                <div>
+                                    <label for="queue_limit"
+                                        class="block text-sm text-black font-semibold dark:text-gray-300">Queue Limit</label>
+
+                                    <div class="relative flex items-center mt-2">
+                                        <span class="absolute">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-3 text-gray-400 dark:text-gray-500">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 17C10.34 17 9 15.66 9 14H15C15 15.66 13.66 17 12 17ZM12 7C9.79 7 8 8.79 8 11H16C16 8.79 14.21 7 12 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                        </span>
+                                        <input type="number" 
+                                            class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                            name="queue_limit" required value="{{ old('queue_limit') }}" min="1">
+                                    </div>
+                                    @error('queue_limit') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
+                                </div>
+                                {{-- END QUEUE LIMIT --}}
+                                
+
+
+                                
                                 <button
                                     class="flex items-center px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

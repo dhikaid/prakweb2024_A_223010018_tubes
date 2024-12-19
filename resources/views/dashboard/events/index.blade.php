@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="flex justify-start">
-            <a href="users/create"
+            <a href="events/create"
                 class="px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-indigo-500 hover:bg-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80 mb-3 text-sm inline-block rounded-lg">
                 <div class="flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

@@ -122,4 +122,8 @@ Route::get('/{location}', [HomeController::class, 'index'])->name('home.location
 
 Route::resource('dashboard/users', DashboardUsersController::class)->middleware('auth');
 Route::resource('dashboard/roles', DashboardRolesController::class)->middleware('auth');
-Route::resource('dashboard/events', DashboardEventsController::class)->middleware('auth');
+// Route::resource('dashboard/events', DashboardEventsController::class)->middleware('auth');
+
+Route::prefix('dashboard')->middleware(['auth'])->group(function () {
+    Route::resource('events', DashboardEventsController::class);
+});
