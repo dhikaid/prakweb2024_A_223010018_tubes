@@ -6,7 +6,7 @@
 <section class="events">
     <div class="flex flex-col">
         <div class="info my-4">
-            @include('dashboard.layouts.partials.breadcumb',[$datas = ['Events', 'Create']])
+            @include('dashboard.layouts.partials.breadcumb',[$datas = ['Events', 'Edit']])
             <div class="flex items-center gap-3 my-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                 <path 
@@ -74,7 +74,7 @@
                                         </span>
                                         <input type="text" placeholder="Music Festival"
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="name" required value="{{ old('name'), $event->name }}">
+                                            name="name" required value="{{ old('name', $event->name )}}">
                                     </div>
                                     @error('name') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -85,7 +85,7 @@
 
                                     <textarea name="description" id="description" placeholder="Enter event description here"
                                         class="block w-full py-2.5 pl-3 pr-3 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                        rows="4" required>{{ old('description'), $event->description }}</textarea>
+                                        rows="4" required>{{ old('description', $event->description) }}</textarea>
                                         
                                     @error('description') 
                                         <p class="mt-3 text-xs text-red-400">{{ $message }}</p> 
@@ -107,7 +107,7 @@
                                         </span>
                                         <input type="date" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="start_date" required value="{{ old('start_date'), $event->start_date }}">
+                                            name="start_date" required value="{{ old('start_date', $event->start_date) }}">
                                     </div>
                                     @error('start_date') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -128,7 +128,7 @@
                                         </span>
                                         <input type="date" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="end_date" required value="{{ old('end_date'), $event->end_date }}">
+                                            name="end_date" required value="{{ old('end_date', $event->end_date) }}">
                                     </div>
                                     @error('end_date') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -149,7 +149,7 @@
                                         </span>
                                         <input type="text" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="country" required value="{{ old('country'), $event->country }}">
+                                            name="country" required value="{{ old('country', $event->locations->country) }}">
                                     </div>
                                     @error('country') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -169,7 +169,7 @@
                                         </span>
                                         <input type="text" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="province" required value="{{ old('province'), $event->province }}">
+                                            name="province" required value="{{ old('province', $event->locations->province) }}">
                                     </div>
                                     @error('province') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -189,7 +189,7 @@
                                         </span>
                                         <input type="text" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="city" required value="{{ old('city'), $event->city }}">
+                                            name="city" required value="{{ old('city', $event->locations->city) }}">
                                     </div>
                                     @error('city') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -209,7 +209,7 @@
                                         </span>
                                         <input type="text" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="venue" required value="{{ old('venue'), $event->venue }}">
+                                            name="venue" required value="{{ old('venue', $event->locations->venue) }}">
                                     </div>
                                     @error('venue') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -228,7 +228,7 @@
                                         </span>
                                         <input type="number" 
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                            name="capacity" required value="{{ old('capacity'), $event->capacity }}" min="1">
+                                            name="capacity" required value="{{ old('capacity', $event->capacity) }}" min="1">
                                     </div>
                                     @error('capacity') <p class="mt-3 text-xs text-red-400">{{ $message }}</p> @enderror
                                 </div>
@@ -263,7 +263,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
-                                    <span class="mx-1">Create</span>
+                                    <span class="mx-1">Update Event</span>
                                 </button>
                             </form>
                         </div>

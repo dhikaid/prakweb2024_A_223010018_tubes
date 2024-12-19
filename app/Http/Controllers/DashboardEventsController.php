@@ -6,6 +6,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use function Ramsey\Uuid\v1;
+use Carbon\Carbon;
 
 class DashboardEventsController extends Controller
 {
@@ -87,6 +88,12 @@ class DashboardEventsController extends Controller
      */
     public function edit(Event $event)
     {
+        // Memformat start_date ke format 'Y-m-d'
+        $event->start_date = Carbon::parse($event->start_date)->format('Y-m-d');
+
+        // Memformat end_date ke format 'Y-m-d'
+        $event->end_date = Carbon::parse($event->end_date)->format('Y-m-d');
+
         $data = [
             'title' => 'Edit Events',
             'event' => $event,
@@ -102,8 +109,8 @@ class DashboardEventsController extends Controller
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable|string',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'string',
             'location_uuid' => 'required|uuid',
             'user_uuid' => 'required|uuid',
             'start_date' => 'required|date',
@@ -120,11 +127,6 @@ class DashboardEventsController extends Controller
             $validasiData['image'] = $request->file('image')->store('events/images', 'public');
         } else {
             unset($validasiData['image']);
-        }
-
-        // Handle 
-        if (empty($validasiData['description'])) {
-            $validasiData['description'] = $event->description;
         }
 
         $event->update($validasiData);
