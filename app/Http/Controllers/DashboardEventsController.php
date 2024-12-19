@@ -88,11 +88,11 @@ class DashboardEventsController extends Controller
     public function edit(Event $event)
     {
         $data = [
-            'title' => 'Dashboard Events',
+            'title' => 'Edit Events',
             'event' => $event,
         ];
 
-        return view('dashboard.events.index', $data);
+        return view('dashboard.events.edit', $data);
     }
 
     /**
