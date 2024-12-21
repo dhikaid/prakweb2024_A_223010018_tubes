@@ -52,5 +52,12 @@ class AppServiceProvider extends ServiceProvider
             $queue = $event->queue->where('user_uuid', $user->uuid)->first();
             return $event->is_tiket_war && $queue && ($queue->status === 'pending' && $queue->status !== 'in_progress');
         });
+
+        Gate::define('isMyEvent', function (User $user, Event $event) {
+            if ($user->role->role === "Admin" || ($user->role->role === "EO" && $event->user_uuid === $user->uuid)) {
+                return true;
+            }
+            return false;
+        });
     }
 }

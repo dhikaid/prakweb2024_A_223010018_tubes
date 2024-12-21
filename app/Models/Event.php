@@ -81,8 +81,33 @@ class Event extends Model
         if (Carbon::parse($this->start_date)->format($format) === Carbon::parse($this->end_date)->format($format)) {
             return Carbon::parse($this->start_date)->format($format);
         } else {
-            return Carbon::parse($this->start_date)->format($format) . '- ' . Carbon::parse($this->end_date)->format($format);
+            return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
         }
+    }
+
+    public function getDurationWithTimeAttribute()
+    {
+        $format = "d M Y h:i";
+        if (Carbon::parse($this->start_date)->format($format) === Carbon::parse($this->end_date)->format($format)) {
+            return Carbon::parse($this->start_date)->format($format);
+        } else {
+            return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
+        }
+    }
+
+    public function getStartTimeAttribute()
+    {
+        return Carbon::parse($this->start_date)->format('Y-m-d\TH:i');
+    }
+    public function getEndTimeAttribute()
+    {
+
+        return Carbon::parse($this->end_date)->format('Y-m-d\TH:i');
+    }
+    public function getStartWarTimeAttribute()
+    {
+
+        return Carbon::parse($this->queue_open)->format('Y-m-d\TH:i');
     }
 
     // return low price to high price format 10-100
@@ -92,12 +117,5 @@ class Event extends Model
         $min = $this->tickets->min('price');
         $max = $this->tickets->max('price');
         return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
-    }
-
-
-    public function getIsWarOpenAttribute()
-    {
-        $open = Carbon::parse($this->queue_open)->timestamp;
-        return now()->timestamp >= $open;
     }
 }

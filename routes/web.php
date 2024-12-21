@@ -3,6 +3,7 @@
 use App\Events\Test;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
@@ -55,13 +56,7 @@ Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 //     $event->where('title', 'like', '%' . request('search') . '%');
 // }
 
-// DASHBOARD
-Route::get('/dashboard', function () {
-    $data = [
-        'title' => 'Dashboard',
-    ];
-    return view('dashboard.index', $data);
-});
+
 
 // ROUTE DETAIL
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
@@ -123,13 +118,23 @@ route::group(['middleware' => 'auth'], function () {
 
 // ROUTE EVENT DETAILS
 Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
-// Route::get('/main/event-details/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
 
 //ROUTE HOME
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
 
+Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index']);
 
+    Route::middleware('isAdmin')->group(function () {
+        Route::resource('users', DashboardUsersController::class);
+        Route::resource('roles', DashboardRolesController::class);
+    });
 
-Route::resource('dashboard/users', DashboardUsersController::class)->middleware('auth');
-Route::resource('dashboard/roles', DashboardRolesController::class)->middleware('auth');
+    Route::resource('events', DashboardEventsController::class);
+    Route::get('events/{event:uuid}/tickets/create', [DashboardEventsController::class, 'showCreateTicket']);
+    Route::post('events/{event:uuid}/tickets', [DashboardEventsController::class, 'createTicket']);
+    Route::get('events/{event:uuid}/tickets/{ticket:uuid}/edit', [DashboardEventsController::class, 'showEditTicket']);
+    Route::put('events/{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'editTicket']);
+    Route::delete('events/{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'deleteTicket']);
+});

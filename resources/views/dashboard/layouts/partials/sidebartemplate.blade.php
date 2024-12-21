@@ -25,14 +25,14 @@
         <nav>
             <a class="flex items-center px-4 py-2 {{ Request::is('dashboard') ? 'text-white bg-indigo-500 hover:bg-indigo-700' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-700' }} transition-colors duration-300 transform rounded-md"
                 href="/dashboard">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                 </svg>
                 <span class="mx-4 font-medium">Dashboard</span>
             </a>
-
+            @can('isAdmin')
             <a class="flex items-center px-4 py-2 mt-5 {{ Request::is('dashboard/users*') ? 'text-white bg-indigo-500 hover:bg-indigo-700' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-700' }} transition-colors duration-300 transform rounded-md "
                 href="/dashboard/users">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,7 +57,7 @@
 
                 <span class="mx-4 font-medium">Roles</span>
             </a>
-
+            @endcan
             <a class="flex items-center px-4 py-2 mt-5 {{ Request::is('dashboard/events*') ? 'text-white bg-indigo-500 hover:bg-indigo-700' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-700' }} transition-colors duration-300 transform rounded-md"
                 href="/dashboard/events">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -15,10 +15,10 @@
                 <h1 class="text-2xl md:text-3xl uppercase font-bold">Users</h1>
             </div>
         </div>
-        <div class="flex justify-start">
+        <div class="md:flex justify-start items-center mb-4 gap-2">
             <a href="users/create"
-                class="px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-indigo-500 hover:bg-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80 mb-3 text-sm inline-block rounded-lg">
-                <div class="flex items-center gap-1">
+                class="mb-3 md:m-0 w-full md:w-auto text-center h-full px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-indigo-500 hover:bg-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80 text-sm inline-block rounded-lg">
+                <div class="flex items-center gap-1 justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -27,6 +27,21 @@
                     <p>Create</p>
                 </div>
             </a>
+
+            <form method="GET" action='/dashboard/users' class="relative flex items-center">
+                <input type="text" placeholder="Cari user" name="query"
+                    class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-3 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    required>
+                <button type="submit" class="bg-blue-500 p-2 rounded-lg me-2 absolute right-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        class="size-5 text-white">
+                        <path fill-rule="evenodd"
+                            d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </form>
+
         </div>
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">

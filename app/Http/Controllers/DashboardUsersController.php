@@ -12,15 +12,18 @@ class DashboardUsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->only(['query']);
+
         $data = [
             'title' => 'Dashboard Users',
-            'users' => User::with('role')->paginate(5), // Ambil semua data user
+            'users' => User::with('role')->filter($filters)->paginate(5)->appends($filters),
         ];
 
         return view('dashboard.users.index', $data);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -99,6 +102,7 @@ class DashboardUsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
+
         $rules = [
             'username' => 'required|min:3|max:100',
             'fullname' => 'required|max:255',
