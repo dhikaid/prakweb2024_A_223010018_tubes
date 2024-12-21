@@ -78,8 +78,33 @@ class Event extends Model
         if (Carbon::parse($this->start_date)->format($format) === Carbon::parse($this->end_date)->format($format)) {
             return Carbon::parse($this->start_date)->format($format);
         } else {
-            return Carbon::parse($this->start_date)->format($format) . '- ' . Carbon::parse($this->end_date)->format($format);
+            return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
         }
+    }
+
+    public function getDurationWithTimeAttribute()
+    {
+        $format = "d M Y h:i";
+        if (Carbon::parse($this->start_date)->format($format) === Carbon::parse($this->end_date)->format($format)) {
+            return Carbon::parse($this->start_date)->format($format);
+        } else {
+            return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
+        }
+    }
+
+    public function getStartTimeAttribute()
+    {
+        return Carbon::parse($this->start_date)->format('Y-m-d\TH:i');
+    }
+    public function getEndTimeAttribute()
+    {
+
+        return Carbon::parse($this->end_date)->format('Y-m-d\TH:i');
+    }
+    public function getStartWarTimeAttribute()
+    {
+
+        return Carbon::parse($this->queue_open)->format('Y-m-d\TH:i');
     }
 
     // return low price to high price format 10-100
@@ -92,18 +117,17 @@ class Event extends Model
     }
 
     protected $fillable = [
-    'uuid',
-    'slug',
-    'name',
-    'image',
-    'description',
-    'location_uuid',
-    'user_uuid',
-    'start_date',
-    'end_date',
-    'capacity',
-    'is_tiket_war',
-    'queue_limit',
-];
-
+        'uuid',
+        'slug',
+        'name',
+        'image',
+        'description',
+        'location_uuid',
+        'user_uuid',
+        'start_date',
+        'end_date',
+        'capacity',
+        'is_tiket_war',
+        'queue_limit',
+    ];
 }

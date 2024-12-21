@@ -39,5 +39,12 @@ class AppServiceProvider extends ServiceProvider
             $payment->load(['booking']);
             return $user->uuid === $payment->booking->user_uuid;
         });
+
+        Gate::define('isMyEvent', function (User $user, Event $event) {
+            if ($user->role->role === "Admin" || ($user->role->role === "EO" && $event->user_uuid === $user->uuid)) {
+                return true;
+            }
+            return false;
+        });
     }
 }

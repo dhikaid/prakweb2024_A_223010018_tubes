@@ -2,22 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Event;
-use Illuminate\Http\Request;
+use App\Models\Location;
+use App\Models\Ticket;
 use Illuminate\Support\Str;
 use function Ramsey\Uuid\v1;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class DashboardEventsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->only(['query']);
+        $events = Event::where('user_uuid', Auth::user()->uuid)->filter($filters)->paginate(10)->appends($filters);
+        if (Auth::user()->role->role === 'Admin') {
+            $events = Event::filter($filters)->paginate(10)->appends($filters);
+        }
+
         $data = [
             'title' => 'Dashboard Events',
-            'events' => Event::paginate(5),
+            'events' => $events,
         ];
 
         return view('dashboard.events.index', $data);
@@ -41,38 +52,52 @@ class DashboardEventsController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable|string',
-            'location_uuid' => 'required|uuid',
-            'user_uuid' => 'required|uuid',
+            'image' => 'required|image|max:2048',
+            'description' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'capacity' => 'required|integer|min:1',
-            'is_tiket_war' => 'required|boolean',
-            'queue_limit' => 'required|integer|min:0',
+            'is_tiket_war' => 'nullable|boolean',
+            'queue_limit' => 'nullable|integer|min:1',
+            'queue_open' => 'nullable|date|before_or_equal:start_date',
+            'country' => 'required|string',
+            'province' => 'required|string',
+            'city' => 'required|string',
+            'venue' => 'required|string',
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('events/images', 'public');
+        if ($request->file('image')) {
+            $imagePath = $request->file('image')->store('events/images');
         }
 
-        $event = Event::create([
-            'uuid' => Str::uuid(),
-            'slug' => Str::slug($request->name . '-' . now()->timestamp),
-            'name' => $request->name,
-            'image' => $imagePath,
-            'description' => $request->description,
-            'location_uuid' => $request->location_uuid,
-            'user_uuid' => $request->user_uuid,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'capacity' => $request->capacity,
-            'is_tiket_war' => $request->is_tiket_war,
-            'queue_limit' => $request->queue_limit,
-        ]);
+        DB::transaction(function () use ($request, $imagePath) {
 
-        return redirect()->route('dashboard.events.index')->with('success', 'Event berhasil di buat.');
+            $location =  Location::create([
+                'country' => strtoupper($request->country),
+                'province' => strtoupper($request->province),
+                'city' => strtoupper($request->city),
+                'venue' => strtoupper($request->venue),
+            ]);
+
+            Event::create([
+                'uuid' => Str::uuid(),
+                'slug' => Str::slug($request->name . '-' . now()->timestamp),
+                'name' => strtoupper($request->name),
+                'image' => $imagePath,
+                'description' => $request->description,
+                'location_uuid' => $location->uuid,
+                'user_uuid' => Auth::user()->uuid,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'capacity' => $request->capacity,
+                'is_tiket_war' => $request->is_tiket_war,
+                'queue_limit' => $request->queue_limit,
+            ]);
+        });
+
+
+
+        return redirect()->route('events.index')->with('success', 'Event berhasil di buat.');
     }
 
     /**
@@ -80,19 +105,107 @@ class DashboardEventsController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
+
+        $data = [
+            'title' => 'Tickets Event: ' . $event->name,
+            'event' => $event,
+        ];
+
+        return view('dashboard.events.ticket', $data);
     }
+
+
+    public function showCreateTicket(Event $event)
+    {
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
+
+        $data = [
+            'title' => 'Tambah Tiket: ' . $event->name,
+            'event' => $event,
+        ];
+
+        return view('dashboard.events.createticket', $data);
+    }
+
+    public function createTicket(Event $event, Request $request)
+    {
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
+
+        $validatedData = $request->validate([
+            'ticket' => 'required|string',
+            'qty' => 'required|min:1|integer',
+            'price' => 'required|min:1|integer',
+        ]);
+
+        Ticket::create([
+            'uuid' => Str::uuid(),
+            'event_uuid' => $event->uuid,
+            'ticket' => $validatedData['ticket'],
+            'qty' => $validatedData['qty'],
+            'price' => $validatedData['price'],
+        ]);
+
+        return redirect()->to("/dashboard/events/$event->uuid")->with('success', 'Tiket berhasil ditambahkan.');
+    }
+
+
+    public function showEditTicket(Event $event, Ticket $ticket, Request $request)
+    {
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
+
+        $data = [
+            'title' => 'Tambah Tiket: ' . $event->name,
+            'event' => $event,
+            'ticket' => $ticket
+        ];
+
+        return view('dashboard.events.editticket', $data);
+    }
+    public function editTicket(Event $event, Ticket $ticket, Request $request)
+    {
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
+
+        $validatedData = $request->validate([
+            'ticket' => 'required|string',
+            'qty' => 'required|min:1|integer',
+            'price' => 'required|min:1|integer',
+        ]);
+
+        return redirect()->to("/dashboard/events/$event->uuid")->with('success', 'Tiket berhasil diedit.');
+    }
+
+    public function deleteTicket(Event $event, Ticket $ticket, Request $request)
+    {
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
+
+        $ticket->delete();
+
+        return redirect()->to("/dashboard/events/$event->uuid")->with('success', 'Event berhasil di hapus.');
+    }
+
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Event $event)
     {
-        // Memformat start_date ke format 'Y-m-d'
-        $event->start_date = Carbon::parse($event->start_date)->format('Y-m-d');
-
-        // Memformat end_date ke format 'Y-m-d'
-        $event->end_date = Carbon::parse($event->end_date)->format('Y-m-d');
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
 
         $data = [
             'title' => 'Edit Events',
@@ -107,29 +220,54 @@ class DashboardEventsController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        $rules = [
+
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
+        $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'string',
-            'location_uuid' => 'required|uuid',
-            'user_uuid' => 'required|uuid',
+            'image' => 'nullable|image|max:2048', // Nullable untuk gambar jika tidak diunggah
+            'description' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'capacity' => 'required|integer|min:1',
-            'is_tiket_war' => 'required|boolean',
-            'queue_limit' => 'required|integer|min:0',
-        ];
+            'is_tiket_war' => 'nullable|boolean',
+            'queue_limit' => 'nullable|integer|min:1',
+            'queue_open' => 'nullable|date|before_or_equal:start_date',
+            'country' => 'required|string',
+            'province' => 'required|string',
+            'city' => 'required|string',
+            'venue' => 'required|string',
+        ]);
 
-        $validasiData = $request->validate($rules);
-
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $validasiData['image'] = $request->file('image')->store('events/images', 'public');
+        // Jika gambar baru diunggah, simpan gambar baru, jika tidak gunakan gambar lama
+        if ($request->file('image')) {
+            $imagePath = $request->file('image')->store('events/images');
         } else {
-            unset($validasiData['image']);
+            $imagePath = $event->image; // Gunakan gambar lama
         }
 
-        $event->update($validasiData);
+        DB::transaction(function () use ($request, $event, $imagePath) {
+            // Update lokasi
+            $event->locations->update([
+                'country' => strtoupper($request->country),
+                'province' => strtoupper($request->province),
+                'city' => strtoupper($request->city),
+                'venue' => strtoupper($request->venue),
+            ]);
+
+            // Update event
+            $event->update([
+                'name' => strtoupper($request->name),
+                'image' => $imagePath,
+                'description' => $request->description,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'capacity' => $request->capacity,
+                'is_tiket_war' => $request->is_tiket_war,
+                'queue_limit' => $request->queue_limit,
+            ]);
+        });
 
         return redirect()->route('events.index')->with('success', 'Event berhasil diperbarui.');
     }
@@ -139,8 +277,12 @@ class DashboardEventsController extends Controller
      */
     public function destroy(Event $event)
     {
+
+        if (!Gate::allows('isMyEvent', $event)) {
+            abort(403, 'Event ini bukan milik anda');
+        }
         $event->delete();
 
-        return redirect()->route('dashboard.events.index')->with('success', 'Event berhasil di hapus.');
+        return redirect()->route('events.index')->with('success', 'Event berhasil di hapus.');
     }
 }

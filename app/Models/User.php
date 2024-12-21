@@ -76,6 +76,11 @@ class User extends Authenticatable
         return asset('storage/' . $value);
     }
 
-    // scope untuk mennampilkan roles EO saja
-
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['query'] ?? false, function ($query, $search) {
+            return $query->where('username', 'like', '%' . $search . '%')
+                ->orWhere('fullname', 'like', '%' . $search . '%');
+        });
+    }
 }

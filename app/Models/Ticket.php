@@ -46,6 +46,12 @@ class Ticket extends Model
         return ($this->getQtyAvailableAttribute()) === 0;
     }
 
+    public function getPriceNumberAttribute()
+    {
+        return rtrim(rtrim($this->price, '0'), '.'); // Menghapus nol di belakang dan titik desimal jika ada
+    }
+
+
     // order by min price to highest price
     public function scopeMinPrice($query)
     {
