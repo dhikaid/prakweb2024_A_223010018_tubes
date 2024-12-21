@@ -7,8 +7,7 @@
         <!-- Hero Image -->
         <div class="rounded-2xl overflow-hidden mb-6 group">
             <img class="w-full h-[400px] object-cover transform transition-transform duration-500 group-hover:scale-105 shadow-lg"
-                src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
-                alt="{{ $event->name }}">
+                src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->name }}">
         </div>
 
         <!-- Info Mobile -->

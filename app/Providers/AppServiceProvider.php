@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('access-tiket-war', function ($user, $event) {
             $event->load('queue');
-            $queue = $event->queue->where('user_uuid', $user->uuid)->first();
+            $queue = $event->queue->where('user_uuid', $user->uuid)->where('status', '!=', 'completed')->first();
             return $event->is_tiket_war && $queue && $queue->status === 'in_progress';
         });
 
@@ -51,6 +51,13 @@ class AppServiceProvider extends ServiceProvider
             $event->load('queue');
             $queue = $event->queue->where('user_uuid', $user->uuid)->first();
             return $event->is_tiket_war && $queue && ($queue->status === 'pending' && $queue->status !== 'in_progress');
+        });
+
+        Gate::define('isEoAdmin', function (User $user) {
+            if ($user->role->role === 'Admin' || $user->role->role === 'EO') {
+                return true;
+            }
+            return false;
         });
 
         Gate::define('isMyEvent', function (User $user, Event $event) {

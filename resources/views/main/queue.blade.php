@@ -61,7 +61,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">Waktu Event</p>
-                            <p class="font-semibold text-gray-900">09:00 - 15:00 WIB</p>
+                            <p class="font-semibold text-gray-900">{{ $event->range_duration }} WIB</p>
                         </div>
                     </div>
 

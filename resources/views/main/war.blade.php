@@ -58,7 +58,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">Waktu Pelaksanaan</p>
-                            <p class="font-semibold text-gray-900">09:00 - 15:00 WIB</p>
+                            <p class="font-semibold text-gray-900">{{ $event->range_duration }} WIB</p>
                         </div>
                     </div>
 
@@ -101,8 +101,6 @@
                 <!-- Action Button -->
                 <div class="mt-8">
                     @if ($event->is_war_open)
-
-
                     <form action="{{ route('war', ['event' => $event->slug]) }}" method="POST">
                         @csrf
                         <button type="submit"
@@ -116,8 +114,6 @@
 
                     @else
                     <div class="" x-data="countdown('{{ $event->queue_open }}', false, true)" x-init="startCountdown()">
-
-
                         <button
                             class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold px-6 py-4 rounded-xl shadow-lg shadow-blue-600/20 transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group">
                             <span class="relative z-10 flex items-center gap-2 justify-center">

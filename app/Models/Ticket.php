@@ -31,26 +31,32 @@ class Ticket extends Model
 
     public function getQtyAvailableAttribute()
     {
-        // Get all booking details with their associated bookings
+        // Ambil semua booking detail beserta relasi booking
         $bookingDetails = $this->bookingDetail()->with('booking')->get();
+        $duration = ceil(env('WAR_TICKET_DURATION', 60) / 2);
 
-        // Filter valid bookings: status not 'failed' and created_at less than 10 minutes ago
-        $totalBookedQty = $bookingDetails->filter(function ($bookingDetail) {
-            $isValidStatus = $bookingDetail->booking && $bookingDetail->booking->status !== 'failed';
-            $isWithin10Minutes = $bookingDetail->created_at->greaterThan(now()->subMinutes(1));
-            return $isValidStatus && $isWithin10Minutes;
-        })->sum('qty');
+        $totalBookedQty = 0;
 
-        // Calculate the available quantity
+        foreach ($bookingDetails as $bookingDetail) {
+            $status = $bookingDetail->booking->status ?? null;
+
+            if ($status === 'settlement') {
+                // Tambahkan jumlah jika status adalah settlement
+                $totalBookedQty += $bookingDetail->qty;
+            } elseif ($status === 'pending') {
+                // Tambahkan jumlah jika pending dan masih dalam durasi 10 menit
+                if ($bookingDetail->created_at->greaterThan(now()->subSeconds($duration))) {
+                    $totalBookedQty += $bookingDetail->qty;
+                }
+            }
+        }
+
+        // Hitung jumlah tersedia
         $result = $this->qty - $totalBookedQty;
 
-        if ($result < 0) {
-            $result = 0;
-        }
-        return $result;
+        // Pastikan hasil tidak kurang dari 0
+        return max($result, 0);
     }
-
-
 
     // if ticket is empty
     public function getIsEmptyAttribute()

@@ -88,7 +88,7 @@
                     <a href="/event/{{ $event->slug }}"
                         class="group block w-80 overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                         <div class="relative overflow-hidden">
-                            <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
+                            <img src="{{ asset('storage/'.$event->image) }}"
                                 class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                                 alt="{{ $event->name }}">
                         </div>
@@ -145,7 +145,7 @@
                     <a href="/event/{{ $event->slug }}"
                         class="group block w-80 overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                         <div class="relative overflow-hidden">
-                            <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
+                            <img src="{{ asset('storage/'.$event->image) }}"
                                 class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                                 alt="{{ $event->name }}">
                         </div>

@@ -21,8 +21,11 @@ use Illuminate\Validation\ValidationException;
 
 class PaymentController extends Controller
 {
+
+    private $addTime;
     public function __construct()
     {
+        $this->addTime = ceil(env('WAR_TICKET_DURATION', 60) / 60);
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = config('midtrans.is_sanitized');
@@ -188,7 +191,6 @@ class PaymentController extends Controller
         }
         // Pastikan tenggatWaktu adalah instance Carbon
         $tenggatWaktu = Carbon::parse($payment->tenggatWaktu)->timestamp;
-        // dd($tenggatWaktu . " = " . now()->timestamp);
         if (now()->timestamp >= $tenggatWaktu) {
             if ($payment->status === 'pending') {
                 Transaction::cancel($payment->uuid);
@@ -203,10 +205,12 @@ class PaymentController extends Controller
 
         if ($payment->booking->event->is_tiket_war) {
             if ($payment->status !== 'pending') {
-                $qid = Queue::where('user_uuid', Auth::user()->uuid)->where('event_uuid', $payment->booking->event->uuid)->first();
-                $this->completeQueue($qid->uuid, $payment->booking->event->uuid);
-                foreach ($payment->booking->bookingDetail as $ticket) {
-                    broadcast(new TicketUpdated(Ticket::where('uuid', $ticket->ticket_uuid)->first()));
+                $qid = Queue::where('user_uuid', Auth::user()->uuid)->where('event_uuid', $payment->booking->event->uuid)->where('status', '!=', 'completed')->first();
+                if ($qid) {
+                    $this->completeQueue($qid->uuid, $payment->booking->event->uuid);
+                    foreach ($payment->booking->bookingDetail as $ticket) {
+                        broadcast(new TicketUpdated(Ticket::where('uuid', $ticket->ticket_uuid)->first()));
+                    }
                 }
             }
         }
@@ -246,7 +250,7 @@ class PaymentController extends Controller
         // Ambil pengguna yang belum diproses (statusnya pending)
         return Queue::where('event_uuid', $eventUuid)
             ->where('status', 'pending')
-            ->orderBy('time', 'asc')
+            ->orderBy('created_at', 'asc')
             ->first();
     }
     public function processQueue($queueUuid)
@@ -276,16 +280,17 @@ class PaymentController extends Controller
         for ($i = 0; $i < $slotsAvailable; $i++) {
             $nextQueue = $this->getNextInQueue($eventUuid);
             if ($nextQueue) {
-                $nextQueue->update(['status' => 'in_progress']);
+                $nextQueue->update(['status' => 'in_progress', 'joined_at' => now()]);
 
                 // Broadcast ke pengguna baru
                 broadcast(new QueueUpdated(
                     $nextQueue->event_uuid,
                     $nextQueue->user_uuid,
                     1, // Posisi baru
-                    2, // Estimasi waktu
+                    $this->addTime, // Estimasi waktu
                     'in_progress'
                 ));
+                // dd(2);
             } else {
                 break; // Jika tidak ada antrian lagi, hentikan loop
             }
@@ -299,10 +304,10 @@ class PaymentController extends Controller
         // Ambil semua antrian dengan status 'pending' berdasarkan waktu
         $queues = Queue::where('event_uuid', $eventUuid)
             ->where('status', 'pending')
-            ->orderBy('time', 'asc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
-        $estimatedMinutesPerUser = 2; // Estimasi waktu per pengguna
+        $estimatedMinutesPerUser = $this->addTime; // Estimasi waktu per pengguna
 
         // Loop melalui setiap pengguna dalam antrian
         foreach ($queues as $index => $queue) {
@@ -310,6 +315,7 @@ class PaymentController extends Controller
             $estimate = $position * $estimatedMinutesPerUser;
 
             // Kirim pembaruan ke setiap pengguna
+
             broadcast(new QueueUpdated(
                 $eventUuid,
                 $queue->user_uuid,
@@ -317,6 +323,8 @@ class PaymentController extends Controller
                 $estimate,
                 $queue->status // Kirim status saat ini
             ));
+
+            // dd(1);
         }
     }
 }

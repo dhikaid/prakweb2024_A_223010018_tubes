@@ -21,7 +21,7 @@ class DashboardEventsController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['query']);
-        $events = Event::where('user_uuid', Auth::user()->uuid)->filter($filters)->paginate(10)->appends($filters);
+        $events = Event::withoutGlobalScope('user_uuid', Auth::user()->uuid)->filter($filters)->paginate(10)->appends($filters);
         if (Auth::user()->role->role === 'Admin') {
             $events = Event::filter($filters)->paginate(10)->appends($filters);
         }
@@ -92,6 +92,7 @@ class DashboardEventsController extends Controller
                 'capacity' => $request->capacity,
                 'is_tiket_war' => $request->is_tiket_war,
                 'queue_limit' => $request->queue_limit,
+                'queue_open' => $request->queue_open,
             ]);
         });
 
@@ -182,6 +183,8 @@ class DashboardEventsController extends Controller
             'price' => 'required|min:1|integer',
         ]);
 
+        $ticket->update($validatedData);
+
         return redirect()->to("/dashboard/events/$event->uuid")->with('success', 'Tiket berhasil diedit.');
     }
 
@@ -266,6 +269,7 @@ class DashboardEventsController extends Controller
                 'capacity' => $request->capacity,
                 'is_tiket_war' => $request->is_tiket_war,
                 'queue_limit' => $request->queue_limit,
+                'queue_open' => $request->queue_open,
             ]);
         });
 

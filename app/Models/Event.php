@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[ScopedBy([ActiveScope::class])]
+
 class Event extends Model
 {
     use HasUuids;
@@ -87,7 +87,7 @@ class Event extends Model
 
     public function getDurationWithTimeAttribute()
     {
-        $format = "d M Y h:i";
+        $format = "d M Y H:i";
         if (Carbon::parse($this->start_date)->format($format) === Carbon::parse($this->end_date)->format($format)) {
             return Carbon::parse($this->start_date)->format($format);
         } else {
@@ -104,6 +104,12 @@ class Event extends Model
 
         return Carbon::parse($this->end_date)->format('Y-m-d\TH:i');
     }
+
+    public function getRangeDurationAttribute()
+    {
+        $format = "H:i";
+        return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
+    }
     public function getStartWarTimeAttribute()
     {
 
@@ -117,5 +123,11 @@ class Event extends Model
         $min = $this->tickets->min('price');
         $max = $this->tickets->max('price');
         return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
+    }
+
+    public function getIsWarOpenAttribute()
+    {
+        $open = Carbon::parse($this->queue_open)->timestamp;
+        return now()->timestamp >= $open;
     }
 }

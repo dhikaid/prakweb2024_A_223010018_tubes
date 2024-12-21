@@ -35,7 +35,7 @@
             <a href="/event/{{ $event->slug }}"
                 class="group block bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                 <div class="relative aspect-[4/3] overflow-hidden">
-                    <img src="https://assets.loket.com/neo/production/images/banner/20241019183718_671399eea31a2.jpg"
+                    <img src="{{ asset('storage/'.$event->image) }}"
                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         alt="{{ $event->name }}">
                     <div class="absolute bottom-4 left-4">
