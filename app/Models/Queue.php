@@ -9,4 +9,10 @@ class Queue extends Model
 {
     use HasUuids;
     protected $primaryKey = 'uuid';
+    protected $guarded = ['uuid'];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_uuid');
+    }
 }

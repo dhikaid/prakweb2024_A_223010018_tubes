@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Queue;
+use App\Events\QueueUpdated;
 use Illuminate\Http\Request;
 use Spatie\LaravelPdf\Facades\Pdf;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -32,6 +36,8 @@ class HomeController extends Controller
 
         return view('main.index', $data);
     }
+
+
 
     public function showSearch(Request $request)
     {
@@ -60,6 +66,11 @@ class HomeController extends Controller
     public function showTicket(Event $event)
     {
 
+        $userUuid = Auth::user()->uuid;
+        // if ($event->is_tiket_war && !$event->queue->where('user_uuid', Auth::user()->uuid)->first()->status !== 'in_progress') {
+        //     return redirect()->to('/event/' . $event->slug . '/war');
+        // }
+
         $data = [
             'title' => "Buy ticket: $event->name",
             'event' => $event->load(['tickets' => function ($q) {
@@ -73,7 +84,31 @@ class HomeController extends Controller
     {
         $data = [
             'title' => 'Search',
-            'datas' => User::EO()->latest()->get(),
+            'datas' => User::EO()->latest()->paginate(10),
+            'query' => "Creators"
+        ];
+        return view('main.showall', $data);
+    }
+    public function showLatestEvent()
+    {
+        $data = [
+            'title' => 'Latest',
+            'datas' =>  Event::with(['locations', 'tickets', 'creator'])->upcoming()->latest()->inRandomOrder()->paginate(10)->withQueryString(),
+            'query' => "Latest Event"
+        ];
+        return view('main.showall', $data);
+    }
+
+    public function showLocationEvent($location = 'jakarta')
+    {
+        $data = [
+            'title' => 'Location',
+            'datas' =>  Event::whereHas('locations', function ($query) use ($location) {
+                $query->where('city', 'LIKE', '%' . strtolower($location) . '%');
+            })
+                ->with(['tickets', 'creator', 'locations'])->upcoming()->inRandomOrder()
+                ->paginate(4)->withQueryString(),
+            'query' => $location
         ];
         return view('main.showall', $data);
     }

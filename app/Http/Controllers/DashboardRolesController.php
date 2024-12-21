@@ -13,7 +13,8 @@ class DashboardRolesController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Dashboard Roles'
+            'title' => 'Dashboard Roles',
+            'roles' => Role::paginate(10),
         ];
 
         return view('dashboard.roles.index', $data);
@@ -24,7 +25,10 @@ class DashboardRolesController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.roles.create', [
+            'title' => 'Create New User',
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
@@ -32,7 +36,14 @@ class DashboardRolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'role' => 'required|unique:roles,role|min:3|max:100',
+        ]);
+
+        Role::create($validatedData);
+
+        return redirect()->route('roles.index')
+            ->with('success', 'Role berhasil ditambahkan!');
     }
 
     /**
@@ -43,27 +54,38 @@ class DashboardRolesController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //VIEW EDIT ROLES
     public function edit(Role $role)
     {
-        //
+        return view('dashboard.roles.edit', [
+            'title' => 'Edit User',
+            'role' => $role,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // UPDATE(EDIT) ROLE 
     public function update(Request $request, Role $role)
     {
-        //
+        $rules = [
+            'role' => 'required|unique:roles,role|min:3|max:100',
+        ];
+
+        $validasiData = $request->validate($rules);
+
+        Role::where('uuid', $role->uuid)
+            ->update($validasiData);
+
+
+
+        return redirect()->route('roles.index')
+            ->with('success', 'Role berhasil diperbaharui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        return redirect()->route('roles.index')->with('success', 'Role berhasil di hapus!');
     }
 }

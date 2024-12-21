@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Event;
+use App\Models\Queue;
 use App\Models\Ticket;
 use App\Models\Booking;
-use App\Models\Booking_Detail;
 use App\Models\Payment;
+use Midtrans\Transaction;
+use App\Events\QueueUpdated;
 use Illuminate\Http\Request;
+use App\Models\Booking_Detail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class PaymentController extends Controller
@@ -39,22 +44,30 @@ class PaymentController extends Controller
             $booking = $this->saveBooking($request, $event);
 
             foreach ($validatedData['data'] as $data) {
-                if ($ticket = $event->tickets->firstWhere('uuid', $data['tickets'])) {
-                    // Pastikan bahwa harga tiket dan kuantitas valid
-                    $ticketPrice = is_numeric($ticket['price']) ? (float)$ticket['price'] : 0;
-                    $quantity = is_numeric($data['qty']) ? (int)$data['qty'] : 0;
+                $ticket = $event->tickets->firstWhere('uuid', $data['tickets']);
+                if ($ticket) {
+                    if (!$ticket->is_empty) {
+                        // Pastikan bahwa harga tiket dan kuantitas valid
+                        $ticketPrice = is_numeric($ticket['price']) ? (float)$ticket['price'] : 0;
+                        $quantity = is_numeric($data['qty']) ? (int)$data['qty'] : 0;
 
-                    $items[] = [
-                        'id' => $ticket['uuid'],
-                        'name' => "Tiket " . $event->name . ": " . $ticket->ticket,
-                        'price' => $ticket['price'],  // menggunakan harga asli
-                        'quantity' => $data['qty'],
-                    ];
+                        $items[] = [
+                            'id' => $ticket['uuid'],
+                            'name' => "Tiket " . $event->name . ": " . $ticket->ticket,
+                            'price' => $ticket['price'],  // menggunakan harga asli
+                            'quantity' => $data['qty'],
+                        ];
 
-                    // Kalkulasi total dengan memastikan kedua nilai numerik
-                    $total = $quantity * $ticketPrice;
-                    $price = $price + $total;
-                    $bookingDetails = $this->saveBookingDetail($data, $booking, $ticket, $price);
+                        // Kalkulasi total dengan memastikan kedua nilai numerik
+                        $total = $quantity * $ticketPrice;
+                        $price = $price + $total;
+                        $bookingDetails = $this->saveBookingDetail($data, $booking, $ticket, $price);
+                    } else {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => "Tiket " . $event->name . ": " . $ticket->ticket . " telah habis"
+                        ]);
+                    }
                 } else {
                     return response()->json([
                         'status' => 'error',
@@ -64,7 +77,7 @@ class PaymentController extends Controller
             }
 
             // CREATE PAYMENTS
-            Payment::create([
+            $payment = Payment::create([
                 'booking_uuid' => $booking->uuid,
                 'total' => $price,
                 'payment_status' => 'pending',
@@ -72,7 +85,7 @@ class PaymentController extends Controller
 
             $params = [
                 'transaction_details' => [
-                    'order_id' => uniqid(),
+                    'order_id' => $payment->uuid,
                     'gross_amount' => $price,
                 ],
                 'item_details' => $items,
@@ -130,10 +143,15 @@ class PaymentController extends Controller
             ]);
 
             $payment = Payment::where('booking_uuid', $validatedData['booking_uuid'])->first();
+            if ($validatedData['data']['payment_type'] == 'qris') {
+                $validatedData['data']['va_numbers'][0]['va_number'] = "https://api.sandbox.midtrans.com/v2/qris/" . $validatedData['data']['transaction_id'] . "/qr-code";
+            }
             $payment->update([
                 'status' => $validatedData['data']['transaction_status'],
                 'method' => $validatedData['data']['payment_type'],
                 'payment_date' => $validatedData['data']['transaction_time'],
+                'bank' => $validatedData['data']['va_numbers'][0]['bank'] ?? null,
+                'va' => $validatedData['data']['va_numbers'][0]['va_number'] ?? null,
             ]);
 
             Booking::where('uuid', $validatedData['booking_uuid'])->update([
@@ -150,5 +168,40 @@ class PaymentController extends Controller
                 'message' => $e->errors()
             ]);
         };
+    }
+
+    public function showTransaction(Payment $payment)
+    {
+        $payment->load(['booking', 'booking.event']);
+        if (!Gate::allows('isMyTransaction', $payment)) {
+            return abort(403);
+        }
+        // Pastikan tenggatWaktu adalah instance Carbon
+        $tenggatWaktu = Carbon::parse($payment->tenggatWaktu)->timestamp;
+        // dd($tenggatWaktu . " = " . now()->timestamp);
+        if (now()->timestamp >= $tenggatWaktu) {
+            if ($payment->status !== 'failed') {
+                Transaction::cancel($payment->uuid);
+                $payment->update([
+                    'status' => 'failed'
+                ]);
+                $payment->booking->update([
+                    'status' => 'failed'
+                ]);
+                if ($payment->booking->event->is_tiket_war) {
+                    Queue::where('user_uuid', Auth::user()->uuid)->where('event_uuid', $payment->booking->event->uuid)->update([
+                        'status' => 'completed'
+                    ]);
+                }
+            }
+        }
+
+
+        $payment->load(['booking', 'booking.event']);
+        $data = [
+            'title' => 'Transaction Ticket: ' . $payment->booking->event->name,
+            'payment' => $payment,
+        ];
+        return view('main.transaction', $data);
     }
 }

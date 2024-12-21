@@ -42,7 +42,7 @@ class AuthController extends Controller
 
         $validatedData['password'] = Hash::make($validatedData['password']);
         $validatedData['role_uuid'] = Role::where('role', 'User')->first()->uuid;
-        $validatedData['image'] = "default.png";
+        $validatedData['image'] = "https://ui-avatars.com/api/?name=" . $validatedData['username'] . "&background=random";
 
         User::create($validatedData);
 

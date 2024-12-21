@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {{-- FAVICON --}}
+    <link rel="icon" sizes="180x180" href="{{ asset('assets/bookrn.png') }}">
     <title>{{ $title }} | BookRN</title>
 
     {{-- CDN --}}
     @vite('resources/css/app.css')
+
     <link rel="stylesheet" href="/css/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -20,6 +23,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.5/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{{ asset('css/flash.css') }}">
 </head>
 
@@ -28,6 +32,7 @@
 
 
     <!--JAVASCRIPT CODE-->
+    @vite('resources/js/app.js')
     <script>
         var swiper = new Swiper(".progress-slide-carousel", {
             loop: true,

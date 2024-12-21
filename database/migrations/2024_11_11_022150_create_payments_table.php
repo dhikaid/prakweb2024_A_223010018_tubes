@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->decimal('total', 15, 2);
             $table->enum('status', ['pending', 'settlement', 'failed'])->default('pending');
             $table->string('method')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('va')->nullable();
             $table->dateTime('payment_date')->nullable();
             $table->timestamps();
         });
