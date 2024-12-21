@@ -27,15 +27,34 @@ class ProfileController extends Controller
      */
     public function updateGeneral(Request $request)
     {
-        $validasiData = $request->validate([
-            'username' => 'required|string|max:255|unique:users,username',
-            'fullname' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-        ]);
+        $rules = [
+            'username' => 'required|min:3|max:100',
+            'fullname' => 'required|max:255',
+            'email' => 'required|email:rfc,dns',
+        ];
 
         $user = Auth::user();
+
+        if ($request->file('image')) {
+            $rules['image'] = 'required|image|file|max:10240';
+        }
+
+        if ($request->get('username') !== $user->username) {
+            $rules['username'] = 'required|min:3|max:100|unique:users';
+        }
+
+        if ($request->get('email') !== $user->email) {
+            $rules['email'] = 'required|email:rfc,dns|unique:users';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('avatar');
+        }
+
         User::where('uuid', $user->uuid)
-            ->update($validasiData);
+            ->update($validatedData);
 
         return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
     }
