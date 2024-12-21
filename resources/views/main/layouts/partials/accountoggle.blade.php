@@ -38,7 +38,7 @@
     <div x-ref="panel" x-show="open" x-transition.origin.top.left x-on:click.outside="close($refs.button)"
         :id="$id('dropdown-button')" style="display: none"
         class="absolute left-0 mt-2 rounded-xl bg-white w-full shadow-md z-10">
-        <a href="/profile"
+        <a href="{{ route('profile.index') }}"
             class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500 hover:text-neutral-800">
             <div class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

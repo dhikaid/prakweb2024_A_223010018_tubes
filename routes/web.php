@@ -6,13 +6,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
+use App\Http\Controllers\QueueController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ServiceAPIController;
 use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
-use App\Http\Controllers\QueueController;
 
 Route::get(
     '/test',
@@ -106,6 +107,13 @@ Route::group(['middleware' => 'guest'], function () {
 
 // Route Group for Middleware Auth
 route::group(['middleware' => 'auth'], function () {
+    //PROFILE
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+    Route::put('/profile/update-general', [ProfileController::class, 'updateGeneral'])->name('profile.update.general');
+
+    Route::put('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
+
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
 });
@@ -127,3 +135,7 @@ Route::resource('dashboard/roles', DashboardRolesController::class)->middleware(
 Route::prefix('dashboard')->middleware(['auth'])->group(function () {
     Route::resource('events', DashboardEventsController::class);
 });
+
+
+
+
