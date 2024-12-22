@@ -18,7 +18,7 @@
                 isSearchFocused: false,
                 search() {
                     if (this.searchQuery.length > 0) {
-                        fetch(`http://localhost:8000/service/api/search?query=${this.searchQuery}`)
+                        fetch(`/service/api/search?query=${this.searchQuery}`)
                             .then(response => response.json())
                             .then(data => {
                                 this.searchResults = data.data.data;
