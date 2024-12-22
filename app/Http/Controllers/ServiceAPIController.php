@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Ticket;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ServiceAPIController extends Controller
 {
@@ -73,5 +75,26 @@ class ServiceAPIController extends Controller
     public function checkTicket(Ticket $ticket, Request $request)
     {
         return response()->json($ticket);
+    }
+
+    public function searchEvent(Request $request)
+    {
+
+        try {
+            $validatedData = $request->validate([
+                'query' => 'required'
+            ]);
+            $event = Event::with(['creator', 'tickets', 'locations'])->filter($validatedData)->upcoming()->paginate(5)->withQueryString();
+
+            return response()->json([
+                'status' => 200,
+                'data' => $event
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => 500,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

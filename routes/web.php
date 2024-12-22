@@ -10,6 +10,7 @@ use App\Http\Controllers\OauthController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ServiceAPIController;
@@ -81,6 +82,8 @@ Route::prefix('service/api')->group(function () {
 
     Route::post('/transaction/{event:slug}', [PaymentController::class, 'createCharge']);
     Route::post('/transaction/{event:slug}/pay', [PaymentController::class, 'createPay']);
+
+    Route::get('/search', [ServiceAPIController::class, 'searchEvent']);
 });
 
 
@@ -115,6 +118,11 @@ Route::group(['middleware' => 'guest'], function () {
 
 // Route Group for Middleware Auth
 route::group(['middleware' => 'auth'], function () {
+    //PROFILE
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile/update-general', [ProfileController::class, 'updateGeneral'])->name('profile.update.general');
+    Route::put('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
+    Route::put('/profile/changerole', [ProfileController::class, 'updateRole'])->name('profile.update.role');
     Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
     Route::get('/tickets/{payment:uuid}', [TicketController::class, 'index']);
     Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware('war')->name('war');

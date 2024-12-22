@@ -122,6 +122,9 @@ class Event extends Model
 
         $min = $this->tickets->min('price');
         $max = $this->tickets->max('price');
+        if ($min == $max) {
+            return Number::currency($min, 'IDR', 'ID');
+        }
         return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
     }
 
