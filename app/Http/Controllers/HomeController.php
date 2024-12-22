@@ -47,7 +47,7 @@ class HomeController extends Controller
 
         $data = [
             'title' => 'Search',
-            'events' => Event::filter($validatedData)->paginate(4)->withQueryString(),
+            'events' => Event::filter($validatedData)->upcoming()->paginate(4)->withQueryString(),
             'query' => $validatedData['query'],
         ];
         return view('main.search', $data);
@@ -65,17 +65,24 @@ class HomeController extends Controller
 
     public function showTicket(Event $event)
     {
-
-        $userUuid = Auth::user()->uuid;
-        // if ($event->is_tiket_war && !$event->queue->where('user_uuid', Auth::user()->uuid)->first()->status !== 'in_progress') {
-        //     return redirect()->to('/event/' . $event->slug . '/war');
-        // }
+        $queue = null;
+        if ($event->is_tiket_war) {
+            if (!Gate::allows('access-tiket-war', $event)) {
+                return redirect()->to('/event/' . $event->slug . '/war');
+            }
+            $queue = Queue::where('event_uuid', $event->uuid)->where('user_uuid', Auth::user()->uuid)->where('status', '=', 'in_progress')->first();
+            if ($queue->isExpired) {
+                $queue->lockForUpdate()->update(['status' => 'completed']);
+                return redirect()->to('/event/' . $event->slug . '/war');
+            }
+        }
 
         $data = [
             'title' => "Buy ticket: $event->name",
             'event' => $event->load(['tickets' => function ($q) {
                 $q->minprice();
             }]),
+            'queue' => $queue
         ];
         return view('main.ticket', $data);
     }
@@ -93,7 +100,7 @@ class HomeController extends Controller
     {
         $data = [
             'title' => 'Latest',
-            'datas' =>  Event::with(['locations', 'tickets', 'creator'])->upcoming()->latest()->inRandomOrder()->paginate(10)->withQueryString(),
+            'datas' =>  Event::upcoming()->with(['locations', 'tickets', 'creator'])->upcoming()->latest()->inRandomOrder()->paginate(10)->withQueryString(),
             'query' => "Latest Event"
         ];
         return view('main.showall', $data);
@@ -103,7 +110,7 @@ class HomeController extends Controller
     {
         $data = [
             'title' => 'Location',
-            'datas' =>  Event::whereHas('locations', function ($query) use ($location) {
+            'datas' =>  Event::upcoming()->whereHas('locations', function ($query) use ($location) {
                 $query->where('city', 'LIKE', '%' . strtolower($location) . '%');
             })
                 ->with(['tickets', 'creator', 'locations'])->upcoming()->inRandomOrder()
@@ -111,5 +118,16 @@ class HomeController extends Controller
             'query' => $location
         ];
         return view('main.showall', $data);
+    }
+
+    public function showDetailCreator(User $user)
+    {
+        $user->load('event');
+        $data = [
+            'title' => $user->username,
+            'user' => $user,
+            'events' => $user->event,
+        ];
+        return view('main.detailcreator', $data);
     }
 }

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {{-- FAVICON --}}
     <link rel="icon" sizes="180x180" href="{{ asset('assets/bookrn.png') }}">
-    <title>{{ $title }} | BookRN</title>
+    <title>{{ $title ?? 'Unknown' }} | BookRN</title>
 
     {{-- CDN --}}
     @vite('resources/css/app.css')
@@ -25,6 +25,8 @@
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{{ asset('css/flash.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 </head>
 
 <body class="font-poppins">

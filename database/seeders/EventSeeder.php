@@ -19,17 +19,18 @@ class EventSeeder extends Seeder
         Location::factory(10)->create();
 
         Event::create([
-            'slug' => fake()->slug(),
+            'slug' => 'roasting-by-rafli',
             'user_uuid' => User::inRandomOrder()->first()->uuid,
-            'name' => 'Tech Conference 2024',
+            'name' => 'Roasting by Rafli',
             'image' => 'tech_conference.jpg',
-            'description' => 'A conference about the latest in tech, focusing on AI, Cloud, and IoT.',
+            'description' => 'Bosan dengan hari-hari yang monoton? Yuk, ikutan Roasting by Rafli! Dalam acara spesial ini, Rafli akan berbagi cerita dan keluh kesah yang paling jujur dan kocak. Dijamin bikin malammu jadi lebih seru!',
             'location_uuid' => Location::inRandomOrder()->first()->uuid,
-            'start_date' => '2024-12-01 09:00:00',
-            'end_date' => '2024-12-01 17:00:00',
+            'start_date' => '2025-12-01 09:00:00',
+            'end_date' => '2025-12-01 17:00:00',
             'capacity' => 500,
             'is_tiket_war' => true,
-            'queue_limit' => 50,
+            'queue_limit' => 1,
+            'queue_open' => '2024-12-16 09:00:00',
         ]);
 
         Event::create([

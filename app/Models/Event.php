@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Number;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Event extends Model
 {
@@ -78,8 +81,39 @@ class Event extends Model
         if (Carbon::parse($this->start_date)->format($format) === Carbon::parse($this->end_date)->format($format)) {
             return Carbon::parse($this->start_date)->format($format);
         } else {
-            return Carbon::parse($this->start_date)->format($format) . '- ' . Carbon::parse($this->end_date)->format($format);
+            return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
         }
+    }
+
+    public function getDurationWithTimeAttribute()
+    {
+        $format = "d M Y H:i";
+        if (Carbon::parse($this->start_date)->format($format) === Carbon::parse($this->end_date)->format($format)) {
+            return Carbon::parse($this->start_date)->format($format);
+        } else {
+            return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
+        }
+    }
+
+    public function getStartTimeAttribute()
+    {
+        return Carbon::parse($this->start_date)->format('Y-m-d\TH:i');
+    }
+    public function getEndTimeAttribute()
+    {
+
+        return Carbon::parse($this->end_date)->format('Y-m-d\TH:i');
+    }
+
+    public function getRangeDurationAttribute()
+    {
+        $format = "H:i";
+        return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
+    }
+    public function getStartWarTimeAttribute()
+    {
+
+        return Carbon::parse($this->queue_open)->format('Y-m-d\TH:i');
     }
 
     // return low price to high price format 10-100
@@ -88,22 +122,15 @@ class Event extends Model
 
         $min = $this->tickets->min('price');
         $max = $this->tickets->max('price');
+        if ($min == $max) {
+            return Number::currency($min, 'IDR', 'ID');
+        }
         return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
     }
 
-    protected $fillable = [
-    'uuid',
-    'slug',
-    'name',
-    'image',
-    'description',
-    'location_uuid',
-    'user_uuid',
-    'start_date',
-    'end_date',
-    'capacity',
-    'is_tiket_war',
-    'queue_limit',
-];
-
+    public function getIsWarOpenAttribute()
+    {
+        $open = Carbon::parse($this->queue_open)->timestamp;
+        return now()->timestamp >= $open;
+    }
 }

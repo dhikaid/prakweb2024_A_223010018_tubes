@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Queue;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -38,8 +39,9 @@ class QueueUpdated  implements ShouldBroadcast, ShouldDispatchAfterCommit
      */
     public function broadcastOn()
     {
-        return [new PresenceChannel('queue.' . $this->eventUuid . '.' . $this->userUuid)];
+        return [new PrivateChannel('queue.' . $this->userUuid)];
     }
+
 
 
     public function broadcastWith(): array
@@ -47,6 +49,7 @@ class QueueUpdated  implements ShouldBroadcast, ShouldDispatchAfterCommit
         return [
             "position" => $this->position,
             "estimate" => $this->estimate,
+            "total_queue" => Queue::where('event_uuid', $this->eventUuid)->where('status', 'pending')->count(),
             "status" => $this->status,
         ];
     }

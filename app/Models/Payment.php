@@ -24,7 +24,8 @@ class Payment extends Model
     public function getTenggatWaktuAttribute()
     {
         $date = new \DateTime($this->payment_date);
-        $date->modify('+1 minutes');
+        $duration = ceil((env('WAR_TICKET_DURATION', 60)) / 2);
+        $date->modify('+' . $duration . ' seconds');
         return $date->format('Y-m-d H:i:s');
     }
     // get attribute for tenggat waktu, max 5 menit from payment_date

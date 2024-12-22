@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -33,7 +34,7 @@ class ProfileController extends Controller
             'email' => 'required|email:rfc,dns',
         ];
 
-        $user = Auth::user();
+        $user = User::where('uuid', Auth::user()->uuid)->first();
 
         if ($request->file('image')) {
             $rules['image'] = 'required|image|file|max:10240';
@@ -55,7 +56,7 @@ class ProfileController extends Controller
 
         $user->update($validatedData);
 
-        return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
+        return redirect()->route('profile.index')->with('success_profile', 'Profile updated successfully.');
     }
 
     /**
@@ -63,6 +64,45 @@ class ProfileController extends Controller
      */
     public function updatePassword(Request $request)
     {
+        $rules = [
+            'prevpassword' => 'required|min:8',
+            'password' => 'required|min:8',
+            'password2' => 'required|min:8|same:password',
+        ];
 
+        $validatedData = $request->validate($rules);
+
+        $user = User::where('uuid', Auth::user()->uuid)->first();
+
+        if (password_verify($validatedData['prevpassword'], $user->password)) {
+
+            $user->update($validatedData);
+
+            return redirect()->route('profile.index')->with('success_password', 'Profile updated successfully.');
+        }
+
+        return redirect()->route('profile.index')->with('failed_password', 'Password sebelumnya tidak sesuai.');
+    }
+
+    public function updateRole(Request $request)
+    {
+
+
+        $user = User::where('uuid', Auth::user()->uuid)->first();
+        if ($user->role->role == 'EO') {
+            $role = Role::where('role', 'User')->first();
+        } elseif ($user->role->role == 'User') {
+            $role = Role::where('role', 'EO')->first();
+        } else {
+            return abort(403);
+        }
+        $user->update([
+            'role_uuid' => $role->uuid
+        ]);
+
+
+
+
+        return redirect()->route('profile.index')->with('success_role', 'Profile updated successfully.');
     }
 }

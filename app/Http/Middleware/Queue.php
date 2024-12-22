@@ -4,9 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureUserIsAdmin
+class Queue
 {
     /**
      * Handle an incoming request.
@@ -15,7 +16,14 @@ class EnsureUserIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        
+        $event = $request->route('event'); // Pastikan parameter 'event' ada di route
+        $queue = $event->queue->where('user_uuid', Auth::user()->uuid)->where('status', '!=', 'completed')->first();
+
+        if (!$queue) {
+            return redirect()->to('/event/' . $event->slug . '/war');
+        }
+
+        // Jika tidak ada masalah, lanjutkan
         return $next($request);
     }
 }

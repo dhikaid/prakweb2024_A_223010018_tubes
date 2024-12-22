@@ -31,20 +31,44 @@ class Ticket extends Model
 
     public function getQtyAvailableAttribute()
     {
-        // Get all booking details
+        // Ambil semua booking detail beserta relasi booking
         $bookingDetails = $this->bookingDetail()->with('booking')->get();
-        $totalBookedQty = $bookingDetails->filter(function ($bookingDetail) {
-            return $bookingDetail->booking && $bookingDetail->booking->status !== 'failed';
-        })->sum('qty');
+        $duration = ceil(env('WAR_TICKET_DURATION', 60) / 2);
 
-        return ($this->qty - $totalBookedQty);
+        $totalBookedQty = 0;
+
+        foreach ($bookingDetails as $bookingDetail) {
+            $status = $bookingDetail->booking->status ?? null;
+
+            if ($status === 'settlement') {
+                // Tambahkan jumlah jika status adalah settlement
+                $totalBookedQty += $bookingDetail->qty;
+            } elseif ($status === 'pending') {
+                // Tambahkan jumlah jika pending dan masih dalam durasi 10 menit
+                if ($bookingDetail->created_at->greaterThan(now()->subSeconds($duration))) {
+                    $totalBookedQty += $bookingDetail->qty;
+                }
+            }
+        }
+
+        // Hitung jumlah tersedia
+        $result = $this->qty - $totalBookedQty;
+
+        // Pastikan hasil tidak kurang dari 0
+        return max($result, 0);
     }
 
     // if ticket is empty
     public function getIsEmptyAttribute()
     {
-        return ($this->getQtyAvailableAttribute()) === 0;
+        return ($this->getQtyAvailableAttribute() <= 0);
     }
+
+    public function getPriceNumberAttribute()
+    {
+        return rtrim(rtrim($this->price, '0'), '.'); // Menghapus nol di belakang dan titik desimal jika ada
+    }
+
 
     // order by min price to highest price
     public function scopeMinPrice($query)
