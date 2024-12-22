@@ -53,8 +53,7 @@ class ProfileController extends Controller
             $validatedData['image'] = $request->file('image')->store('avatar');
         }
 
-        User::where('uuid', $user->uuid)
-            ->update($validatedData);
+        $user->update($validatedData);
 
         return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
     }
