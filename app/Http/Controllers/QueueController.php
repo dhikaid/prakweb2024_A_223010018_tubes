@@ -143,9 +143,17 @@ class QueueController extends Controller
         }
 
         // Setelah selesai, proses pengguna berikutnya
-        $this->processQueue($eventUuid);
+        $this->processQueue($queueUuid);
     }
 
+    function getNextInQueue($eventUuid)
+    {
+        // Ambil pengguna yang belum diproses (statusnya pending)
+        return Queue::where('event_uuid', $eventUuid)
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'asc')
+            ->first();
+    }
     public function processQueue($queueUuid)
     {
         $queue = Queue::where('uuid', $queueUuid)->first();
@@ -183,16 +191,14 @@ class QueueController extends Controller
                     $this->addTime, // Estimasi waktu
                     'in_progress'
                 ));
-                // dd(3);
+                // dd(2);
             } else {
                 break; // Jika tidak ada antrian lagi, hentikan loop
             }
         }
-
         // Kirim pembaruan posisi untuk semua pengguna yang masih pending
         $this->sendQueueUpdate($eventUuid);
     }
-
 
     public function sendQueueUpdate($eventUuid)
     {
@@ -202,7 +208,7 @@ class QueueController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
-        $estimatedMinutesPerUser =  $this->addTime; // Estimasi waktu per pengguna
+        $estimatedMinutesPerUser = $this->addTime; // Estimasi waktu per pengguna
 
         // Loop melalui setiap pengguna dalam antrian
         foreach ($queues as $index => $queue) {
@@ -210,6 +216,7 @@ class QueueController extends Controller
             $estimate = $position * $estimatedMinutesPerUser;
 
             // Kirim pembaruan ke setiap pengguna
+
             broadcast(new QueueUpdated(
                 $eventUuid,
                 $queue->user_uuid,
@@ -217,10 +224,10 @@ class QueueController extends Controller
                 $estimate,
                 $queue->status // Kirim status saat ini
             ));
-            // dd(4);
+
+            // dd(1);
         }
     }
-
 
 
     public function checkAndProcessQueue($eventUuid)
@@ -233,14 +240,6 @@ class QueueController extends Controller
         }
     }
 
-    function getNextInQueue($eventUuid)
-    {
-        // Ambil pengguna yang belum diproses (statusnya pending)
-        return Queue::where('event_uuid', $eventUuid)
-            ->where('status', 'pending')
-            ->orderBy('created_at', 'asc')
-            ->first();
-    }
 
     public function startWar(Event $event)
     {
