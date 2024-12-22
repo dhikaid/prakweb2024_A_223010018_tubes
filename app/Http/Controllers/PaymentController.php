@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PaymentUpdate;
 use Carbon\Carbon;
 use Midtrans\Snap;
 use Midtrans\Config;
@@ -343,28 +344,32 @@ class PaymentController extends Controller
 
     public function callbackMidtrans()
     {
+
         $notif = new \Midtrans\Notification();
+
 
         $transaction = $notif->transaction_status;
         $fraud = $notif->fraud_status;
 
         error_log("Order ID $notif->order_id: " . "transaction status = $transaction, fraud staus = $fraud");
 
-        if ($transaction == 'capture') {
-            if ($fraud == 'challenge') {
-                Log::info($transaction . ' - ' . $fraud);
-            } else if ($fraud == 'accept') {
-                Log::info($transaction . ' - ' . $fraud);
-            }
-        } else if ($transaction == 'cancel') {
-            if ($fraud == 'challenge') {
-                Log::info($transaction . ' - ' . $fraud);
-            } else if ($fraud == 'accept') {
-                Log::info($transaction . ' - ' . $fraud);
-            }
-        } else if ($transaction == 'deny') {
-            Log::info($transaction . ' - ' . $fraud);
+        $order = Payment::where('uuid', $notif->order_id)->first();
+        if ($transaction == 'pending') {
+            $order->update([
+                'status' => 'pending'
+            ]);
+        } elseif ($transaction == 'settlement') {
+            $order->update([
+                'status' => 'settlement'
+            ]);
+        } elseif ($transaction == 'cancel' || $transaction == 'failed') {
+            $order->update([
+                'status' => 'failed'
+            ]);
         }
+
+        broadcast(new PaymentUpdate($notif->order_id));
+
         return response()->json(['status' => 'success', 'data' => $notif->order_id]);
     }
 }

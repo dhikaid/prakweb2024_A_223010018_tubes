@@ -163,4 +163,17 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function(e){
+        const userUuid = "{{ $payment->uuid }}";
+
+        Echo.private(`payment.${userUuid}`)
+        .listen("PaymentUpdate", (data) => {
+            if (data.status == true) {
+                location.reload();
+            }
+        });
+
+    });
+</script>
 @endsection
