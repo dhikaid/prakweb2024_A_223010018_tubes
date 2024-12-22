@@ -17,10 +17,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class, // Jangan lupa seeder lainnya
             UserSeeder::class,
+            EventCategorySeeder::class,
             EventSeeder::class,
             TicketSeeder::class,
-            EventCategorySeeder::class,
-            EventCategoryMappingSeeder::class,
         ]);
     }
 }

@@ -16,14 +16,15 @@ return new class extends Migration {
             $table->string('name');
             $table->string('image');
             $table->text('description');
-            $table->foreignUuid('location_uuid')->references('uuid')->on('locations');
-            $table->foreignUuid('user_uuid')->references('uuid')->on('users');
+            $table->foreignUuid('location_uuid')->nullable()->references('uuid')->on('locations')->nullOnDelete();
+            $table->foreignUuid('user_uuid')->nullable()->references('uuid')->on('users')->nullOnDelete();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->integer('capacity');
             $table->boolean('is_tiket_war')->default(false);
             $table->integer('queue_limit')->nullable();
             $table->dateTime('queue_open')->nullable();
+            $table->foreignUuid('category_uuid')->nullable()->references('uuid')->on('categories')->nullOnDelete();
             $table->timestamps();
         });
     }

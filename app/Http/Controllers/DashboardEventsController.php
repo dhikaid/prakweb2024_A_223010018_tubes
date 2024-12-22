@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Event;
-use App\Models\Location;
 use App\Models\Ticket;
+use App\Models\Category;
+use App\Models\Location;
 use Illuminate\Support\Str;
 use function Ramsey\Uuid\v1;
 use Illuminate\Http\Request;
@@ -40,7 +41,8 @@ class DashboardEventsController extends Controller
     public function create()
     {
         $data = [
-            'title' => 'Buat Events'
+            'title' => 'Buat Events',
+            'categories' => Category::all(),
         ];
         return view('dashboard.events.create', $data);
     }
@@ -64,6 +66,7 @@ class DashboardEventsController extends Controller
             'province' => 'required|string',
             'city' => 'required|string',
             'venue' => 'required|string',
+            'category' => 'required|uuid|exists:categories,uuid'
         ]);
 
         if ($request->file('image')) {
@@ -102,6 +105,7 @@ class DashboardEventsController extends Controller
                 'is_tiket_war' => $request->is_tiket_war,
                 'queue_limit' => $request->queue_limit,
                 'queue_open' => $request->queue_open,
+                'category_uuid' => $request->category,
             ]);
         });
 
@@ -222,6 +226,7 @@ class DashboardEventsController extends Controller
         $data = [
             'title' => 'Edit Events',
             'event' => $event,
+            'categories' => Category::all(),
         ];
 
         return view('dashboard.events.edit', $data);
@@ -250,6 +255,7 @@ class DashboardEventsController extends Controller
             'province' => 'required|string',
             'city' => 'required|string',
             'venue' => 'required|string',
+            'category' => 'required|uuid|exists:categories,uuid'
         ]);
 
         // Jika gambar baru diunggah, simpan gambar baru, jika tidak gunakan gambar lama
@@ -290,6 +296,7 @@ class DashboardEventsController extends Controller
                 'is_tiket_war' => $request->is_tiket_war,
                 'queue_limit' => $request->queue_limit,
                 'queue_open' => $request->queue_open,
+                'category_uuid' => $request->category,
             ]);
         });
 
