@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Number;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Event extends Model
 {
@@ -84,7 +87,7 @@ class Event extends Model
 
     public function getDurationWithTimeAttribute()
     {
-        $format = "d M Y h:i";
+        $format = "d M Y H:i";
         if (Carbon::parse($this->start_date)->format($format) === Carbon::parse($this->end_date)->format($format)) {
             return Carbon::parse($this->start_date)->format($format);
         } else {
@@ -101,6 +104,12 @@ class Event extends Model
 
         return Carbon::parse($this->end_date)->format('Y-m-d\TH:i');
     }
+
+    public function getRangeDurationAttribute()
+    {
+        $format = "H:i";
+        return Carbon::parse($this->start_date)->format($format) . ' - ' . Carbon::parse($this->end_date)->format($format);
+    }
     public function getStartWarTimeAttribute()
     {
 
@@ -116,18 +125,9 @@ class Event extends Model
         return Number::currency($min, 'IDR', 'ID') . ' - ' . Number::currency($max, 'IDR', 'ID');
     }
 
-    protected $fillable = [
-        'uuid',
-        'slug',
-        'name',
-        'image',
-        'description',
-        'location_uuid',
-        'user_uuid',
-        'start_date',
-        'end_date',
-        'capacity',
-        'is_tiket_war',
-        'queue_limit',
-    ];
+    public function getIsWarOpenAttribute()
+    {
+        $open = Carbon::parse($this->queue_open)->timestamp;
+        return now()->timestamp >= $open;
+    }
 }

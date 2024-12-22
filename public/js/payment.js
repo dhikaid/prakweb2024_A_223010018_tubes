@@ -93,11 +93,14 @@ const payment = async (bookingid, eventid, data, token) => {
     }
 };
 
-function countdown(date, status) {
+function countdown(date, status, war = false) {
     return {
         targetDate: new Date(date),
+        days: 0,
+        hours: 0,
         minutes: 0,
         seconds: 0,
+        output: "",
         startCountdown() {
             this.updateCountdown();
             setInterval(() => {
@@ -107,6 +110,11 @@ function countdown(date, status) {
         updateCountdown() {
             const now = new Date();
             const distance = this.targetDate - now;
+
+            this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            this.hours = Math.floor(
+                (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
             this.minutes = Math.floor(
                 (distance % (1000 * 60 * 60)) / (1000 * 60)
             );
@@ -114,11 +122,25 @@ function countdown(date, status) {
 
             if (distance < 0) {
                 clearInterval(this);
+                this.days = 0;
+                this.hours = 0;
                 this.minutes = 0;
                 this.seconds = 0;
-                if (status) {
+
+                if (status || war) {
                     location.reload();
                 }
+            }
+
+            // Logika untuk menyusun output
+            if (this.days > 0) {
+                this.output = `${this.days} Hari ${this.hours} Jam ${this.minutes} Menit ${this.seconds} Detik`;
+            } else if (this.hours > 0) {
+                this.output = `${this.hours} Jam ${this.minutes} Menit ${this.seconds} Detik`;
+            } else if (this.minutes > 0) {
+                this.output = `${this.minutes} Menit ${this.seconds} Detik`;
+            } else {
+                this.output = `${this.seconds} Detik`;
             }
         },
     };

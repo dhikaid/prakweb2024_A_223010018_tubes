@@ -92,14 +92,12 @@
                                         </div>
                                         {{-- ENDFORM --}}
                                         {{-- START DESCRIPTION --}}
-                                        <div class="mt-4">
+                                        <div class="mt-4 w-full">
                                             <label for="description"
-                                                class="block text-sm text-black font-semibold dark:text-gray-300">Description</label>
-                                            <textarea name="description" id="description"
-                                                placeholder="Enter event description here"
-                                                class="block w-full py-2.5 pl-3 pr-3 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                rows="4"
-                                                required>{{ old('description', $event->description) }}</textarea>
+                                                class="block text-sm text-black font-semibold dark:text-gray-300 w-full">Description</label>
+                                            <input id="x" type="hidden" name="description" required class="w-full">
+                                            <trix-editor input="x" class="prose w-full"> {!! old('description',
+                                                $event->description) !!} </trix-editor>
                                             @error('description')
                                             <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
                                             @enderror

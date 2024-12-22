@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Ticket;
 use App\Models\Event;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Support\Str;
 
 class TicketSeeder extends Seeder
@@ -16,26 +17,23 @@ class TicketSeeder extends Seeder
     public function run(): void
     {
         // Tech Conference 2024
-        $event = Event::where('name', 'Tech Conference 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Roasting by Rafli')->first();
         Ticket::create([
-
-            'ticket' => 'VIP',
+            'ticket' => 'Bangku Depan',
             'price' => 1500000,
-            'qty' => 50,
+            'qty' => 3,
             'event_uuid' => $event->uuid,
         ]);
         Ticket::create([
-
-            'ticket' => 'Regular',
+            'ticket' => 'Bangku Tengah',
             'price' => 750000,
-            'qty' => 200,
+            'qty' => 2,
             'event_uuid' => $event->uuid,
         ]);
 
         // Startup Weekend 2024
-        $event = Event::where('name', 'Startup Weekend 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Startup Weekend 2024')->first();
         Ticket::create([
-
             'ticket' => 'VIP',
             'price' => 1000000,
             'qty' => 30,
@@ -50,7 +48,7 @@ class TicketSeeder extends Seeder
         ]);
 
         // Business Summit 2024
-        $event = Event::where('name', 'Business Summit 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Business Summit 2024')->first();
         Ticket::create([
 
             'ticket' => 'VIP',
@@ -67,7 +65,7 @@ class TicketSeeder extends Seeder
         ]);
 
         // Music Festival 2024
-        $event = Event::where('name', 'Music Festival 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Music Festival 2024')->first();
         Ticket::create([
 
             'ticket' => 'VIP',
@@ -84,7 +82,7 @@ class TicketSeeder extends Seeder
         ]);
 
         // Art Exhibition 2024
-        $event = Event::where('name', 'Art Exhibition 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Art Exhibition 2024')->first();
         Ticket::create([
 
             'ticket' => 'VIP',
@@ -101,7 +99,7 @@ class TicketSeeder extends Seeder
         ]);
 
         // Digital Marketing Summit 2024
-        $event = Event::where('name', 'Digital Marketing Summit 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Digital Marketing Summit 2024')->first();
         Ticket::create([
 
             'ticket' => 'VIP',
@@ -118,7 +116,7 @@ class TicketSeeder extends Seeder
         ]);
 
         // Blockchain Expo 2024
-        $event = Event::where('name', 'Blockchain Expo 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Blockchain Expo 2024')->first();
         Ticket::create([
 
             'ticket' => 'VIP',
@@ -135,7 +133,7 @@ class TicketSeeder extends Seeder
         ]);
 
         // Fashion Show 2024
-        $event = Event::where('name', 'Fashion Show 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Fashion Show 2024')->first();
         Ticket::create([
 
             'ticket' => 'VIP',
@@ -152,7 +150,7 @@ class TicketSeeder extends Seeder
         ]);
 
         // Sports Championship 2024
-        $event = Event::where('name', 'Sports Championship 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Sports Championship 2024')->first();
         Ticket::create([
 
             'ticket' => 'VIP',
@@ -169,7 +167,7 @@ class TicketSeeder extends Seeder
         ]);
 
         // Food Expo 2024
-        $event = Event::where('name', 'Food Expo 2024')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Food Expo 2024')->first();
         Ticket::create([
 
             'ticket' => 'VIP',

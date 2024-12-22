@@ -1,25 +1,43 @@
 <?php
 
 use App\Events\Test;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
+use App\Http\Controllers\QueueController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ServiceAPIController;
 use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
-use App\Http\Controllers\QueueController;
+
+
+Route::get('/email', function () {
+    // return view('email.ticket');
+    Log::info('test');
+});
+
+Route::post('/callbackmidtrans', [PaymentController::class, 'callbackMidtrans']);
 
 Route::get(
     '/test',
     function () {
-        broadcast(new Test('halo'));
+        dd(broadcast(new Test('halo')));
     }
+);
+Route::get(
+    '/test/{payment:uuid}',
+    [PaymentController::class, 'testSelesai']
+);
+Route::get(
+    '/test2/{event:uuid}',
+    [PaymentController::class, 'updateTicket']
 );
 
 // ROUTE DASHBOARD
@@ -36,6 +54,7 @@ Route::prefix('dashboard')->group(function () {
 })->middleware(['auth']);
 
 Route::get('/creators', [HomeController::class, 'showCreators']);
+Route::get('/creator/{user:username}', [HomeController::class, 'showDetailCreator']);
 Route::get('/events', [HomeController::class, 'showLatestEvent']);
 Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
 Route::get('/transaction/{payment:uuid}', [PaymentController::class, 'showTransaction'])->middleware('auth');
@@ -51,11 +70,6 @@ Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 
 // ROUTE DETAIL
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
-Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
-Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->name('war');
-Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->name('war')->middleware('auth');
-Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->name('queue');
-Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
 
 
 // SERVICES API
@@ -101,6 +115,13 @@ Route::group(['middleware' => 'guest'], function () {
 
 // Route Group for Middleware Auth
 route::group(['middleware' => 'auth'], function () {
+    Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
+    Route::get('/tickets/{payment:uuid}', [TicketController::class, 'index']);
+    Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware('war')->name('war');
+    Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware(['war', 'waropen'])->name('war');
+    Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen'])->name('queue');
+    Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
+    Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
 });
