@@ -365,5 +365,6 @@ class PaymentController extends Controller
         } else if ($transaction == 'deny') {
             Log::info($transaction . ' - ' . $fraud);
         }
+        return response()->json(['status' => 'success', 'data' => $notif->order_id]);
     }
 }

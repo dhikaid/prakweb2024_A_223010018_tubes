@@ -25,8 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'isAdmin' => IsAdmin::class,
         ]);
         $middleware->validateCsrfTokens(except: [
-            'callbackmidtrans/*',
-            'https://bookrn.bhadrikais.my.id/callbackmidtrans'
+            '/callbackmidtrans*'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
