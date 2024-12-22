@@ -24,6 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'isEOAdmin' => IsEoAdmin::class,
             'isAdmin' => IsAdmin::class,
         ]);
+        $middleware->validateCsrfTokens(except: [
+            'callbackmidtrans/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

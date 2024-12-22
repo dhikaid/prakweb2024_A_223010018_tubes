@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignUuid('user_uuid')->references('uuid')->on('users');
             $table->foreignUuid('event_uuid')->references('uuid')->on('events');
             $table->enum('status', ['pending', 'settlement', 'failed'])->default('pending');
+            $table->boolean('sendEmail')->default(false);
             $table->timestamps();
         });
     }

@@ -126,7 +126,6 @@
                     </div>
                     @endif
                     @endif
-
                     <!-- Price Details -->
                     <div class="border-t border-gray-100 pt-4 mt-4">
                         <div class="flex justify-between mb-2">
@@ -138,6 +137,26 @@
                             <span class="text-blue-500">{{ $payment->price }}</span>
                         </div>
                     </div>
+
+                    @if($payment->status === 'settlement')
+                    <!-- ID Payment -->
+                    <a href="/tickets/{{ $payment->uuid }}"
+                        class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-150">
+                        <div class="flex-1 text-gray-500">
+                            <p class="text-sm ">Print Ticket</p>
+                            <p class="font-semibold text-gray-900">Ticket {{ $payment->booking->event->name }}</p>
+                            <p class="text-xs">Tiket juga telah dikirim ke emailmu!</p>
+                        </div>
+                        <button class="text-indigo-500 hover:text-indigo-600 transition-colors p-2"
+                            onclick="navigator.clipboard.writeText('{{ $payment->uuid }}')" title="Copy ID">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+                        </button>
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>

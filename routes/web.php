@@ -3,17 +3,25 @@
 use App\Events\Test;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
+use App\Http\Controllers\QueueController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ServiceAPIController;
 use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
-use App\Http\Controllers\QueueController;
+
+
+Route::get('/email', function () {
+    return view('email.ticket');
+});
+
+Route::post('/callbackmidtrans', [PaymentController::class, 'callbackMidtrans']);
 
 Route::get(
     '/test',
@@ -106,7 +114,7 @@ Route::group(['middleware' => 'guest'], function () {
 // Route Group for Middleware Auth
 route::group(['middleware' => 'auth'], function () {
     Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
-
+    Route::get('/tickets/{payment:uuid}', [TicketController::class, 'index']);
     Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware('war')->name('war');
     Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware(['war', 'waropen'])->name('war');
     Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen'])->name('queue');

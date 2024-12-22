@@ -21,4 +21,9 @@ class Booking extends Model
     {
         return $this->hasMany(Booking_Detail::class, 'booking_uuid');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_uuid');
+    }
 }

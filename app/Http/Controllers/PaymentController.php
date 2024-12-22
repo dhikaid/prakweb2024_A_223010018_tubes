@@ -15,8 +15,11 @@ use App\Events\QueueUpdated;
 use Illuminate\Http\Request;
 use App\Events\TicketUpdated;
 use App\Models\Booking_Detail;
+use App\Mail\Ticket as MailTicket;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class PaymentController extends Controller
@@ -213,6 +216,16 @@ class PaymentController extends Controller
                     }
                 }
             }
+
+            if ($payment->status === 'settlement' && $payment->booking->sendEmail == false) {
+                $ticket =  new TicketController();
+                $ticket->generate($payment);
+                Booking::where('uuid', $payment->booking->uuid)->update([
+                    'sendEmail' => true,
+                ]);
+                $ticket = $payment;
+                Mail::to($payment->booking->user->email)->send(new MailTicket($ticket));
+            }
         }
 
         $payment->load(['booking', 'booking.event']);
@@ -325,6 +338,32 @@ class PaymentController extends Controller
             ));
 
             // dd(1);
+        }
+    }
+
+    public function callbackMidtrans()
+    {
+        $notif = new \Midtrans\Notification();
+
+        $transaction = $notif->transaction_status;
+        $fraud = $notif->fraud_status;
+
+        error_log("Order ID $notif->order_id: " . "transaction status = $transaction, fraud staus = $fraud");
+
+        if ($transaction == 'capture') {
+            if ($fraud == 'challenge') {
+                Log::info($transaction . ' - ' . $fraud);
+            } else if ($fraud == 'accept') {
+                Log::info($transaction . ' - ' . $fraud);
+            }
+        } else if ($transaction == 'cancel') {
+            if ($fraud == 'challenge') {
+                Log::info($transaction . ' - ' . $fraud);
+            } else if ($fraud == 'accept') {
+                Log::info($transaction . ' - ' . $fraud);
+            }
+        } else if ($transaction == 'deny') {
+            Log::info($transaction . ' - ' . $fraud);
         }
     }
 }

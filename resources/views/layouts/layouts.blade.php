@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {{-- FAVICON --}}
     <link rel="icon" sizes="180x180" href="{{ asset('assets/bookrn.png') }}">
-    <title>{{ $title }} | BookRN</title>
+    <title>{{ $title ?? 'Unknown' }} | BookRN</title>
 
     {{-- CDN --}}
     @vite('resources/css/app.css')
