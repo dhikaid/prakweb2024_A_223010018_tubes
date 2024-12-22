@@ -79,9 +79,18 @@ class DashboardEventsController extends Controller
                 'venue' => strtoupper($request->venue),
             ]);
 
+            $baseSlug = Str::slug($request->name);
+            $slug = $baseSlug;
+            $count = 1;
+
+            while (Event::where('slug', $slug)->exists()) {
+                $count++;
+                $slug = $baseSlug . '-' . $count;
+            }
+
             Event::create([
                 'uuid' => Str::uuid(),
-                'slug' => Str::slug($request->name . '-' . now()->timestamp),
+                'slug' => $slug,
                 'name' => strtoupper($request->name),
                 'image' => $imagePath,
                 'description' => $request->description,
@@ -259,9 +268,20 @@ class DashboardEventsController extends Controller
                 'venue' => strtoupper($request->venue),
             ]);
 
+            $baseSlug = Str::slug($request->name);
+            $slug = $baseSlug;
+            $count = 1;
+
+            // Check if the new slug already exists for other events
+            while (Event::where('slug', $slug)->where('uuid', '!=', $event->uuid)->exists()) {
+                $count++;
+                $slug = $baseSlug . '-' . $count;
+            }
+
             // Update event
             $event->update([
                 'name' => strtoupper($request->name),
+                'slug' => $slug, // Update the slug here
                 'image' => $imagePath,
                 'description' => $request->description,
                 'start_date' => $request->start_date,

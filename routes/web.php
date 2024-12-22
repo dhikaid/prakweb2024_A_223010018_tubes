@@ -82,6 +82,8 @@ Route::prefix('service/api')->group(function () {
 
     Route::post('/transaction/{event:slug}', [PaymentController::class, 'createCharge']);
     Route::post('/transaction/{event:slug}/pay', [PaymentController::class, 'createPay']);
+
+    Route::get('/search', [ServiceAPIController::class, 'searchEvent']);
 });
 
 
