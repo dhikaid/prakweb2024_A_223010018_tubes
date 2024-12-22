@@ -26,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->validateCsrfTokens(except: [
             'callbackmidtrans/*',
+            'https://bookrn.bhadrikais.my.id/callbackmidtrans'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

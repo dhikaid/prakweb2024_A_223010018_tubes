@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\Test;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -18,7 +19,8 @@ use App\Http\Controllers\DashboardEventsController;
 
 
 Route::get('/email', function () {
-    return view('email.ticket');
+    // return view('email.ticket');
+    Log::info('test');
 });
 
 Route::post('/callbackmidtrans', [PaymentController::class, 'callbackMidtrans']);
