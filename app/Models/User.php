@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Scopes\EOScope;
+// use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -16,6 +17,7 @@ class User extends Authenticatable
 {
 
     use HasFactory, Notifiable, HasUuids, SoftDeletes;
+    // use HasApiTokens;
 
     // Tentukan nama kolom primary key
     protected $primaryKey = 'uuid';
