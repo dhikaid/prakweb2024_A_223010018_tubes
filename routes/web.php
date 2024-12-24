@@ -132,6 +132,13 @@ route::group(['middleware' => 'auth'], function () {
     Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen'])->name('queue');
     Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
     Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
+
+    // INI NANTI DIUBAH VIEWNYA
+    Route::get('/history', function () {
+        return view('main.history');
+    });
+    // ENDVIEW
+
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
 });
@@ -145,8 +152,6 @@ Route::get('/{location}', [HomeController::class, 'index'])->name('home.location
 
 Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
-
-
     Route::middleware('isAdmin')->group(function () {
         Route::resource('users', DashboardUsersController::class);
         Route::resource('roles', DashboardRolesController::class);
