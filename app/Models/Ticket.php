@@ -43,7 +43,7 @@ class Ticket extends Model
             if ($status === 'settlement') {
                 // Tambahkan jumlah jika status adalah settlement
                 $totalBookedQty += $bookingDetail->qty;
-            } elseif ($status === 'pending') {
+            } else {
                 // Tambahkan jumlah jika pending dan masih dalam durasi 10 menit
                 if ($bookingDetail->created_at->greaterThan(now()->subSeconds($duration))) {
                     $totalBookedQty += $bookingDetail->qty;

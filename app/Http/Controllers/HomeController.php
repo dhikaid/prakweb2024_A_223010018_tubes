@@ -72,7 +72,15 @@ class HomeController extends Controller
             }
             $queue = Queue::where('event_uuid', $event->uuid)->where('user_uuid', Auth::user()->uuid)->where('status', '=', 'in_progress')->first();
             if ($queue->isExpired) {
-                $queue->lockForUpdate()->update(['status' => 'completed']);
+
+
+                $qid = Queue::where('user_uuid', Auth::user()->uuid)->where('event_uuid', $event->uuid)->where('status', '!=', 'completed')->first();
+                // dd($qid);
+                if ($qid) {
+                    $queueController = new QueueController();
+                    $queueController->completeQueue($qid->uuid, $event->uuid);
+                }
+                $queue->update(['status' => 'completed']);
                 return redirect()->to('/event/' . $event->slug . '/war');
             }
         }

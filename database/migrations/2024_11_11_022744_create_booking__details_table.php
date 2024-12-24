@@ -10,12 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('bookings', function (Blueprint $table) {
+        Schema::create('booking__details', function (Blueprint $table) {
             $table->uuid()->unique();
-            $table->foreignUuid('user_uuid')->references('uuid')->on('users');
-            $table->foreignUuid('event_uuid')->references('uuid')->on('events');
-            $table->enum('status', ['pending', 'settlement', 'failed'])->default('pending');
-            $table->boolean('sendEmail')->default(false);
+            $table->foreignUuid('booking_uuid')->nullable()->references('uuid')->on('bookings')->nullOnDelete();
+            $table->foreignUuid('ticket_uuid')->nullable()->references('uuid')->on('tickets')->nullOnDelete();
+            $table->integer('qty');
+            $table->decimal('total', 15, 2);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('booking__details');
     }
 };

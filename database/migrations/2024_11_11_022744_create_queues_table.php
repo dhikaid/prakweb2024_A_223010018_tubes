@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('queues', function (Blueprint $table) {
             $table->uuid()->unique();
-            $table->foreignUuid('event_uuid')->references('uuid')->on('events');
-            $table->foreignUuid('user_uuid')->references('uuid')->on('users');
+            $table->foreignUuid('event_uuid')->nullable()->references('uuid')->on('events')->nullOnDelete();
+            $table->foreignUuid('user_uuid')->nullable()->references('uuid')->on('users')->nullOnDelete();
             $table->dateTime('joined_at')->nullable();
             $table->enum('status', ['pending', 'in_progress', 'completed']); // Menggunakan enum dengan pilihan status
             $table->timestamps();

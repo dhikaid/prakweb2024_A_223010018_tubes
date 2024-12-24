@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('fullname');
             $table->string('password');
-            $table->foreignUuid('role_uuid')->references('uuid')->on('roles');
+            $table->foreignUuid('role_uuid')->nullable()->references('uuid')->on('roles')->nullOnDelete();
             $table->boolean('isVerified')->default(false);
             $table->rememberToken();
             $table->timestamps();

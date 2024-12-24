@@ -10,10 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('event__categories', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->uuid()->unique();
-            $table->text('description');
-            $table->string('name');
+            $table->string('ticket');
+            $table->decimal('price', 15, 2);
+            $table->integer('qty');
+            $table->foreignUuid('event_uuid')->nullable()->references('uuid')->on('events')->nullOnDelete();
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('event__categories');
+        Schema::dropIfExists('tickets');
     }
 };

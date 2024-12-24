@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->uuid()->unique();
-            $table->foreignUuid('booking_uuid')->references('uuid')->on('bookings');
+            $table->foreignUuid('booking_uuid')->nullable()->references('uuid')->on('bookings')->nullOnDelete();
             $table->decimal('total', 15, 2);
             $table->enum('status', ['pending', 'settlement', 'failed'])->default('pending');
             $table->string('method')->nullable();

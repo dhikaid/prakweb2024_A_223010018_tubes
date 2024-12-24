@@ -91,6 +91,22 @@
                                             @enderror
                                         </div>
                                         {{-- END Description --}}
+                                        {{-- START END DATE --}}
+                                        <div class="mt-4">
+                                            <label for="category"
+                                                class="block text-sm text-black font-semibold dark:text-gray-300 mb-2">Category</label>
+                                            <select
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                name="category" required>
+                                                @foreach ($categories as $category)
+                                                <option value="{{ $category->uuid }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('category')
+                                            <p class="mt-3 text-xs text-red-400">{{ $message }} </p>
+                                            @enderror
+                                        </div>
+                                        {{-- END END DATE --}}
                                     </div>
                                     <div class="layout-2 w-full">
                                         <div class="md:flex gap-2 w-full mb-4">
@@ -142,6 +158,8 @@
                                                 </p> @enderror
                                             </div>
                                             {{-- END END DATE --}}
+
+
                                         </div>
                                         {{-- START QUEUE LIMIT --}}
                                         <div class="mb-3">
