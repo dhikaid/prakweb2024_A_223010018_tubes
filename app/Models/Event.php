@@ -21,14 +21,7 @@ class Event extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(
-            Event_Category::class,
-            'event__categories__mappings', // Nama tabel pivot
-            'uuid',                   // Foreign key di tabel pivot
-            'uuid',                // Foreign key di tabel categories
-            'uuid',                   // Primary key di tabel events
-            'uuid'                 // Primary key di tabel categories
-        );
+        return $this->belongsTo(Category::class, 'category_uuid');
     }
 
     public function queue()

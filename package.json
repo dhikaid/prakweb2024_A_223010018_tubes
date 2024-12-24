@@ -3,7 +3,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "deploy": "composer install && npm install && npm run build",
+        "deploymigration": "php artisan migrate:fresh --seed && composer install && npm install && npm run build"
     },
     "devDependencies": {
         "@tailwindcss/line-clamp": "^0.4.4",

@@ -32,7 +32,7 @@
                     <div class="relative" @click.away="isSearchFocused = false">
                         <input type="text" name="query" placeholder="Cari event menarik disini..."
                             @focus="isSearchFocused = true; search()" @input.debounce.300ms="search()"
-                            x-model="searchQuery" class="w-full px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl bg-gray-50/80
+                            x-model="searchQuery" required autocomplete="off" class="w-full px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl bg-gray-50/80
                                       placeholder-gray-400 text-gray-700 text-sm lg:text-base
                                       border-2 border-blue-400
                                       hover:border-blue-500 hover:bg-white

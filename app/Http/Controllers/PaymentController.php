@@ -27,8 +27,10 @@ class PaymentController extends Controller
 {
 
     private $addTime;
+    private $queue;
     public function __construct()
     {
+        $this->queue = new QueueController();
         $this->addTime = ceil(env('WAR_TICKET_DURATION', 60) / 60);
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
@@ -211,7 +213,7 @@ class PaymentController extends Controller
             if ($payment->status !== 'pending') {
                 $qid = Queue::where('user_uuid', Auth::user()->uuid)->where('event_uuid', $payment->booking->event->uuid)->where('status', '!=', 'completed')->first();
                 if ($qid) {
-                    $this->completeQueue($qid->uuid, $payment->booking->event->uuid);
+                    $this->queue->completeQueue($qid->uuid, $payment->booking->event->uuid);
                     foreach ($payment->booking->bookingDetail as $ticket) {
                         broadcast(new TicketUpdated(Ticket::where('uuid', $ticket->ticket_uuid)->first()));
                     }
@@ -243,104 +245,10 @@ class PaymentController extends Controller
         $payment->load(['booking', 'booking.event']);
         $qid = Queue::where('user_uuid', Auth::user()->uuid)->where('event_uuid', $payment->booking->event->uuid)->first();
 
-        $this->completeQueue($qid->uuid, $payment->booking->event->uuid);
+        $this->queue->completeQueue($qid->uuid, $payment->booking->event->uuid);
     }
 
 
-    public function completeQueue($queueUuid, $eventUuid)
-    {
-        // Tandai pengguna sebagai selesai
-        $queue = Queue::where('uuid', $queueUuid)->first();
-        if ($queue) {
-            $queue->update(['status' => 'completed']);
-        }
-
-        // Setelah selesai, proses pengguna berikutnya
-        $this->processQueue($queueUuid);
-    }
-
-    function getNextInQueue($eventUuid)
-    {
-        // Ambil pengguna yang belum diproses (statusnya pending)
-        return Queue::where('event_uuid', $eventUuid)
-            ->where('status', 'pending')
-            ->orderBy('created_at', 'asc')
-            ->first();
-    }
-    public function processQueue($queueUuid)
-    {
-        $queue = Queue::where('uuid', $queueUuid)->first();
-
-        if ($queue) {
-            // Tandai pengguna saat ini sebagai 'completed'
-            $queue->update(['status' => 'completed']);
-        }
-
-        // Ambil event_uuid dari queue saat ini
-        $eventUuid = $queue->event_uuid;
-
-        // Cek jumlah pengguna dengan status 'in_progress'
-        $currentInProgress = Queue::where('event_uuid', $eventUuid)
-            ->where('status', 'in_progress')
-            ->count();
-
-        // Ambil queue_limit dari Event
-        $queueLimit = Event::where('uuid', $eventUuid)->value('queue_limit');
-
-        // Hitung jumlah slot yang tersedia
-        $slotsAvailable = $queueLimit - $currentInProgress;
-
-        // Proses pengguna berikutnya jika ada slot kosong
-        for ($i = 0; $i < $slotsAvailable; $i++) {
-            $nextQueue = $this->getNextInQueue($eventUuid);
-            if ($nextQueue) {
-                $nextQueue->update(['status' => 'in_progress', 'joined_at' => now()]);
-
-                // Broadcast ke pengguna baru
-                broadcast(new QueueUpdated(
-                    $nextQueue->event_uuid,
-                    $nextQueue->user_uuid,
-                    1, // Posisi baru
-                    $this->addTime, // Estimasi waktu
-                    'in_progress'
-                ));
-                // dd(2);
-            } else {
-                break; // Jika tidak ada antrian lagi, hentikan loop
-            }
-        }
-        // Kirim pembaruan posisi untuk semua pengguna yang masih pending
-        $this->sendQueueUpdate($eventUuid);
-    }
-
-    public function sendQueueUpdate($eventUuid)
-    {
-        // Ambil semua antrian dengan status 'pending' berdasarkan waktu
-        $queues = Queue::where('event_uuid', $eventUuid)
-            ->where('status', 'pending')
-            ->orderBy('created_at', 'asc')
-            ->get();
-
-        $estimatedMinutesPerUser = $this->addTime; // Estimasi waktu per pengguna
-
-        // Loop melalui setiap pengguna dalam antrian
-        foreach ($queues as $index => $queue) {
-            $position = $index + 1; // Posisi dimulai dari 1
-            $estimate = $position * $estimatedMinutesPerUser;
-
-            // Kirim pembaruan ke setiap pengguna
-
-            broadcast(new QueueUpdated(
-                $eventUuid,
-                $queue->user_uuid,
-                $position,
-                $estimate,
-                $queue->status // Kirim status saat ini
-            ));
-
-            // dd(1);
-        }
-    }
 
     public function callbackMidtrans()
     {

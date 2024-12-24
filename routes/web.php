@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\Test;
+use App\Models\EventCategory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\ServiceAPIController;
 use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
+use App\Http\Controllers\DashboardCategoriesController;
 
 
 Route::get('/email', function () {
@@ -144,9 +146,11 @@ Route::get('/{location}', [HomeController::class, 'index'])->name('home.location
 Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
 
+
     Route::middleware('isAdmin')->group(function () {
         Route::resource('users', DashboardUsersController::class);
         Route::resource('roles', DashboardRolesController::class);
+        Route::resource('categories', DashboardCategoriesController::class);
     });
 
     Route::resource('events', DashboardEventsController::class);
