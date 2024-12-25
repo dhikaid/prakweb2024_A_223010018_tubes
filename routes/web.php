@@ -10,6 +10,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ServiceAPIController;
 use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
@@ -82,9 +83,7 @@ route::group(['middleware' => 'auth'], function () {
 
 // DASHBOARD
 Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard.index');
-    });
+    Route::get('/', [DashboardController::class, 'index']);
     Route::middleware('isAdmin')->group(function () {
         Route::resource('users', DashboardUsersController::class);
         Route::resource('roles', DashboardRolesController::class);
