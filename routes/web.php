@@ -10,6 +10,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PasswordController;
@@ -132,6 +133,7 @@ route::group(['middleware' => 'auth'], function () {
     Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen'])->name('queue');
     Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
     Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
 
     // INI NANTI DIUBAH VIEWNYA
     Route::get('/history', function () {
@@ -150,6 +152,7 @@ Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
 
+
 Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::middleware('isAdmin')->group(function () {
@@ -165,3 +168,5 @@ Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function ()
     Route::put('events/{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'editTicket']);
     Route::delete('events/{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'deleteTicket']);
 });
+
+
