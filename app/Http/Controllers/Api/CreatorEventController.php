@@ -22,6 +22,14 @@ class CreatorEventController extends Controller
             })
             ->get();
 
+        // Check if the creator exists
+        if (!$data) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Creator not found'
+            ], 404);
+        }
+
         // Membungkus data dengan resource
         return new CreatorEventCollection(
             true, // Status
