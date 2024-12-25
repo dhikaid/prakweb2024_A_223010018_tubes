@@ -31,30 +31,34 @@ class Ticket extends Model
 
     public function getQtyAvailableAttribute()
     {
-        // Ambil semua booking detail beserta relasi booking
-        $bookingDetails = $this->bookingDetail()->with('booking')->get();
         $duration = ceil(env('WAR_TICKET_DURATION', 60) / 2);
-
+        $cutoffTime = now()->subSeconds($duration);
         $totalBookedQty = 0;
 
-        foreach ($bookingDetails as $bookingDetail) {
-            $status = $bookingDetail->booking->status ?? null;
+        // Fetch booking details with related bookings efficiently using whereHas
+        $settledBookings = $this->bookingDetail()->whereHas('booking', function ($query) {
+            $query->where('status', 'settlement');
+        })->get();
 
-            if ($status === 'settlement') {
-                // Tambahkan jumlah jika status adalah settlement
-                $totalBookedQty += $bookingDetail->qty;
-            } else {
-                // Tambahkan jumlah jika pending dan masih dalam durasi 10 menit
-                if ($bookingDetail->created_at->greaterThan(now()->subSeconds($duration))) {
-                    $totalBookedQty += $bookingDetail->qty;
-                }
-            }
+        $pendingBookings = $this->bookingDetail()->whereHas('booking', function ($query) use ($cutoffTime) {
+            $query->where('status', 'pending')
+                ->where('created_at', '>=', $cutoffTime);
+        })->get();
+
+        // Sum the quantities for settlement bookings
+        foreach ($settledBookings as $bookingDetail) {
+            $totalBookedQty += $bookingDetail->qty;
         }
 
-        // Hitung jumlah tersedia
+        // Sum the quantities for pending bookings within the timeframe
+        foreach ($pendingBookings as $bookingDetail) {
+            $totalBookedQty += $bookingDetail->qty;
+        }
+
+        // Calculate the available quantity
         $result = $this->qty - $totalBookedQty;
 
-        // Pastikan hasil tidak kurang dari 0
+        // Ensure the result is not negative
         return max($result, 0);
     }
 
