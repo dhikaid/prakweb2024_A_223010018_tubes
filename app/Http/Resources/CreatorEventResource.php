@@ -7,19 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CreatorEventResource extends JsonResource
 {
-
-
-    //define properti
+    // Properti tambahan jika diperlukan
     public $status;
     public $message;
-    public $resource;
 
     /**
      * __construct
      *
      * @param  mixed $status
      * @param  mixed $message
-     * @param  mixed $resource
      * @return void
      */
     public function __construct($status, $message, $resource)
@@ -37,12 +33,30 @@ class CreatorEventResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $data = [
+            'uuid' => $this->uuid,
+            'username' => $this->username,
+            'fullname' => $this->fullname,
+            'email' => $this->email,
+            'role' => $this->role->role,
+            'totalEvents' => $this->event->count(),
+            'events' => $this->event->map(function ($event) {
+                return [
+                    'uuid' => $event->uuid,
+                    'eventName' => $event->name,
+                    'slug' => $event->slug,
+                    'description' => $event->description,
+                    'startDate' => $event->start_date,
+                    'endDate' => $event->end_date,
+                    'capacity' => $event->capacity,
+                ];
+            }),
+        ];
+
         return [
             'success' => $this->status,
             'message' => $this->message,
-            'data' => $this->resource
+            'data' => $data,
         ];
     }
-
-
 }

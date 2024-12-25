@@ -2,38 +2,57 @@
 
 namespace App\Http\Controllers\Api;
 
-//import model Event
-use App\Models\Event;
+//import model User
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
+//import resource 
 use App\Http\Controllers\Controller;
-
-
-//import resource PostResource
 use App\Http\Resources\CreatorEventResource;
+use App\Http\Resources\CreatorEventCollection;
 
 class CreatorEventController extends Controller
 {
     public function index()
     {
-        return response()->json(['message' => 'Route is working']);
+        // Query untuk mendapatkan data creator mengggunakan relasi dari event dan role
+        $data = User::with(['role', 'event']) // Memuat role dan event
+            ->whereHas('role', function ($query) {
+                $query->where('role', 'EO'); // Hanya creator dengan role EO
+            })
+            ->get();
 
+        // Membungkus data dengan resource
+        return new CreatorEventCollection(
+            true, // Status
+            'List of Creators and Their Events', // Pesan
+            $data // Data
+        );
 
-        // jika ingin menggunakan DB
-        // $data = DB::table('events')
-        //     ->join('users', 'events.user_uuid', '=', 'users.uuid')
-        //     ->join('roles', 'users.role_uuid', '=', 'roles.uuid')
-        //     ->where('roles.role', 'EO') // Filter hanya untuk role EO
-        //     ->select('users.fullname as creator_name', 'events.name as event_name')
-        //     ->get();
+    }
 
-        // jika ingin menggunakan model
-        // $data = Event::with('creator.role')
-        // ->whereHas('creator.role', function ($query) {
-        //     $query->where('role', 'EO');
-        // })
-        // ->get();
+    public function show($username)
+    {
+        $data = User::with(['role', 'event'])
+            ->where('username', $username)
+            ->whereHas('role', function ($query) {
+                $query->where('role', 'EO');
+            })
+            ->firstOrFail();
 
-        // return new CreatorEventResource(true, 'List Data Posts', $data);
+        // Check if the creator exists
+        if (!$data) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Creator not found'
+            ], 404);
+        }
+
+        // Membungkus data dengan resource
+        return new CreatorEventResource(
+            true, // Status
+            'Creator and Their Events', // Message
+            $data // Data
+        );
     }
 }
