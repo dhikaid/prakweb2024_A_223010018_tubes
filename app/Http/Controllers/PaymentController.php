@@ -207,6 +207,15 @@ class PaymentController extends Controller
                     'status' => 'failed'
                 ]);
             }
+        } else {
+            if ($payment->status === 'settlement') {
+                $payment->update([
+                    'status' => 'settlement'
+                ]);
+                $payment->booking->update([
+                    'status' => 'settlement'
+                ]);
+            }
         }
 
         if ($payment->booking->event->is_tiket_war) {
@@ -262,16 +271,26 @@ class PaymentController extends Controller
         error_log("Order ID $notif->order_id: " . "transaction status = $transaction, fraud staus = $fraud");
 
         $order = Payment::where('uuid', $notif->order_id)->first();
+        $booking = Booking::where('uuid',  $order->booking_uuid)->first();
         if ($transaction == 'pending') {
             $order->update([
+                'status' => 'pending'
+            ]);
+            $booking->update([
                 'status' => 'pending'
             ]);
         } elseif ($transaction == 'settlement') {
             $order->update([
                 'status' => 'settlement'
             ]);
+            $booking->update([
+                'status' => 'settlement'
+            ]);
         } elseif ($transaction == 'cancel' || $transaction == 'failed') {
             $order->update([
+                'status' => 'failed'
+            ]);
+            $booking->update([
                 'status' => 'failed'
             ]);
         }
