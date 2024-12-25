@@ -1,8 +1,5 @@
 <?php
 
-use App\Events\Test;
-use App\Models\EventCategory;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -13,67 +10,11 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ServiceAPIController;
 use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
 use App\Http\Controllers\DashboardCategoriesController;
-
-
-Route::get('/email', function () {
-    // return view('email.ticket');
-    Log::info('test');
-});
-
-Route::post('/callbackmidtrans', [PaymentController::class, 'callbackMidtrans']);
-
-Route::get(
-    '/test',
-    function () {
-        dd(broadcast(new Test('halo')));
-    }
-);
-Route::get(
-    '/test/{payment:uuid}',
-    [PaymentController::class, 'testSelesai']
-);
-Route::get(
-    '/test2/{event:uuid}',
-    [PaymentController::class, 'updateTicket']
-);
-
-// ROUTE DASHBOARD
-Route::prefix('dashboard')->group(function () {
-    Route::get('/', function () {
-        return view('dashboard.index');
-    });
-    // /dashboard/users
-    Route::resource('/users', DashboardUsersController::class);
-    // /dashboard/roles
-    Route::resource('/roles', DashboardRolesController::class);
-    // /dashboard/events
-    Route::resource('/events', DashboardEventsController::class);
-})->middleware(['auth']);
-
-Route::get('/creators', [HomeController::class, 'showCreators']);
-Route::get('/creator/{user:username}', [HomeController::class, 'showDetailCreator']);
-Route::get('/events', [HomeController::class, 'showLatestEvent']);
-Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
-Route::get('/transaction/{payment:uuid}', [PaymentController::class, 'showTransaction'])->middleware('auth');
-
-// ROUTE SEARCH
-Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
-
-// if (request('search')) {
-//     $event->where('title', 'like', '%' . request('search') . '%');
-// }
-
-
-
-// ROUTE DETAIL
-Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
-
 
 // SERVICES API
 Route::prefix('service/api')->group(function () {
@@ -86,6 +27,7 @@ Route::prefix('service/api')->group(function () {
     Route::post('/transaction/{event:slug}/pay', [PaymentController::class, 'createPay']);
 
     Route::get('/search', [ServiceAPIController::class, 'searchEvent']);
+    Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
 });
 
 
@@ -131,32 +73,42 @@ route::group(['middleware' => 'auth'], function () {
     Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware(['war', 'waropen'])->name('war');
     Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen'])->name('queue');
     Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
-    Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
+    // TRANSACTION
+    Route::get('/transaction/{payment:uuid}', [PaymentController::class, 'showTransaction']);
 });
 
-// ROUTE EVENT DETAILS
-Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
 
-//ROUTE HOME
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
-
+// DASHBOARD
 Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function () {
-    Route::get('/', [DashboardController::class, 'index']);
-
-
+    Route::get('/', function () {
+        return view('dashboard.index');
+    });
     Route::middleware('isAdmin')->group(function () {
         Route::resource('users', DashboardUsersController::class);
         Route::resource('roles', DashboardRolesController::class);
         Route::resource('categories', DashboardCategoriesController::class);
     });
-
     Route::resource('events', DashboardEventsController::class);
-    Route::get('events/{event:uuid}/tickets/create', [DashboardEventsController::class, 'showCreateTicket']);
-    Route::post('events/{event:uuid}/tickets', [DashboardEventsController::class, 'createTicket']);
-    Route::get('events/{event:uuid}/tickets/{ticket:uuid}/edit', [DashboardEventsController::class, 'showEditTicket']);
-    Route::put('events/{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'editTicket']);
-    Route::delete('events/{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'deleteTicket']);
+    Route::prefix('events')->group(function () {
+        Route::get('{event:uuid}/tickets/create', [DashboardEventsController::class, 'showCreateTicket']);
+        Route::post('{event:uuid}/tickets', [DashboardEventsController::class, 'createTicket']);
+        Route::get('{event:uuid}/tickets/{ticket:uuid}/edit', [DashboardEventsController::class, 'showEditTicket']);
+        Route::put('{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'editTicket']);
+        Route::delete('{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'deleteTicket']);
+    });
 });
+
+
+//ALL ACCESS
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/callbackmidtrans', [PaymentController::class, 'callbackMidtrans']);
+Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
+Route::get('/creators', [HomeController::class, 'showCreators']);
+Route::get('/creator/{user:username}', [HomeController::class, 'showDetailCreator']);
+Route::get('/events', [HomeController::class, 'showLatestEvent']);
+Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
+Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
+Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
+Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
