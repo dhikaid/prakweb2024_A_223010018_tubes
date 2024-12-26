@@ -17,6 +17,6 @@ class HistoryController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('history.index', compact('history'));
+        return view('main.history', compact('history'));
     }
 }

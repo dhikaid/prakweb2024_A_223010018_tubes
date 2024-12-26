@@ -136,9 +136,7 @@ route::group(['middleware' => 'auth'], function () {
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
 
     // INI NANTI DIUBAH VIEWNYA
-    Route::get('/history', function () {
-        return view('main.history');
-    });
+    
     // ENDVIEW
 
     // LOGOUT

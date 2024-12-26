@@ -156,7 +156,7 @@
                 </div>
             </div>
         </div>
-
+        @foreach($history as $payment)
         <div class=" px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <div class="flex items-center justify-between">
                 <span class="text-sm font-light text-gray-600 dark:text-gray-400">Events</span>
@@ -164,14 +164,14 @@
             </div>
         
             <div class="mt-2">
-                <a href="#" class="text-xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline" tabindex="0" role="link">BLOCKCHAIN EXPO 2024</a>
-                <p class="mt-2 text-gray-600 dark:text-gray-300">ID Transaksi: 12345 </p>
-                <p class="mt-2 text-gray-600 dark:text-gray-300">Total Pembayaran: Rp 1.000.000</p>
-                <p class="mt-2 text-gray-600 dark:text-gray-300">Tanggal Pembayaran: Selasa, 11 Oktober 2024</p>
+                <a href="#" class="text-xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline" tabindex="0" role="link">{{ $payment->booking->event->name ?? 'Event tidak tersedia' }}</a>
+                <p class="mt-2 text-gray-600 dark:text-gray-300">ID Transaksi: {{ $payment->uuid }} </p>
+                <p class="mt-2 text-gray-600 dark:text-gray-300">Total Pembayaran: {{ $payment->price }}</p>
+                <p class="mt-2 text-gray-600 dark:text-gray-300">Tanggal Pembayaran: {{ $payment->created_at }}</p>
             </div>
         
             <div class="flex items-center justify-between mt-4 text-sm">
-                <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline flex" tabindex="0" role="link">
+                <a href="/tickets/{{ $payment->uuid }}" class="text-blue-600 dark:text-blue-400 hover:underline flex" tabindex="0" role="link">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 mt-0">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>
@@ -180,11 +180,22 @@
                 </a>
         
                 <div class="flex items-center">
-                    <img class="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src="https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=40&q=80" alt="avatar">
-                    <a class="font-bold text-gray-700 cursor-pointer dark:text-gray-200" tabindex="0" role="link">Khatab wedaa</a>
+                    <img class="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src="{{ Auth::user()->image }}" alt="avatar">
+                    <a class="font-bold text-gray-700 cursor-pointer dark:text-gray-200" tabindex="0" role="link">{{ Auth::user()->username }}</a>
+                    @if (auth()->user()->isVerified)
+                        <span class="inline-flex items-center gap-1 text-xs text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                            </svg>
+                            Terverifikasi
+                        </span>
+                    @endif
                 </div>
             </div>
         </div>
+        @endforeach
     </div>
 </div>
 
