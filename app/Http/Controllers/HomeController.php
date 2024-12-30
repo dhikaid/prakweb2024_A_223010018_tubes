@@ -15,6 +15,14 @@ class HomeController extends Controller
 {
     public function index($location = 'jakarta')
     {
+
+        if ($location !== 'jakarta') {
+            $cekAPI = new ServiceAPIController;
+            if (!$cekAPI->checkCity($location)) {
+                return redirect()->to('/');
+            }
+        }
+
         $event = new Event;
         $eventlocation = $event->whereHas('locations', function ($query) use ($location) {
             $query->where('city', 'LIKE', '%' . strtolower($location) . '%');
