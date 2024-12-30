@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PasswordController;
@@ -24,8 +25,8 @@ Route::prefix('service/api')->group(function () {
     Route::post('/ticket/{ticket:uuid}', [ServiceAPIController::class, 'addTicket'])->middleware('auth');
     Route::get('/ticket/{ticket:uuid}', [ServiceAPIController::class, 'checkTicket'])->middleware('auth');
 
-    Route::post('/transaction/{event:slug}', [PaymentController::class, 'createCharge']);
-    Route::post('/transaction/{event:slug}/pay', [PaymentController::class, 'createPay']);
+    Route::post('/transaction/{event:slug}', [PaymentController::class, 'createCharge'])->middleware('eventActive');
+    Route::post('/transaction/{event:slug}/pay', [PaymentController::class, 'createPay'])->middleware('eventActive');
 
     Route::get('/search', [ServiceAPIController::class, 'searchEvent']);
     Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
@@ -68,12 +69,13 @@ route::group(['middleware' => 'auth'], function () {
     Route::put('/profile/update-general', [ProfileController::class, 'updateGeneral'])->name('profile.update.general');
     Route::put('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
     Route::put('/profile/changerole', [ProfileController::class, 'updateRole'])->name('profile.update.role');
-    Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
+    Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket')->middleware('eventActive');
     Route::get('/tickets/{payment:uuid}', [TicketController::class, 'index']);
-    Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware('war')->name('war');
-    Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware(['war', 'waropen'])->name('war');
-    Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen'])->name('queue');
-    Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
+    Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware(['war', 'eventActive'])->name('war');
+    Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware(['war', 'waropen', 'eventActive'])->name('war');
+    Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen', 'eventActive'])->name('queue');
+    Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start')->middleware('eventActive');;
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
     // TRANSACTION
@@ -109,5 +111,5 @@ Route::get('/creator/{user:username}', [HomeController::class, 'showDetailCreato
 Route::get('/events', [HomeController::class, 'showLatestEvent']);
 Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
-Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
+Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail')->middleware('eventActive');
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');

@@ -77,7 +77,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://bookrn.bhadrikais.my.id/assets/bookrn.png" alt="Logo BookRN" class="logo">
+            <img src="https://bookrn.bhadrikais.my.id/assets/newlogo.png" alt="Logo BookRN" class="logo">
         </div>
         <h1>Terima Kasih Atas Pembelian Anda!</h1>
         <p>Hai {{ $ticket->booking->user->fullname }},</p>

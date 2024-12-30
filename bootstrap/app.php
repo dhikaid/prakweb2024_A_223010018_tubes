@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EventActive;
 use App\Http\Middleware\Queue;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsEoAdmin;
@@ -24,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'waropen' => WarOpen::class,
             'isEOAdmin' => IsEoAdmin::class,
             'isAdmin' => IsAdmin::class,
+            'eventActive' => EventActive::class,
         ]);
         $middleware->validateCsrfTokens(except: [
             '/callbackmidtrans*'
