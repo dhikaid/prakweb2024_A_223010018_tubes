@@ -28,7 +28,7 @@
                 class="font-bold text-lg md:text-xl bg-gradient-to-r from-blue-600 to-violet-500 bg-clip-text text-transparent">
                 Creator Event</h1>
             <a class="text-xs md:text-sm text-blue-500 hover:text-blue-600 font-medium transition-all duration-200 flex items-center gap-2 hover:gap-3 active:scale-95"
-                href="/events/{{ $location }}">
+                href="/creators">
                 Lihat semua
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">

@@ -1,8 +1,5 @@
 <?php
 
-use App\Events\Test;
-use App\Models\EventCategory;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -21,61 +18,6 @@ use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
 use App\Http\Controllers\DashboardCategoriesController;
 
-
-Route::get('/email', function () {
-    // return view('email.ticket');
-    Log::info('test');
-});
-
-Route::post('/callbackmidtrans', [PaymentController::class, 'callbackMidtrans']);
-
-Route::get(
-    '/test',
-    function () {
-        dd(broadcast(new Test('halo')));
-    }
-);
-Route::get(
-    '/test/{payment:uuid}',
-    [PaymentController::class, 'testSelesai']
-);
-Route::get(
-    '/test2/{event:uuid}',
-    [PaymentController::class, 'updateTicket']
-);
-
-// ROUTE DASHBOARD
-Route::prefix('dashboard')->group(function () {
-    Route::get('/', function () {
-        return view('dashboard.index');
-    });
-    // /dashboard/users
-    Route::resource('/users', DashboardUsersController::class);
-    // /dashboard/roles
-    Route::resource('/roles', DashboardRolesController::class);
-    // /dashboard/events
-    Route::resource('/events', DashboardEventsController::class);
-})->middleware(['auth']);
-
-Route::get('/creators', [HomeController::class, 'showCreators']);
-Route::get('/creator/{user:username}', [HomeController::class, 'showDetailCreator']);
-Route::get('/events', [HomeController::class, 'showLatestEvent']);
-Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
-Route::get('/transaction/{payment:uuid}', [PaymentController::class, 'showTransaction'])->middleware('auth');
-
-// ROUTE SEARCH
-Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
-
-// if (request('search')) {
-//     $event->where('title', 'like', '%' . request('search') . '%');
-// }
-
-
-
-// ROUTE DETAIL
-Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail');
-
-
 // SERVICES API
 Route::prefix('service/api')->group(function () {
     Route::get('/getcity', [ServiceAPIController::class, 'getCity']);
@@ -83,10 +25,11 @@ Route::prefix('service/api')->group(function () {
     Route::post('/ticket/{ticket:uuid}', [ServiceAPIController::class, 'addTicket'])->middleware('auth');
     Route::get('/ticket/{ticket:uuid}', [ServiceAPIController::class, 'checkTicket'])->middleware('auth');
 
-    Route::post('/transaction/{event:slug}', [PaymentController::class, 'createCharge']);
-    Route::post('/transaction/{event:slug}/pay', [PaymentController::class, 'createPay']);
+    Route::post('/transaction/{event:slug}', [PaymentController::class, 'createCharge'])->middleware('eventActive');
+    Route::post('/transaction/{event:slug}/pay', [PaymentController::class, 'createPay'])->middleware('eventActive');
 
     Route::get('/search', [ServiceAPIController::class, 'searchEvent']);
+    Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
 });
 
 
@@ -126,31 +69,21 @@ route::group(['middleware' => 'auth'], function () {
     Route::put('/profile/update-general', [ProfileController::class, 'updateGeneral'])->name('profile.update.general');
     Route::put('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
     Route::put('/profile/changerole', [ProfileController::class, 'updateRole'])->name('profile.update.role');
-    Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket');
+    Route::get('/event/{event:slug}/tickets', [HomeController::class, 'showTicket'])->name('ticket')->middleware('eventActive');
     Route::get('/tickets/{payment:uuid}', [TicketController::class, 'index']);
-    Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware('war')->name('war');
-    Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware(['war', 'waropen'])->name('war');
-    Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen'])->name('queue');
-    Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start');
-    Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
+    Route::get('/event/{event:slug}/war', [QueueController::class, 'showWar'])->middleware(['war', 'eventActive'])->name('war');
+    Route::post('/event/{event:slug}/war', [QueueController::class, 'postWar'])->middleware(['war', 'waropen', 'eventActive'])->name('war');
+    Route::get('/event/{event:slug}/queue', [QueueController::class, 'showQueue'])->middleware(['queue', 'waropen', 'eventActive'])->name('queue');
+    Route::get('/event/{event:slug}/start', [QueueController::class, 'startWar'])->name('start')->middleware('eventActive');;
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
-
-    // INI NANTI DIUBAH VIEWNYA
-    
-    // ENDVIEW
-
     // LOGOUT
     Route::POST('/logout', [AuthController::class, 'logout']);
+    // TRANSACTION
+    Route::get('/transaction/{payment:uuid}', [PaymentController::class, 'showTransaction']);
 });
 
-// ROUTE EVENT DETAILS
-Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
 
-//ROUTE HOME
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
-
-
+// DASHBOARD
 Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::middleware('isAdmin')->group(function () {
@@ -158,13 +91,25 @@ Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function ()
         Route::resource('roles', DashboardRolesController::class);
         Route::resource('categories', DashboardCategoriesController::class);
     });
-
     Route::resource('events', DashboardEventsController::class);
-    Route::get('events/{event:uuid}/tickets/create', [DashboardEventsController::class, 'showCreateTicket']);
-    Route::post('events/{event:uuid}/tickets', [DashboardEventsController::class, 'createTicket']);
-    Route::get('events/{event:uuid}/tickets/{ticket:uuid}/edit', [DashboardEventsController::class, 'showEditTicket']);
-    Route::put('events/{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'editTicket']);
-    Route::delete('events/{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'deleteTicket']);
+    Route::prefix('events')->group(function () {
+        Route::get('{event:uuid}/tickets/create', [DashboardEventsController::class, 'showCreateTicket']);
+        Route::post('{event:uuid}/tickets', [DashboardEventsController::class, 'createTicket']);
+        Route::get('{event:uuid}/tickets/{ticket:uuid}/edit', [DashboardEventsController::class, 'showEditTicket']);
+        Route::put('{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'editTicket']);
+        Route::delete('{event:uuid}/tickets/{ticket:uuid}', [DashboardEventsController::class, 'deleteTicket']);
+    });
 });
 
 
+//ALL ACCESS
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/callbackmidtrans', [PaymentController::class, 'callbackMidtrans']);
+Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
+Route::get('/creators', [HomeController::class, 'showCreators']);
+Route::get('/creator/{user:username}', [HomeController::class, 'showDetailCreator']);
+Route::get('/events', [HomeController::class, 'showLatestEvent']);
+Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
+Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
+Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail')->middleware('eventActive');
+Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');

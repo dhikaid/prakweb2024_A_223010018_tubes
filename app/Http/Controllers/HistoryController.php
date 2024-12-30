@@ -8,15 +8,29 @@ use Illuminate\Support\Facades\Auth;
 
 class HistoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $history = Payment::with(['booking.bookingDetail.ticket', 'booking.event', 'booking.user'])
-            ->whereHas('booking', function ($query) {
-                $query->where('user_uuid', Auth::user()->id); 
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $filters = $request->only(['query']);
+        $status = $request->status;
 
-        return view('main.history', compact('history'));
+        $historyQuery = Payment::with(['booking'])
+            ->whereHas('booking', function ($query) {
+                $query->where('user_uuid', Auth::user()->uuid);
+            });
+
+        if (in_array($status, ['success', 'failed'])) {
+            $historyQuery->where('status', $status === 'success' ? 'settlement' : 'failed');
+        }
+
+        $history = $historyQuery
+            ->latest()
+            ->filter($filters)
+            ->paginate(3)
+            ->appends($filters);
+
+        return view('main.history', [
+            'history' => $history,
+            'title' => 'History'
+        ]);
     }
 }

@@ -39,4 +39,15 @@ class Payment extends Model
     {
         return Number::currency($this->total, 'IDR', 'ID');
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['query'] ?? false, function ($query, $search) {
+            return $query->wherehas('booking', function ($q) use ($search) {
+                $q->whereHas('event', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                });
+            });
+        });
+    }
 }
