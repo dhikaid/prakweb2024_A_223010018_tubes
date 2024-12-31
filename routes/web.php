@@ -117,7 +117,6 @@ Route::get('/events', [HomeController::class, 'showLatestEvent']);
 Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail')->middleware('eventActive');
+Route::get('/about', [FooterController::class, 'showAbout']);
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
 
-Route::get('/about', [FooterController::class, 'showAbout']);
-Route::get('/privacy', [FooterController::class, 'showPrivacy']);
