@@ -15,4 +15,12 @@ class FooterController extends Controller
         return view('main.about', $data);
     }
 
+    public function showPrivacy()
+    {
+        $data = [
+            'title' => 'Kebijakan Privasi',
+            
+        ];
+        return view('main.privacy', $data);
+    }
 }
