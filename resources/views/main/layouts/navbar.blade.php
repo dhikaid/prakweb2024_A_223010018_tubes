@@ -4,7 +4,7 @@
         <!-- Logo Section -->
         <div class="flex items-center flex-1">
             <a href="/" class="flex items-center space-x-2 group relative">
-                <img src="/assets/newlogo.png"
+                <img src="{{ asset('assets/'.env('PATH_LOGO', 'newlogo.png')) }}"
                     class="w-8 sm:w-10 md:w-12 transition-all duration-500 group-hover:scale-110" alt="Logo Situs">
                 <div
                     class="absolute inset-0 rounded-full bg-blue-500/10 scale-0 group-hover:scale-125 transition-transform duration-500">

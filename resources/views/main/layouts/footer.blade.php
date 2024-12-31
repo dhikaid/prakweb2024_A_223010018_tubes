@@ -1,14 +1,16 @@
 <footer class="bg-gray-100 py-6">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-center mb-4">
-            <img src="/assets/newlogo.png" alt="Logo" class="h-10 w-auto">
+            <img src="{{ asset('assets/'.env('PATH_LOGO', 'newlogo.png')) }}" alt="Logo" class="h-10 w-auto">
         </div>
         <nav class="flex justify-center space-x-4 sm:space-x-6 mb-4">
             <a href="/" class="text-gray-600 hover:text-gray-800 text-sm">Home</a>
             <span class="text-gray-300 hidden sm:inline">|</span>
-            <a href="/events" class="text-gray-600 hover:text-gray-800 text-sm">Events</a>
+            <a href="/events" class="text-gray-600 hover:text-gray-800 text-sm">Tentang Kami</a>
             <span class="text-gray-300 hidden sm:inline">|</span>
-            <a href="/creators" class="text-gray-600 hover:text-gray-800 text-sm">Creators</a>
+            <a href="/creators" class="text-gray-600 hover:text-gray-800 text-sm">Kebijakan Privasi</a>
+            <span class="text-gray-300 hidden sm:inline">|</span>
+            <a href="/creators" class="text-gray-600 hover:text-gray-800 text-sm">Syarat dan Ketentuan</a>
             <span class="text-gray-300 hidden sm:inline">|</span>
             <a href="/docs/api" class="text-gray-600 hover:text-gray-800 text-sm">API Documentation</a>
         </nav>

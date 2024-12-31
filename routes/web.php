@@ -30,6 +30,8 @@ Route::prefix('service/api')->group(function () {
 
     Route::get('/search', [ServiceAPIController::class, 'searchEvent']);
     Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
+
+    Route::get('/checkuser', [ServiceAPIController::class, 'checkUser']);
 });
 
 

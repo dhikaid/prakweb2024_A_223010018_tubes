@@ -17,7 +17,7 @@
 <section class="flex flex-col justify-between h-full overflow-hidden" id="content">
     <div class="flex justify-between left-1 relative">
         <a href="/">
-            <img class="w-auto h-14" src="{{ asset('assets/newlogo.png') }}" alt="">
+            <img class="w-auto h-14" src="{{ asset('assets/'.env('PATH_LOGO', 'newlogo.png')) }}" alt="">
         </a>
     </div>
 

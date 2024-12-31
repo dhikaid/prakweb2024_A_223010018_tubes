@@ -65,6 +65,7 @@
                     <p class="text-gray-600 text-sm mb-1">Total Pembayaran: {{ $payment->price }}</p>
                     <p class="text-gray-600 text-sm mb-4">Tanggal Pembayaran: {{ $payment->created_at }}</p>
                     <div class="flex items-center justify-between mt-4">
+                        @if ($payment->status === 'settlement')
                         <a href="/tickets/{{ $payment->uuid }}"
                             class="inline-flex items-center text-blue-600 hover:underline">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -74,6 +75,11 @@
                             </svg>
                             Download Tiket
                         </a>
+                        @else
+                        <div class="clear">
+
+                        </div>
+                        @endif
                         <div class="flex items-center">
                             <img class="hidden object-cover w-8 h-8 rounded-full sm:block"
                                 src="{{ Auth::user()->image }}" alt="avatar">
