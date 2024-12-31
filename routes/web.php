@@ -17,6 +17,8 @@ use App\Http\Controllers\DashboardRolesController;
 use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
 use App\Http\Controllers\DashboardCategoriesController;
+use App\Http\Controllers\FooterController;
+
 
 // SERVICES API
 Route::prefix('service/api')->group(function () {
@@ -82,6 +84,7 @@ route::group(['middleware' => 'auth'], function () {
     Route::POST('/logout', [AuthController::class, 'logout']);
     // TRANSACTION
     Route::get('/transaction/{payment:uuid}', [PaymentController::class, 'showTransaction']);
+    
 });
 
 
@@ -115,3 +118,6 @@ Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail')->middleware('eventActive');
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
+
+Route::get('/about', [FooterController::class, 'showAbout']);
+Route::get('/privacy', [FooterController::class, 'showPrivacy']);
