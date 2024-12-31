@@ -1,7 +1,17 @@
 @extends('main.layouts.main')
 @section('main')
+<div class="mb-5 transform hover:-translate-x-2 transition-transform duration-300 inline-block">
+  <a href="{{ route('home') }}" class="flex items-center text-gray-700 hover:text-blue-600 group">
+      <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          <path d="M9 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="font-semibold">Kembali ke Home</span>
+  </a>
+</div>
 <div class="min-h-screen  text-black">
-  <div class=" py-12">
+  <div class=" py-5">
     <div class="container mx-auto px-6 lg:px-20">
       <div class="grid lg:grid-cols-2 gap-8 items-center">
         <!-- Bagian Kiri: Gambar -->

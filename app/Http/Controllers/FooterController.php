@@ -9,7 +9,7 @@ class FooterController extends Controller
     public function showAbout()
     {
         $data = [
-            'title' => 'Search',
+            'title' => 'Tentang Kami',
             
         ];
         return view('main.about', $data);
