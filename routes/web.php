@@ -119,5 +119,6 @@ Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail')->middleware('eventActive');
 Route::get('/about', [FooterController::class, 'showAbout']);
 Route::get('/privacy', [FooterController::class, 'showPrivacy']);
+Route::get('/terms', [FooterController::class, 'showTerms']);
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');
 

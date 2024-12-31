@@ -23,4 +23,13 @@ class FooterController extends Controller
         ];
         return view('main.privacy', $data);
     }
+
+    public function showTerms()
+    {
+        $data = [
+            'title' => 'Syarat & Ketentuan',
+            
+        ];
+        return view('main.terms', $data);
+    }
 }
