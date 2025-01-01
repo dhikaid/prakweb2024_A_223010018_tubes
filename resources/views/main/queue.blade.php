@@ -21,7 +21,7 @@
         <div class="bg-white rounded-3xl p-8 shadow-xl animate-fadeIn border border-blue-100">
             <div class="flex justify-between items-start mb-8">
                 <a href="/" class="group">
-                    <img src="{{ asset('assets/'.env('PATH_LOGO', 'newlogo.png')) }}"
+                    <img src="{{ asset('assets/bookrn.png') }}"
                         class="w-20 h-auto transform group-hover:scale-105 transition-all duration-300"
                         alt="Logo BookRN">
                 </a>
@@ -88,8 +88,8 @@
                 <div class="border-t border-gray-100 pt-6">
                     <p class="text-sm text-gray-500 mb-3">Diselenggarakan oleh:</p>
                     <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
-                        <img src="{{ $event->creator->image }}" alt="{{ $event->creator->fullname }}"
-                            class="w-12 h-12 rounded-xl border-2 border-blue-100">
+                        <img src="https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1"
+                            alt="{{ $event->creator->fullname }}" class="w-12 h-12 rounded-xl border-2 border-blue-100">
                         <div>
                             <div class="flex items-center gap-2">
                                 <p class="font-bold text-gray-900">{{ $event->creator->fullname }}</p>

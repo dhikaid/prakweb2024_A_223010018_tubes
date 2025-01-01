@@ -84,8 +84,8 @@
                 <div class="mt-8 pt-8 border-t border-gray-100">
                     <p class="text-gray-500 mb-4">Diselenggarakan oleh:</p>
                     <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl">
-                        <img src="{{ $event->creator->image }}" class="w-14 h-14 rounded-xl border-2 border-blue-100"
-                            alt="{{ $event->creator->fullname }}">
+                        <img src="https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1"
+                            class="w-14 h-14 rounded-xl border-2 border-blue-100" alt="{{ $event->creator->fullname }}">
                         <div>
                             <div class="flex items-center gap-2">
                                 <p class="font-bold text-lg text-gray-900">{{ $event->creator->fullname }}</p>

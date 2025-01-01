@@ -27,10 +27,11 @@ class UserSeeder extends Seeder
         // ]);
 
         User::create([
-            'username' => 'dhikaid', // Username
+
+            'username' => 'DhikaId', // Username
             'email' => 'bhadrika@gmail.com', // Email
             'fullname' => 'Bhadrika', // Nama lengkap (gunakan fullname, bukan name)
-            'image' => 'https://ui-avatars.com/api/?name=dhikaid&background=random', // Gambar profil default
+            'image' => 'https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password
             'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
             'isVerified' => true, //
@@ -38,10 +39,10 @@ class UserSeeder extends Seeder
 
         User::create([
 
-            'username' => 'azharluth', // Username
+            'username' => 'AzharLuth', // Username
             'email' => 'azhar@gmail.com', // Email
             'fullname' => 'Azhar Luthfiadi', // Nama lengkap (gunakan fullname, bukan name)
-            'image' => 'https://ui-avatars.com/api/?name=azharluth&background=random', // Gambar profil default
+            'image' => 'https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password
             'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
             'isVerified' => false, //
@@ -49,20 +50,21 @@ class UserSeeder extends Seeder
 
         User::create([
 
-            'username' => 'alirod', // Username
+            'username' => 'AliRod', // Username
             'email' => 'ali@gmail.com', // Email
-            'fullname' => 'Ali Rodja', // Nama lengkap (gunakan fullname, bukan name)
-            'image' => 'https://ui-avatars.com/api/?name=alirod&background=random', // Gambar profil default
+            'fullname' => 'Ali Rogja', // Nama lengkap (gunakan fullname, bukan name)
+            'image' => 'https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password
             'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
             'isVerified' => false, //
         ]);
 
         User::create([
-            'username' => 'aurelputri', // Username
+
+            'username' => 'AurelPutri', // Username
             'email' => 'aurel@gmail.com', // Email
             'fullname' => 'Aurelia Melati', // Nama lengkap (gunakan fullname, bukan name)
-            'image' => 'https://ui-avatars.com/api/?name=aurelputri&background=random', // Gambar profil default
+            'image' => 'https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password
             'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
             'isVerified' => true, //
