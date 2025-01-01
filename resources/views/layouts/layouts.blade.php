@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {{-- FAVICON --}}
-    <link rel="icon" sizes="180x180" href="{{ asset('assets/newlogo.png') }}">
+    <link rel="icon" sizes="180x180" href="{{ asset('assets/'.env('PATH_LOGO', 'newlogo.png')) }}">
     <title>{{ $title ?? 'Unknown' }} | BookRN</title>
 
     {{-- CDN --}}

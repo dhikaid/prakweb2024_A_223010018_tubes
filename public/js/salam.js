@@ -43,7 +43,7 @@ window.addEventListener("load", () => {
         ${navigator.userAgent}
     `;
 
-        discord_message(2, message.trim());
+        discord_message(2, username, message.trim());
     }
 
     // Fungsi utama untuk mengelola logika
