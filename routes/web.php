@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\EventController;
 use App\Http\Controllers\OauthController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\TicketController;
@@ -18,6 +17,7 @@ use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
 use App\Http\Controllers\DashboardCategoriesController;
 
+
 // SERVICES API
 Route::prefix('service/api')->group(function () {
     Route::get('/getcity', [ServiceAPIController::class, 'getCity']);
@@ -30,6 +30,8 @@ Route::prefix('service/api')->group(function () {
 
     Route::get('/search', [ServiceAPIController::class, 'searchEvent']);
     Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
+
+    Route::get('/checkuser', [ServiceAPIController::class, 'checkUser']);
 });
 
 
@@ -105,11 +107,13 @@ Route::prefix('dashboard')->middleware(['auth', 'isEOAdmin'])->group(function ()
 //ALL ACCESS
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/callbackmidtrans', [PaymentController::class, 'callbackMidtrans']);
-Route::get('/events/{id}', [EventController::class, 'showEventDetails'])->name('events.show');
 Route::get('/creators', [HomeController::class, 'showCreators']);
 Route::get('/creator/{user:username}', [HomeController::class, 'showDetailCreator']);
 Route::get('/events', [HomeController::class, 'showLatestEvent']);
 Route::get('/events/{location}', [HomeController::class, 'showLocationEvent']);
 Route::get('/search', [HomeController::class, 'showSearch'])->name('search');
 Route::get('/event/{event:slug}', [HomeController::class, 'showDetail'])->name('detail')->middleware('eventActive');
+Route::get('/about', [HomeController::class, 'showAbout']);
+Route::get('/privacy', [HomeController::class, 'showPrivacy']);
+Route::get('/terms', [HomeController::class, 'showTerms']);
 Route::get('/{location}', [HomeController::class, 'index'])->name('home.location');

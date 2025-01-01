@@ -77,7 +77,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://bookrn.bhadrikais.my.id/assets/newlogo.png" alt="Logo BookRN" class="logo">
+            <img src="{{ asset('assets/'.env('PATH_LOGO', 'newlogo.png')) }}" alt="Logo BookRN" class="logo">
         </div>
         <h1>Terima Kasih Atas Pembelian Anda!</h1>
         <p>Hai {{ $ticket->booking->user->fullname }},</p>
@@ -107,8 +107,10 @@
     </div>
     <div class="footer">
         <p>Ini adalah email otomatis, mohon tidak membalas email ini secara langsung.</p>
-        <p>Butuh bantuan? Hubungi kami di <a href="mailto:cs@bookrn.bhadrikais.my.id"
-                style="color: #007bff; text-decoration: none;">cs@bookrn.bhadrikais.my.id</a>.</p>
+        <p>Butuh bantuan? Hubungi kami di <a
+                href="mailto:{{ env('MAIL_FROM_ADDRESS', 'bookrn@mail.bhadrikais.my.id') }}"
+                style="color: #007bff; text-decoration: none;">{{ env('MAIL_FROM_ADDRESS',
+                'bookrn@mail.bhadrikais.my.id') }}</a>.</p>
     </div>
 </body>
 

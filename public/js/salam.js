@@ -1,24 +1,60 @@
 window.addEventListener("load", () => {
-    // kirim ip
-    fetch("https://ipapi.co/json/")
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data.ip);
-            discord_message(
-                2,
-                "Seseorang mengunjungi website anda!",
-                "LINK :\n" +
-                    window.location.href +
-                    "\nIP :\n" +
-                    data.ip +
-                    "\nKOTA :\n" +
-                    data.city +
-                    "\nISP :\n" +
-                    data.org +
-                    "\nDEVICE :\n" +
-                    navigator.userAgent
-            );
-        });
+    // Fungsi untuk mendapatkan data pengguna
+    async function fetchUserData() {
+        try {
+            const response = await fetch("/service/api/checkuser");
+            const data = await response.json();
+            return data.data ? data.data.fullname : "Seseorang";
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            return "Seseorang";
+        }
+    }
+
+    // Fungsi untuk mendapatkan data lokasi berdasarkan IP
+    async function fetchLocationData() {
+        try {
+            const response = await fetch("https://ipapi.co/json/");
+            return await response.json();
+        } catch (error) {
+            console.error("Error fetching location data:", error);
+            return null;
+        }
+    }
+
+    // Fungsi untuk mengirim pesan ke Discord
+    function sendDiscordMessage(username, locationData) {
+        if (!locationData) {
+            console.warn("Location data is unavailable.");
+            return;
+        }
+
+        const message = `
+        ${username} mengunjungi website anda!
+        LINK :
+        ${window.location.href}
+        IP :
+        ${locationData.ip}
+        KOTA :
+        ${locationData.city}
+        ISP :
+        ${locationData.org}
+        DEVICE :
+        ${navigator.userAgent}
+    `;
+
+        discord_message(2, message.trim());
+    }
+
+    // Fungsi utama untuk mengelola logika
+    async function handleVisitorLog() {
+        const username = await fetchUserData();
+        const locationData = await fetchLocationData();
+        sendDiscordMessage(username, locationData);
+    }
+
+    // Eksekusi fungsi utama
+    handleVisitorLog();
 
     function discord_message(kode, username, message) {
         var params = "username=" + username + "&message=" + message;
