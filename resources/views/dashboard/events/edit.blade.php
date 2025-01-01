@@ -95,9 +95,11 @@
                                         <div class="mt-4 w-full">
                                             <label for="description"
                                                 class="block text-sm text-black font-semibold dark:text-gray-300 w-full">Description</label>
-                                            <input id="x" type="hidden" name="description" required class="w-full">
-                                            <trix-editor input="x" class="prose w-full"> {!! old('description',
-                                                $event->description) !!} </trix-editor>
+                                            <input id="x" value="{!! old('description',$event->description) !!}"
+                                                type="hidden" name="description" required>
+                                            <trix-editor input="x" required>
+
+                                            </trix-editor>
                                             @error('description')
                                             <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
                                             @enderror
