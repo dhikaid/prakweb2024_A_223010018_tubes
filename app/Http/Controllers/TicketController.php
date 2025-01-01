@@ -47,7 +47,7 @@ class TicketController extends Controller
         }
 
         // Membuat PDF dari view 'test' dan data ticket
-        $pdf = PDF::loadView('test', ['ticket' => $payment])
+        $pdf = PDF::loadView('ticketpdf', ['ticket' => $payment])
             ->setOptions([
                 'isRemoteEnabled' => true,          // Mengizinkan pemuatan gambar eksternal
                 'isHtml5ParserEnabled' => true,     // Mengaktifkan parsing HTML5

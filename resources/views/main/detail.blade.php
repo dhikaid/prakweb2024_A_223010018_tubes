@@ -7,7 +7,7 @@
         <!-- Hero Image -->
         <div class="rounded-2xl overflow-hidden mb-6 group">
             <img class="w-full h-[400px] object-cover transform transition-transform duration-500 group-hover:scale-105 shadow-lg"
-                src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->name }}">
+                src="{{ $event->image }}" alt="{{ $event->name }}">
         </div>
 
         <!-- Info Mobile -->

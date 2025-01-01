@@ -126,4 +126,13 @@ class Event extends Model
         $open = Carbon::parse($this->queue_open)->timestamp;
         return now()->timestamp >= $open;
     }
+
+    public function getImageAttribute($value)
+    {
+        // cek kalo diawali dari link tinggal return aja
+        if (strpos($value, 'http') === 0) {
+            return $value;
+        }
+        return asset('storage/' . $value);
+    }
 }

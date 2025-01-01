@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Ticket</title>
+    <title>Ticket: {{ $ticket->booking->event->name }}</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -60,7 +60,7 @@
         .banner {
             width: 100%;
             height: 200px;
-            background: url("{{ env('APP_URL'). '/storage/'. $ticket->booking->event->image }}") center/cover no-repeat;
+            background: url("{{ $ticket->booking->event->image }}") center/cover no-repeat;
         }
 
         .details {
