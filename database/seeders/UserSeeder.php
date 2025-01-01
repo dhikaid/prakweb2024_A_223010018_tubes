@@ -27,6 +27,16 @@ class UserSeeder extends Seeder
         // ]);
 
         User::create([
+            'username' => 'bookrn', // Username
+            'email' => 'bookrn@mail.bhadrikais.my.id', // Email
+            'fullname' => 'bookrn', // Nama lengkap (gunakan fullname, bukan name)
+            'image' => asset('assets/' . env('PATH_LOGO', 'newlogo.png')), // Gambar profil default
+            'password' => Hash::make('Bitwave2024'), // Hash untuk password
+            'role_uuid' => Role::where('role', 'Admin')->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
+            'isVerified' => true, //
+        ]);
+
+        User::create([
             'username' => 'dhikaid', // Username
             'email' => 'bhadrika@gmail.com', // Email
             'fullname' => 'Bhadrika', // Nama lengkap (gunakan fullname, bukan name)
