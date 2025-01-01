@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\UpdateExpiredQueues;
 use App\Http\Middleware\EventActive;
 use App\Http\Middleware\Queue;
 use App\Http\Middleware\IsAdmin;
@@ -9,6 +10,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\War;
 use App\Http\Middleware\WarOpen;
+use Illuminate\Console\Scheduling\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -33,4 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        $schedule->call(UpdateExpiredQueues::class)->everyMinute();
     })->create();

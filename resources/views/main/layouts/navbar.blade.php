@@ -63,7 +63,7 @@
                                 <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                     <a :href="'/event/' + event.slug" class="w-full inline-block">
                                         <div class="flex items-center space-x-2">
-                                            <img :src="'/storage/' + event.image" alt="Event Image"
+                                            <img :src="event.image" alt="Event Image"
                                                 class="w-10 h-10 rounded object-cover">
                                             <div>
                                                 <p class="text-sm font-semibold" x-text="event.name"></p>
