@@ -36,7 +36,7 @@
                 <div
                     class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 group-hover:-translate-y-1">
                     <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->name }}"
+                        <img src="{{ $event->image }}" alt="{{ $event->name }}"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
 
                         <div class="absolute bottom-4 left-4">

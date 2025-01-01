@@ -17,7 +17,7 @@ class TicketSeeder extends Seeder
     public function run(): void
     {
         // Tech Conference 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Roasting by Rafli')->first();
+        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Stand Up Comedy by Rafli')->first();
         Ticket::create([
             'ticket' => 'Bangku Depan',
             'price' => 1500000,
@@ -31,156 +31,23 @@ class TicketSeeder extends Seeder
             'event_uuid' => $event->uuid,
         ]);
 
-        // Startup Weekend 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Startup Weekend 2024')->first();
-        Ticket::create([
-            'ticket' => 'VIP',
-            'price' => 1000000,
-            'qty' => 30,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
+        $events = Event::withoutGlobalScope(ActiveScope::class)
+            ->where('name', '!=', 'Stand Up Comedy by Rafli')
+            ->get();
 
-            'ticket' => 'Regular',
-            'price' => 500000,
-            'qty' => 150,
-            'event_uuid' => $event->uuid,
-        ]);
-
-        // Business Summit 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Business Summit 2024')->first();
-        Ticket::create([
-
-            'ticket' => 'VIP',
-            'price' => 2000000,
-            'qty' => 40,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
-
-            'ticket' => 'Regular',
-            'price' => 1000000,
-            'qty' => 160,
-            'event_uuid' => $event->uuid,
-        ]);
-
-        // Music Festival 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Music Festival 2024')->first();
-        Ticket::create([
-
-            'ticket' => 'VIP',
-            'price' => 2000000,
-            'qty' => 100,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
-
-            'ticket' => 'General',
-            'price' => 500000,
-            'qty' => 500,
-            'event_uuid' => $event->uuid,
-        ]);
-
-        // Art Exhibition 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Art Exhibition 2024')->first();
-        Ticket::create([
-
-            'ticket' => 'VIP',
-            'price' => 1000000,
-            'qty' => 20,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
-
-            'ticket' => 'Regular',
-            'price' => 400000,
-            'qty' => 180,
-            'event_uuid' => $event->uuid,
-        ]);
-
-        // Digital Marketing Summit 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Digital Marketing Summit 2024')->first();
-        Ticket::create([
-
-            'ticket' => 'VIP',
-            'price' => 1200000,
-            'qty' => 60,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
-
-            'ticket' => 'Regular',
-            'price' => 600000,
-            'qty' => 300,
-            'event_uuid' => $event->uuid,
-        ]);
-
-        // Blockchain Expo 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Blockchain Expo 2024')->first();
-        Ticket::create([
-
-            'ticket' => 'VIP',
-            'price' => 2500000,
-            'qty' => 80,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
-
-            'ticket' => 'Regular',
-            'price' => 1200000,
-            'qty' => 400,
-            'event_uuid' => $event->uuid,
-        ]);
-
-        // Fashion Show 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Fashion Show 2024')->first();
-        Ticket::create([
-
-            'ticket' => 'VIP',
-            'price' => 1800000,
-            'qty' => 60,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
-
-            'ticket' => 'Regular',
-            'price' => 900000,
-            'qty' => 300,
-            'event_uuid' => $event->uuid,
-        ]);
-
-        // Sports Championship 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Sports Championship 2024')->first();
-        Ticket::create([
-
-            'ticket' => 'VIP',
-            'price' => 2500000,
-            'qty' => 100,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
-
-            'ticket' => 'General',
-            'price' => 800000,
-            'qty' => 1000,
-            'event_uuid' => $event->uuid,
-        ]);
-
-        // Food Expo 2024
-        $event = Event::withoutGlobalScope(ActiveScope::class)->where('name', 'Food Expo 2024')->first();
-        Ticket::create([
-
-            'ticket' => 'VIP',
-            'price' => 1200000,
-            'qty' => 100,
-            'event_uuid' => $event->uuid,
-        ]);
-        Ticket::create([
-
-            'ticket' => 'General',
-            'price' => 500000,
-            'qty' => 700,
-            'event_uuid' => $event->uuid,
-        ]);
+        foreach ($events as $event) {
+            Ticket::create([
+                'ticket' => 'VIP',
+                'price' => random_int(500, 2000) * 1000, // Kelipatan 1000
+                'qty' => random_int(10, 100),
+                'event_uuid' => $event->uuid,
+            ]);
+            Ticket::create([
+                'ticket' => 'Regular',
+                'price' => random_int(50, 300) * 1000, // Kelipatan 1000
+                'qty' => random_int(10, 100),
+                'event_uuid' => $event->uuid,
+            ]);
+        }
     }
 }

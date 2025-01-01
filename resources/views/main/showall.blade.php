@@ -65,7 +65,7 @@
                 <a href="/event/{{ $event->slug }}"
                     class="group block overflow-hidden rounded-2xl bg-white border border-gray-200 hover:border-blue-200 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                     <div class="relative overflow-hidden">
-                        <img src="{{ asset('storage/'.$event->image) }}"
+                        <img src="{{ $event->image }}"
                             class="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-110"
                             alt="{{ $event->name }}">
                         <div class="absolute bottom-0 left-0 right-0 p-4">

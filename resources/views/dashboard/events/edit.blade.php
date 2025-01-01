@@ -32,8 +32,7 @@
                                     <label for="file"
                                         class="block text-sm text-black font-semibold dark:text-gray-300 mb-2">
                                         Image</label>
-                                    <img src="{{ asset('storage/'.$event->image) }}"
-                                        class="w-full object-cover h-72 rounded-lg" alt="">
+                                    <img src="{{ $event->image }}" class="w-full object-cover h-72 rounded-lg" alt="">
                                 </div>
                                 {{-- ENDFORM --}}
                                 {{-- START FILE FORM --}}

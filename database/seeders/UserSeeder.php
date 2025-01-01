@@ -22,14 +22,14 @@ class UserSeeder extends Seeder
         //     'fullname' => 'Dummy User', // Nama lengkap (gunakan fullname, bukan name)
         //     'image' => 'https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1', // Gambar profil default
         //     'password' => Hash::make('123'), // Hash untuk password
-        //     'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
+        //     'role_uuid' => Role::where('role', 'EO')->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
         //     'isVerified' => true, //
         // ]);
 
         User::create([
             'username' => 'bookrn', // Username
             'email' => 'bookrn@mail.bhadrikais.my.id', // Email
-            'fullname' => 'bookrn', // Nama lengkap (gunakan fullname, bukan name)
+            'fullname' => 'BookRN', // Nama lengkap (gunakan fullname, bukan name)
             'image' => asset('assets/' . env('PATH_LOGO', 'newlogo.png')), // Gambar profil default
             'password' => Hash::make('Bitwave2024'), // Hash untuk password
             'role_uuid' => Role::where('role', 'Admin')->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
             'fullname' => 'Bhadrika', // Nama lengkap (gunakan fullname, bukan name)
             'image' => 'https://ui-avatars.com/api/?name=dhikaid&background=random', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password
-            'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
+            'role_uuid' => Role::where('role', 'EO')->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
             'isVerified' => true, //
         ]);
 
@@ -53,7 +53,7 @@ class UserSeeder extends Seeder
             'fullname' => 'Azhar Luthfiadi', // Nama lengkap (gunakan fullname, bukan name)
             'image' => 'https://ui-avatars.com/api/?name=azharluth&background=random', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password
-            'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
+            'role_uuid' => Role::where('role', 'EO')->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
             'isVerified' => false, //
         ]);
 
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
             'fullname' => 'Ali Rodja', // Nama lengkap (gunakan fullname, bukan name)
             'image' => 'https://ui-avatars.com/api/?name=alirod&background=random', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password
-            'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
+            'role_uuid' => Role::where('role', 'EO')->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
             'isVerified' => false, //
         ]);
 
@@ -74,7 +74,7 @@ class UserSeeder extends Seeder
             'fullname' => 'Aurelia Melati', // Nama lengkap (gunakan fullname, bukan name)
             'image' => 'https://ui-avatars.com/api/?name=aurelputri&background=random', // Gambar profil default
             'password' => Hash::make('123'), // Hash untuk password
-            'role_uuid' => Role::inRandomOrder()->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
+            'role_uuid' => Role::where('role', 'EO')->first()->uuid, // Role ID (pastikan ada role dengan ID 1 di tabel roles)
             'isVerified' => true, //
         ]);
     }
