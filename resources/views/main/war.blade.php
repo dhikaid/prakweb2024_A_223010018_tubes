@@ -6,7 +6,7 @@
 
 <!-- Back Button -->
 <div class="mb-8 transform hover:-translate-x-2 transition-transform duration-300 inline-block">
-    <a href="{{ url()->previous() }}" class="flex items-center text-gray-700 hover:text-blue-600 group">
+    <a href="/event/{{ $event->slug }}" class="flex items-center text-gray-700 hover:text-blue-600 group">
         <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none">
             <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" />

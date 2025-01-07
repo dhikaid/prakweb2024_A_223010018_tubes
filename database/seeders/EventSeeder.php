@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Event;
 use App\Models\Category;
 use App\Models\Location;
-use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class EventSeeder extends Seeder
@@ -17,6 +18,21 @@ class EventSeeder extends Seeder
      */
     public function run(): void
     {
+        // Nonaktifkan foreign key constraints
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // Kosongkan tabel
+        DB::table('queues')->truncate();
+        DB::table('payments')->truncate();
+        DB::table('booking__details')->truncate();
+        DB::table('bookings')->truncate();
+        DB::table('tickets')->truncate();
+        DB::table('events')->truncate();
+        DB::table('locations')->truncate();
+
+        // Aktifkan kembali foreign key constraints
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         Location::factory(10)->create();
 
         Event::create([
