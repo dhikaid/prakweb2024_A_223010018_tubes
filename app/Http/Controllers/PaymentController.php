@@ -228,16 +228,16 @@ class PaymentController extends Controller
                     }
                 }
             }
+        }
 
-            if ($payment->status === 'settlement' && $payment->booking->sendEmail == false) {
-                $ticket =  new TicketController();
-                $ticket->generate($payment);
-                Booking::where('uuid', $payment->booking->uuid)->update([
-                    'sendEmail' => true,
-                ]);
-                $ticket = $payment;
-                Mail::to($payment->booking->user->email)->send(new MailTicket($ticket));
-            }
+        if ($payment->status === 'settlement' && $payment->booking->sendEmail == false) {
+            $ticket =  new TicketController();
+            $ticket->generate($payment);
+            Booking::where('uuid', $payment->booking->uuid)->update([
+                'sendEmail' => true,
+            ]);
+            $ticket = $payment;
+            Mail::to($payment->booking->user->email)->send(new MailTicket($ticket));
         }
 
         $payment->load(['booking', 'booking.event']);

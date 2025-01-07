@@ -30,12 +30,14 @@ return Application::configure(basePath: dirname(__DIR__))
             'eventActive' => EventActive::class,
         ]);
         $middleware->validateCsrfTokens(except: [
-            '/callbackmidtrans*'
+            '/callbackmidtrans*',
+            '/service/api/descai*',
+            '/service/api/findeventai*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })
     ->withSchedule(function (Schedule $schedule) {
-        $schedule->call(UpdateExpiredQueues::class)->everyMinute();
+        $schedule->call(new UpdateExpiredQueues)->everyMinute();
     })->create();

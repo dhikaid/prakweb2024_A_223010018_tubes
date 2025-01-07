@@ -86,8 +86,8 @@
             <div class="mt-6 p-4 bg-gray-50 rounded-xl">
                 <p class="text-sm text-gray-500 mb-3">Diselenggarakan oleh</p>
                 <div class="flex items-center gap-3">
-                    <img src="https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1"
-                        class="w-12 h-12 rounded-full border-2 border-blue-100" alt="">
+                    <img src="{{ $event->creator->image }}" class="w-12 h-12 rounded-full border-2 border-blue-100"
+                        alt="">
                     <div>
                         <div class="flex items-center gap-2">
                             <p class="font-bold text-lg uppercase">{{ $event->creator->fullname }}</p>
@@ -238,8 +238,7 @@
                 <div class="mt-6 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                     <p class="text-sm text-gray-500 mb-3">Diselenggarakan oleh</p>
                     <div class="flex items-center gap-3">
-                        <img src="https://i2.wp.com/cdn.auth0.com/avatars/bh.png?ssl=1"
-                            class="w-12 h-12 rounded-full border-2 border-blue-100"
+                        <img src="{{ $event->creator->image }}" class="w-12 h-12 rounded-full border-2 border-blue-100"
                             alt="{{ $event->creator->fullname }}">
                         <div>
                             <div class="flex items-center gap-2">

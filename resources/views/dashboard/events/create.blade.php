@@ -73,23 +73,105 @@
                                                 </span>
                                                 <input type="text" placeholder="Music Festival"
                                                     class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                    name="name" required value="{{ old('name') }}">
+                                                    id="name" name="name" required value="{{ old('name') }}">
                                             </div>
                                             @error('name') <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
                                             @enderror
                                         </div>
                                         {{-- ENDFORM --}}
                                         {{-- START DESCRIPTION --}}
-                                        <div class="mt-4">
-                                            <label for="description"
-                                                class="block text-sm text-black font-semibold dark:text-gray-300">Description</label>
-                                            <input id="x" type="hidden" name="description" required class="w-full">
-                                            <trix-editor input="x" class="prose w-full"> {!! old('description') !!}
-                                            </trix-editor>
+                                        <div class="mt-4 w-full" x-data="{
+                                            isLoading: false,
+                                            async fetchAIContent() {
+                                                const name = document.getElementById('name').value;
+                                                const category = document.getElementById('category');
+                                                const categoryName = category.options[category.selectedIndex].text;
+                                                const startDate = document.getElementById('start_date').value;
+                                                const endDate = document.getElementById('end_date').value;
+                                                const city = document.getElementById('city').value;
+                                                const country = document.getElementById('country').value;
+                                                const venue = document.getElementById('venue').value;
+
+                                                if (name && category && startDate && endDate && city && country && venue) {
+                                                    this.isLoading = true; // Mulai loading
+                                                    try {
+                                                        const response = await fetch('/service/api/descai', {
+                                                            method: 'POST',
+                                                            headers: {
+                                                                'Content-Type': 'application/json',
+                                                                'Accept': 'application/json',
+                                                            },
+                                                            body: JSON.stringify({
+                                                                prompt: `Acara ${name} dengan category ${categoryName} pada tanggal ${startDate} dan berakhir pada tanggal ${endDate} yang berlokasi di venue ${venue} di kota ${city} yang terletak di negara ${country}`
+                                                            })
+                                                        });
+
+                                                        if (!response.ok) {
+                                                            throw new Error('Error fetching AI content');
+                                                        }
+
+                                                        const data = await response.json();
+                                                        const text = data.response || '';
+
+                                                        // Masukkan teks ke dalam Trix Editor
+                                                        const editorElement = document.querySelector('trix-editor');
+                                                        const inputElement = document.getElementById('x');
+
+                                                        inputElement.value = text; // Set nilai input tersembunyi
+                                                        editorElement.editor.loadHTML(text); // Update konten editor Trix
+                                                    } catch (error) {
+                                                        console.error('Failed to fetch AI content:', error);
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'Oops...',
+                                                            text: 'Gagal mendapatkan data dari AI.',
+                                                        });
+                                                    } finally {
+                                                        this.isLoading = false; // Akhiri loading
+                                                    }
+                                                } else {
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: 'Oops...',
+                                                        text: 'Tolong masukan terlebih dahulu detail acara!',
+                                                    });
+                                                }
+                                            }
+                                        }">
+                                            <div class="flex justify-between mb-3 w-full">
+                                                <label for="description"
+                                                    class="block text-sm text-black font-semibold dark:text-gray-300 w-full">
+                                                    Description
+                                                </label>
+                                                <button x-on:click="fetchAIContent" :disabled="isLoading" type="button"
+                                                    class="flex items-center gap-2 text-sm w-full justify-end">
+                                                    <template x-if="!isLoading">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="h-5 w-5">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+                                                        </svg>
+                                                    </template>
+                                                    <template x-if="isLoading">
+                                                        <div class="flex items-center justify-center">
+                                                            <div
+                                                                class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-gray-300">
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                    <p x-text="isLoading ? 'Loading...' : 'AI AutoFill'"></p>
+                                                </button>
+                                            </div>
+                                            <input id="x" value="{!! old('description') !!}" type="hidden"
+                                                name="description" required>
+                                            <trix-editor input="x" required></trix-editor>
                                             @error('description')
                                             <p class="mt-3 text-xs text-red-400">{{ $message }}</p>
                                             @enderror
                                         </div>
+
+
                                         {{-- END Description --}}
                                         {{-- START END DATE --}}
                                         <div class="mt-4">
@@ -97,7 +179,7 @@
                                                 class="block text-sm text-black font-semibold dark:text-gray-300 mb-2">Category</label>
                                             <select
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                name="category" required>
+                                                name="category" id="category" required>
                                                 @foreach ($categories as $category)
                                                 <option value="{{ $category->uuid }}">{{ $category->name }}</option>
                                                 @endforeach
@@ -127,7 +209,8 @@
                                                     </span>
                                                     <input type="datetime-local"
                                                         class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                        name="start_date" required value="{{ old('start_date') }}">
+                                                        name="start_date" id="start_date" required
+                                                        value="{{ old('start_date') }}">
                                                 </div>
                                                 @error('start_date') <p class="mt-3 text-xs text-red-400">{{ $message }}
                                                 </p>
@@ -152,7 +235,8 @@
                                                     </span>
                                                     <input type="datetime-local"
                                                         class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                        name="end_date" required value="{{ old('end_date') }}">
+                                                        name="end_date" id="end_date" required
+                                                        value="{{ old('end_date') }}">
                                                 </div>
                                                 @error('end_date') <p class="mt-3 text-xs text-red-400">{{ $message }}
                                                 </p> @enderror
@@ -249,7 +333,7 @@
                                                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                             </svg>
                                         </span>
-                                        <input type="text"
+                                        <input type="text" id="country"
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                             name="country" required value="{{ old('country') }}">
                                     </div>
@@ -271,7 +355,7 @@
                                                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                             </svg>
                                         </span>
-                                        <input type="text"
+                                        <input type="text" id="province"
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                             name="province" required value="{{ old('province') }}">
                                     </div>
@@ -293,7 +377,7 @@
                                                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                             </svg>
                                         </span>
-                                        <input type="text"
+                                        <input type="text" id="city"
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                             name="city" required value="{{ old('city') }}">
                                     </div>
@@ -315,7 +399,7 @@
                                                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                             </svg>
                                         </span>
-                                        <input type="text"
+                                        <input type="text" id="venue"
                                             class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                             name="venue" required value="{{ old('venue') }}">
                                     </div>
@@ -348,7 +432,7 @@
 
 
 
-                                <button
+                                <button type="submit"
                                     class="flex items-center px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="size-6">

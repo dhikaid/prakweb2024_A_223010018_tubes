@@ -26,7 +26,7 @@ class UpdateExpiredQueues extends Command
      */
     public function handle()
     {
-        $expiredQueues = Queue::where('status', '!=', 'completed')
+        $expiredQueues = Queue::where('status', 'in_progress')
             ->whereRaw('NOW() >= ADDTIME(joined_at, INTERVAL FLOOR(CEIL(? / 2)) SECOND)', [env('WAR_TICKET_DURATION', 60)])
             ->get();
 
