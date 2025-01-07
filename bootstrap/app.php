@@ -1,16 +1,16 @@
 <?php
 
-use App\Console\Commands\UpdateExpiredQueues;
-use App\Http\Middleware\EventActive;
+use App\Http\Middleware\War;
 use App\Http\Middleware\Queue;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\WarOpen;
+use App\Models\Queue as QueueWar;
 use App\Http\Middleware\IsEoAdmin;
+use App\Http\Middleware\EventActive;
 use Illuminate\Foundation\Application;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\War;
-use App\Http\Middleware\WarOpen;
-use Illuminate\Console\Scheduling\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -39,5 +39,17 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withSchedule(function (Schedule $schedule) {
-        $schedule->call(new UpdateExpiredQueues)->everyMinute();
+        $schedule->call(function () {
+            $duration = ceil(env('WAR_TICKET_DURATION', 60));
+            $cutoffTime = now()->subSeconds($duration);
+
+            $expiredQueues = QueueWar::where('status', 'in_progress')
+                ->where('joined_at', '<=', $cutoffTime)
+                ->get();
+
+            foreach ($expiredQueues as $queue) {
+                $queue->update(['status' => 'completed']);
+                $this->queue->completeQueue($queue->uuid, $queue->event->uuid);
+            }
+        })->everySecond();
     })->create();

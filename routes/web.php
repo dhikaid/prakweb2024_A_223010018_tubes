@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Queue;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -17,6 +18,18 @@ use App\Http\Controllers\DashboardUsersController;
 use App\Http\Controllers\DashboardEventsController;
 use App\Http\Controllers\DashboardCategoriesController;
 
+
+
+Route::get('/test', function () {
+    $duration = ceil(env('WAR_TICKET_DURATION', 60));
+    $cutoffTime = now()->subSeconds($duration);
+
+    $expiredQueues = Queue::where('status', 'in_progress')
+        ->where('joined_at', '<=', $cutoffTime)
+        ->get();
+
+    dd($expiredQueues);
+});
 
 // SERVICES API
 Route::prefix('service/api')->group(function () {
