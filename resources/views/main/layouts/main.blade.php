@@ -9,6 +9,7 @@
         @yield('main')
     </div>
 
+    <div class="mt-8">@include('main.layouts.partials.popupai')</div>
     <div class="mt-8">@include('main.layouts.footer')</div>
 </div>
 
@@ -18,5 +19,6 @@
 <script src="{{ asset('js/addCart.js') }}"></script>
 <script src="{{ asset('js/payment.js') }}"></script>
 <script src="{{ asset('js/salam.js') }}"></script>
+<script src="{{ asset('js/ai.js') }}"></script>
 
 @endsection

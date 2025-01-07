@@ -32,6 +32,8 @@ Route::prefix('service/api')->group(function () {
     Route::post('/api/complete-queue-on-close/{queueUuid}', [QueueController::class, 'completeQueueOnClose']);
 
     Route::get('/checkuser', [ServiceAPIController::class, 'checkUser']);
+    Route::post('/descai', [ServiceAPIController::class, 'descriptionAi']);
+    Route::post('/findeventai', [ServiceAPIController::class, 'findEventWithAi']);
 });
 
 
