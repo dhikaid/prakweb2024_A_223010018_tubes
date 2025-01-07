@@ -8,6 +8,7 @@ use App\Models\Queue as QueueWar;
 use App\Http\Middleware\IsEoAdmin;
 use App\Http\Middleware\EventActive;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\QueueController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -47,9 +48,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->where('joined_at', '<=', $cutoffTime)
                 ->get();
 
-            foreach ($expiredQueues as $queue) {
-                $queue->update(['status' => 'completed']);
-                $this->queue->completeQueue($queue->uuid, $queue->event->uuid);
+            if ($expiredQueues) {
+                $queueEvent = new QueueController();
+                foreach ($expiredQueues as $queue) {
+                    $queue->update(['status' => 'completed']);
+                    $queueEvent->completeQueue($queue->uuid, $queue->event->uuid);
+                }
             }
-        })->everySecond();
+        })->everyMinute();
     })->create();
