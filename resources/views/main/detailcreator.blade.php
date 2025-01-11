@@ -32,6 +32,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($events as $event)
+            @if($event->tickets()->exists())
             <a href="/event/{{ $event->slug }}" class="group block">
                 <div
                     class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 group-hover:-translate-y-1">
@@ -78,6 +79,7 @@
                     </div>
                 </div>
             </a>
+            @endif
             @empty
 
             <div class="col-span-full py-12 text-center">

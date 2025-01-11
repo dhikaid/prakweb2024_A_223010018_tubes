@@ -32,7 +32,13 @@ class Event extends Model
     // tampilka event dengan tanggal yang akan datang, yang sudah selesai jangan ditampilkan secara default
     public function scopeUpcoming($query)
     {
-        return $query->where('start_date', '>=', now());
+        return $query->where('start_date', '>=', now())
+            ->whereHas('tickets'); // Hanya tampilkan event yang memiliki tiket
+    }
+
+    public function scopeAll($query)
+    {
+        return $query->whereHas('tickets');
     }
 
     public function scopeFilter($query, array $filters)
@@ -113,8 +119,8 @@ class Event extends Model
     public function getPriceRangeAttribute()
     {
 
-        $min = $this->tickets->min('price');
-        $max = $this->tickets->max('price');
+        $min = $this->tickets->min('price') ?? 0;
+        $max = $this->tickets->max('price') ?? 0;
         if ($min == $max) {
             return Number::currency($min, 'IDR', 'ID');
         }

@@ -37,7 +37,7 @@ class HomeController extends Controller
             })->inRandomOrder()
                 ->take(7)
                 ->get(),
-            'latest' => $event->with(['locations', 'tickets', 'creator'])->upcoming()->latest()->inRandomOrder()->take('5')->get(),
+            'latest' => $event->with(['locations', 'tickets', 'creator'])->upcoming()->latest()->take('5')->get(),
             'eventlocation' => $eventlocation,
             'location' => $location
         ];
@@ -138,7 +138,7 @@ class HomeController extends Controller
 
     public function showDetailCreator(User $user)
     {
-        $user->load('event');
+        $user->event()->all()->with('tickets')->get();
         $data = [
             'title' => $user->username,
             'user' => $user,

@@ -18,7 +18,13 @@ class EventActive
     {
         $event = $request->route('event'); // Pastikan parameter 'event' ada di route
         // apakah event melebihi tanggal sekarang
+        // Apakah event melebihi tanggal sekarang
         if ($event->end_date < now()) {
+            abort(403, 'Event tidak ada atau sudah berakhir');
+        }
+
+        // Apakah event memiliki tiket
+        if (!$event->tickets()->exists()) {
             abort(403, 'Event tidak ada atau sudah berakhir');
         }
         return $next($request);
