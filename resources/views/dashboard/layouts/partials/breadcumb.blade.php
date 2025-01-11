@@ -15,7 +15,7 @@
                     clip-rule="evenodd" />
             </svg>
         </span>
-        <a href="{{ $loop->remaining === 1 ? '/dashboard/' . strtolower($datas[$index - 1]) : '/dashboard/' . strtolower($data) }}"
+        <a href="{{ $loop->remaining === 1 && $index > 0 ? '/dashboard/' . strtolower($datas[$index - 1]) : '/dashboard/' . strtolower($data) }}"
             class="{{ $loop->last ? 'text-blue-600' : 'text-gray-600' }} dark:text-blue-400 hover:underline">
             {{$data}}
         </a>
