@@ -4,7 +4,7 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "deploy": "composer install && npm install && npm run build && php artisan db:seed --class=EventSeeder && php artisan db:seed --class=TicketSeeder ",
+        "deploy": "composer install && npm install && npm run build && php artisan storage:link && php artisan db:seed --class=EventSeeder && php artisan db:seed --class=TicketSeeder ",
         "deploymigration": "php artisan migrate:fresh --seed && composer install && npm install && npm run build"
     },
     "devDependencies": {
